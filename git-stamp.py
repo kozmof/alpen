@@ -2,6 +2,7 @@ import re
 import subprocess
 from datetime import datetime, timezone
 from typing import List, NewType
+from configure import load_config, Config
 Datetime = NewType("Datetime", datetime)
 
 
@@ -18,6 +19,8 @@ def changed_files() -> List[str]:
     files: List[str] = []
     pattern: str = "(\tmodified:|\tnew file:)"
     break_pattern: str = "Changes not staged for commit:"
+    config: Config = load_config()
+    root_path: str = config["root_path"]
 
     for line in lines:
         if re.match(break_pattern, line):
@@ -25,7 +28,7 @@ def changed_files() -> List[str]:
         elif re.match(pattern, line):
             file_name: str = re.sub(pattern, "", line).strip()
             if file_name not in files:
-                files.append(file_name)
+                files.append("{}/{}".format(root_path, file_name))
 
     return files
 
