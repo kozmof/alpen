@@ -17,9 +17,12 @@ def changed_files() -> List[str]:
     lines: List[str] = output.split("\n")
     files: List[str] = []
     pattern: str = "(\tmodified:|\tnew file:)"
+    break_pattern: str = "Changes not staged for commit:"
 
     for line in lines:
-        if re.match(pattern, line):
+        if re.match(break_pattern, line):
+            break
+        elif re.match(pattern, line):
             file_name: str = re.sub(pattern, "", line).strip()
             if file_name not in files:
                 files.append(file_name)
