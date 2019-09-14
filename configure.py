@@ -13,6 +13,7 @@ INITIAL_CONFIG: Config = {
 }
 
 """
+PRIORITY
 1. stops
 2. masks / targets
 """
