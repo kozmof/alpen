@@ -1,12 +1,23 @@
 import os
 import json
-from typing import Dict, NewType
-Config = NewType("Config", Dict[str, str])
+from typing import Dict, List, Union, NewType
+Config = NewType("Config", Dict[str, Union[str, List[str]]])
 
 
 INITIAL_CONFIG: Config = {
-    "root_path": ""
+    "root_path": "",
+    "targets": [],
+    "stops": [],
+    "mask": [".md"],
+    "enable_mask": True
 }
+
+"""
+1. stops
+2. mask
+3. targets 
+"""
+
 CONFIG_PATH: str = "config.json"
 
 
