@@ -2,10 +2,11 @@ import re
 import subprocess
 from datetime import datetime, timezone
 from typing import List, Dict, NewType
-from configure import load_config, Config
+from configure import load_config, is_active_file, Config
 from pprint import pprint
 Datetime = NewType("Datetime", datetime)
 Diffs = NewType("Diffs", Dict[str, List[str]])
+Stamps = NewType("Stamps", Dict[str, List[str]])
 
 
 def git_diff() -> Diffs:
@@ -50,20 +51,44 @@ def fullpath(files: List[str]) -> List[str]:
     return ["{}/{}".format(root_path, file_name) for file_name in files]
 
 
-def time_stamp() -> str:
+def make_time_stamp() -> str:
     now: Datetime = datetime.now()
     time: str = str(now.replace(microsecond=0))
     tzname: str = str(now.astimezone().tzname())
     return time + " " + tzname
 
 
-def make_stamp(file_name: str, diffs: Diffs, separator: str = "=" * 8) -> str:
-    stamp_text: str = "{}\n{}".format(time_stamp(), "\n".join(diffs[file_name]))
+def make_diff_stamp(file_name: str, diffs: Diffs, separator: str = "") -> str:
+    stamp_text: str = "\n".join(diffs[file_name])
     if separator:
         stamp_text: str = "{}\n{}".format(separator, stamp_text)
     return stamp_text
 
 
+def make_sign_stamp():
+    pass
+
+
+def combine_stamp(enable_time_stamp: bool = True, enable_diff_stamp: bool = True, separator: str = "=" * 8) -> Stamps:
+    stamps = {}
+
+    for file_name, diff_lines in diffs:
+        time_stamp = ""
+        diff_stamp = ""
+        if enable_time_stamp:
+            time_stamp: str = make_time_stamp() + "\n"
+
+        if enable_diff_stamp:
+            diffs: Diffs = git_diff()
+            if is_active_file(file_name):
+                diff_stamp: str = make_diff_stamp(file_name, diffs, separator=separator) + "\n"
+
+        stamp: str = "{0}{1}".format(time_stamp, diff_stamp)
+        stamps[file_name] Stamps = stamp
+
+    return stamps
+
+
 if __name__ == "__main__":
     pprint(git_diff())
-    print(make_stamp("test/test2.txt", git_diff()))
+    print(make_diff_stamp("test/test2.txt", git_diff()))
