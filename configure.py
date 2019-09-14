@@ -4,7 +4,7 @@ from typing import Dict, NewType
 Config = NewType("Config", Dict[str, str])
 
 
-INITIAL_CONFIG: Conofig = {
+INITIAL_CONFIG: Config = {
     "root_path": ""
 }
 CONFIG_PATH: str = "config.json"
@@ -18,7 +18,7 @@ def init() -> None:
 def load_config() -> Config:
     if os.path.isfile(CONFIG_PATH):
         with open("config.json", "r") as f:
-            return config.load(f)
+            return json.load(f)
     else:     
         raise Exception("config.json not found")
 
