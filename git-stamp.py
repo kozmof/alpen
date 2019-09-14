@@ -15,13 +15,15 @@ def git_diff() -> Diffs:
     lines: List[str] = output.split("\n")
     separate_pattern: str = "diff --git "
     group: Diffs = {}
+    file_name = ""
 
     for line in lines:
         if re.match(separate_pattern, line):
             file_name: str = re.sub("a/", "", re.sub(separate_pattern, "", line).split(" ")[0])
             group[file_name] = []
 
-        group[file_name].append(line)
+        if file_name:
+            group[file_name].append(line)
 
     return group
 
@@ -59,9 +61,13 @@ def make_time_stamp() -> str:
 
 
 def make_diff_stamp(file_name: str, diffs: Diffs, separator: str = "") -> str:
-    stamp_text: str = "\n".join(diffs[file_name])
-    if separator:
-        stamp_text: str = "{}\n{}".format(separator, stamp_text)
+    stamp_text: str = ""
+
+    if file_name in diffs:
+        stamp_text = "\n".join(diffs[file_name])
+        if separator:
+            stamp_text = "{}\n{}".format(separator, stamp_text)
+
     return stamp_text
 
 
@@ -84,7 +90,7 @@ def combine_stamp(enable_time_stamp: bool = True, enable_diff_stamp: bool = True
                 diff_stamp: str = make_diff_stamp(file_name, diffs, separator=separator) + "\n"
 
         stamp: str = "{0}{1}".format(time_stamp, diff_stamp)
-        stamps[file_name] Stamps = stamp
+        stamps[file_name] = stamp
 
     return stamps
 
