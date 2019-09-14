@@ -71,6 +71,7 @@ def make_diff_stamp(file_name: str, diffs: Diffs, separator: str = "") -> str:
     return stamp_text
 
 
+# Reserved
 def make_sign_stamp():
     pass
 
