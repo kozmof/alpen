@@ -3,14 +3,13 @@ import subprocess
 from datetime import datetime, timezone
 from typing import List, Dict, NewType
 from configure import load_config, is_active_file, Config
-from pprint import pprint
 Datetime = NewType("Datetime", datetime)
 Diffs = NewType("Diffs", Dict[str, List[str]])
 Stamps = NewType("Stamps", Dict[str, List[str]])
 
 
 def git_diff() -> Diffs:
-    cmd: str = "git diff --staged --histogram"
+    cmd: str = "git diff --histogram"
     output: str = subprocess.check_output(cmd, shell=True).decode("utf-8")
     lines: List[str] = output.split("\n")
     separate_pattern: str = "diff --git "
