@@ -45,6 +45,7 @@ class DSKShell(cmd.Cmd):
 
     def do_clear(self, arg):
         subprocess.run(["clear"])
+        print(self.intro)
 
     def do_exit(self, arg):
         return True
