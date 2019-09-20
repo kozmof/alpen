@@ -1,8 +1,10 @@
 import os
 import json
+from time import time
+from uuid import uuid4
 from typing import Dict, List, Union, NewType
 Config = NewType("Config", Dict[str, Union[str, List[str]]])
-
+ConfigBackup = NewType("ConfigBackup", Dict[str, Config])
 
 INITIAL_CONFIG: Config = {
     "root_path": "",
@@ -19,6 +21,7 @@ PRIORITY
 """
 
 CONFIG_PATH: str = "config.json"
+CONFIG_BACKUP_PATH: str = ".backup_config.json"
 
 
 def init() -> None:
@@ -26,27 +29,57 @@ def init() -> None:
         json.dump(INITIAL_CONFIG, f)
 
 
-def load_config() -> Config:
-    if os.path.isfile(CONFIG_PATH):
-        with open("config.json", "r") as f:
+def load_config(backup=False) -> Union[Config, ConfigBackup]:
+    if not backup: 
+        cpath = CONFIG_PATH
+    else:
+        cpath = CONFIG_BACKUP_PATH
+
+    if os.path.isfile(cpath):
+        with open(cpath, "r") as f:
             return json.load(f)
     else:     
-        raise Exception("config.json not found")
+        raise Exception("{} not found".format(cpath))
 
 
-def update_config(key: str, value: any) -> None:
+def update_config(key: str, value: any, halt_if_exists: bool = False, backup_limit=10) -> None:
     if os.path.isfile(CONFIG_PATH):
         config : Config = load_config()
-        with open(CONFIG_PATH, "w") as f:
-            config[key]: Config = value
-            json.dump(config, f)
+        update: bool = False
+        if halt_if_exists:
+            if key not in config:
+                update = True
+        else:
+            update = True
+
+        if update:
+            with open(CONFIG_PATH, "w") as f:
+                config[key]: Config = value
+                json.dump(config, f)
+
+            config_backup: ConfigBackup = load_config(backup=True)
+
+            if len(config_backup) > backup_limit:
+                old_key: str = str(min([int(timestamp) for timestamp in config_backup.keys()]))
+                del config_backup[old_key]
+
+            with open(CONFIG_BACKUP_PATH, "w") as fb:
+                backup_key: str = str(int(time()))
+                config_backup[backup_key] = config
+                json.dump(config_backup, fb)
+
     else:     
         raise Exception("config.json not found")
+
+
+def save_uuid() -> None:
+    uuid: str = str(uuid4())
+    update_config("uuid", uuid, halt_if_exists=True)
 
 
 def save_root_path() -> None:
     root_path: str = os.path.dirname(os.path.realpath(__file__))
-    update_config("root_path", root_path)
+    update_config("root_path", root_path, halt_if_exists=True)
 
 
 def config_editor(editor: str) -> None:
@@ -71,4 +104,5 @@ def is_active_file(file_naem: str) -> bool:
 
 if __name__ == "__main__":
     save_root_path()
+    save_uuid()
     config_editor("vim")
