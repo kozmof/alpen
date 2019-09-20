@@ -3,12 +3,16 @@ import cmd
 import subprocess
 from pprint import pprint
 from git_stamp import git_diff
-from configure import load_config
+from configure import load_config, Config
 
 
 class DSKShell(cmd.Cmd):
     ascii_art = " _____     ______     __  __ \n/\  __-.  /\  ___\   /\ \/ / \n\ \ \/\ \ \ \___  \  \ \  _\"-. \n \ \____-  \/\_____\  \ \_\ \_\ \n  \/____/   \/_____/   \/_/\/_/"
-    description = "commands\n build: build texts\n list: list all documents\n exit: exit"
+    description = "commands\n"\
+                  " build: build texts\n"\
+                  " list: list all documents\n"\
+                  " edit: edit documents\n"\
+                  " exit: exit"
 
     intro = "{}\n{}".format(ascii_art, description)  
     prompt = "|> "
@@ -34,8 +38,10 @@ class DSKShell(cmd.Cmd):
     def do_diff(self, arg):
         pprint(git_diff())
 
-    def do_vim(self, arg):
-        subprocess.run(["vim"])
+    def do_edit(self, arg):
+        config: Config = load_config()
+        editor: str = config["editor"]
+        subprocess.run(["{}".format(editor)])
 
     def do_clear(self, arg):
         subprocess.run(["clear"])
