@@ -34,11 +34,23 @@ def load_config() -> Config:
         raise Exception("config.json not found")
 
 
+def update_config(key: str, value: any) -> None:
+    if os.path.isfile(CONFIG_PATH):
+        config : Config = load_config()
+        with open(CONFIG_PATH, "w") as f:
+            config[key]: Config = value
+            json.dump(config, f)
+    else:     
+        raise Exception("config.json not found")
+
+
 def save_root_path() -> None:
-    config : Config = load_config()
-    with open(CONFIG_PATH, "w") as f:
-        config["root_path"]: Config = os.path.dirname(os.path.realpath(__file__))
-        json.dump(config, f)
+    root_path: str = os.path.dirname(os.path.realpath(__file__))
+    update_config("root_path", root_path)
+
+
+def config_editor(editor: str) -> None:
+    update_config("editor", editor)
 
 
 def is_active_file(file_naem: str) -> bool:
@@ -59,3 +71,4 @@ def is_active_file(file_naem: str) -> bool:
 
 if __name__ == "__main__":
     save_root_path()
+    config_editor("vim")
