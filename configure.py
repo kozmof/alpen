@@ -11,7 +11,8 @@ INITIAL_CONFIG: Config = {
     "targets": [],
     "stops": [],
     "masks": [".md"],
-    "enable_mask": True
+    "enable_mask": True,
+    "show_ascii_art": False
 }
 
 """
@@ -51,6 +52,10 @@ def update_config(key: str, value: any, halt_if_exists: bool = False, backup_lim
         if halt_if_exists:
             if key not in config:
                 update = True
+
+            elif not config[key]:
+                update = True
+
         else:
             update = True
 
@@ -119,7 +124,8 @@ def make_doc_directory():
 
 
 if __name__ == "__main__":
+    init()
     save_root_path()
     save_uuid()
-    config_editor("vim")
+    config_editor("code")
     make_doc_directory()
