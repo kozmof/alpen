@@ -1,3 +1,0 @@
-aaaaa
-ccccc
-dddd
