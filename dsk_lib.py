@@ -9,15 +9,23 @@ from configure import document_dir
 from typing import List
 
 
+def ascii_art():
+    config: Config = load_config()
+    if config["enable_ascii_art"]:
+        art = " _____     ______     __  __ \n/\  __-.  /\  ___\   /\ \/ / \n\ \ \/\ \ \ \___  \  \ \  _\"-. \n \ \____-  \/\_____\  \ \_\ \_\ \n  \/____/   \/_____/   \/_/\/_/"
+        return art + "\n"
+    else:
+        return ""
+
+
 class DSKShell(cmd.Cmd):
-    ascii_art = " _____     ______     __  __ \n/\  __-.  /\  ___\   /\ \/ / \n\ \ \/\ \ \ \___  \  \ \  _\"-. \n \ \____-  \/\_____\  \ \_\ \_\ \n  \/____/   \/_____/   \/_/\/_/"
     description = "commands\n"\
                   " build: build texts\n"\
                   " list: list all documents\n"\
                   " edit: edit documents\n"\
                   " exit: exit"
 
-    intro = "{}\n{}".format(ascii_art, description)  
+    intro = "{}{}".format(ascii_art(), description)  
     prompt = "|> "
 
     def do_build(self, arg):
@@ -44,6 +52,9 @@ class DSKShell(cmd.Cmd):
         editor: str = config["editor"]
         command: List[str] = register_command(editor, arg)
         subprocess.run(command)
+
+    def complete_edit(self, text: str, linei: str, start_index: int, end_index: int) -> List[str]:
+        return ["complete test"]
 
     def do_clear(self, arg):
         subprocess.run(["clear"])

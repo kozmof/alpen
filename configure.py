@@ -12,7 +12,7 @@ INITIAL_CONFIG: Config = {
     "stops": [],
     "masks": [".md"],
     "enable_mask": True,
-    "show_ascii_art": False
+    "enable_ascii_art": False
 }
 
 """
