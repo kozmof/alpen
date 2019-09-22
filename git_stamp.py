@@ -1,3 +1,4 @@
+import os
 import re
 import subprocess
 from datetime import datetime, timezone
@@ -11,8 +12,13 @@ Stamps = NewType("Stamps", Dict[str, List[str]])
 
 
 def git_diff() -> Diffs:
+    config: Config = load_config()
+    root_path = config["root_path"]
     cmd: str = "git diff --histogram"
+    cwd = os.getcwd()
+    os.chdir(root_path)
     output: str = subprocess.check_output(cmd, shell=True).decode("utf-8")
+    os.chdir(cwd)
     lines: List[str] = output.split("\n")
     separate_pattern: str = "diff --git "
     group: Diffs = {}
