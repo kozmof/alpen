@@ -4,6 +4,8 @@ import subprocess
 from pprint import pprint
 from git_stamp import git_diff
 from configure import load_config, Config
+from command_registry import register_command 
+from typing import List
 
 
 class DSKShell(cmd.Cmd):
@@ -41,7 +43,8 @@ class DSKShell(cmd.Cmd):
     def do_edit(self, arg):
         config: Config = load_config()
         editor: str = config["editor"]
-        subprocess.run(["{}".format(editor)])
+        command: List[str] = register_command(editor, arg)
+        subprocess.run(command)
 
     def do_clear(self, arg):
         subprocess.run(["clear"])
