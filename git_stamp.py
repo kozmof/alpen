@@ -3,6 +3,8 @@ import subprocess
 from datetime import datetime, timezone
 from typing import List, Dict, NewType
 from configure import load_config, is_active_file, Config
+from pprint import pprint
+
 Datetime = NewType("Datetime", datetime)
 Diffs = NewType("Diffs", Dict[str, List[str]])
 Stamps = NewType("Stamps", Dict[str, List[str]])

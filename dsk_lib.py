@@ -5,6 +5,7 @@ from pprint import pprint
 from git_stamp import git_diff
 from configure import load_config, Config
 from command_registry import register_command 
+from configure import document_dir
 from typing import List
 
 
@@ -23,10 +24,8 @@ class DSKShell(cmd.Cmd):
         pass
 
     def do_list(self, arg):
-        config = load_config()
-        root_path = config["root_path"]
-        md_path = "{}/md".format(root_path)
-        for file_name in sorted(os.listdir(md_path)):
+        doc_dir = document_dir()
+        for file_name in sorted(os.listdir(doc_dir)):
             print(file_name)
 
     def do_tag(self, arg):
