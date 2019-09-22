@@ -102,7 +102,23 @@ def is_active_file(file_naem: str) -> bool:
                 return True
         return False
 
+
+def document_dir():
+    config: Config = load_config()
+    root_path: str = config["root_path"]
+    uuid: str = config["uuid"]
+    doc_dir = "{}/docs/{}".format(root_path, uuid)
+    return doc_dir
+
+
+def make_doc_directory():
+    doc_dir = document_dir()
+    if not os.path.isdir(doc_dir):
+        os.makedirs(doc_dir)
+
+
 if __name__ == "__main__":
     save_root_path()
     save_uuid()
     config_editor("vim")
+    make_doc_directory()
