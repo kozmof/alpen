@@ -20,8 +20,10 @@ PRIORITY
 2. masks / targets
 """
 
-CONFIG_PATH: str = "config.json"
-CONFIG_BACKUP_PATH: str = ".backup_config.json"
+
+ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
+CONFIG_PATH: str = ROOT_DIR + "/" + "config.json"
+CONFIG_BACKUP_PATH: str = ROOT_DIR + "/" + ".backup_config.json"
 
 
 def init() -> None:
@@ -78,8 +80,7 @@ def save_uuid() -> None:
 
 
 def save_root_path() -> None:
-    root_path: str = os.path.dirname(os.path.realpath(__file__))
-    update_config("root_path", root_path, halt_if_exists=True)
+    update_config("root_path", ROOT_DIR, halt_if_exists=True)
 
 
 def config_editor(editor: str) -> None:
