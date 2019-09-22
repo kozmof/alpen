@@ -13,7 +13,7 @@ def ascii_art():
     config: Config = load_config()
     if config["enable_ascii_art"]:
         art = " _____     ______     __  __ \n/\  __-.  /\  ___\   /\ \/ / \n\ \ \/\ \ \ \___  \  \ \  _\"-. \n \ \____-  \/\_____\  \ \_\ \_\ \n  \/____/   \/_____/   \/_/\/_/"
-        return art + "\n"
+        return art + "\n\n"
     else:
         return ""
 

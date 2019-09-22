@@ -124,7 +124,6 @@ def make_doc_directory():
 
 
 if __name__ == "__main__":
-    init()
     save_root_path()
     save_uuid()
     config_editor("code")
