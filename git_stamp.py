@@ -51,6 +51,24 @@ def changed_files() -> List[str]:
     return files
 
 
+def untraced_files() -> List[str]:
+    cmd: str = "git status"
+    output: str = subprocess.check_output(cmd, shell=True).decode("utf-8")
+    lines: List[str] = output.split("\n")
+    files: List[str] = []
+    pattern: str = "Untracked files:"
+    trace_start: bool  = False
+    for line in lines:
+        if re.match(pattern, line):
+            trace_start = True
+
+        if trace_start and re.match("\t", line):
+            file_name = line.strip()
+            files.append(file_name)
+
+    return files
+
+
 def fullpath(files: List[str]) -> List[str]:
     config: Config = load_config()
     root_path: str = config["root_path"]
@@ -107,5 +125,6 @@ if __name__ == "__main__":
     path = "{}/docs/{}/dummy1.txt".format(root_path, uuid)
     # pprint(git_diff())
     # print(make_diff_stamp(path, git_diff()))
+    print(untraced_files())
     for key, text in combine_stamp().items():
         print(key, text)
