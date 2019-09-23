@@ -85,24 +85,30 @@ def make_sign_stamp():
 
 def combine_stamp(enable_time_stamp: bool = True, enable_diff_stamp: bool = True, separator: str = "=" * 8) -> Stamps:
     stamps = {}
+    diffs: Diffs = git_diff()
 
-    for file_name, diff_lines in diffs:
+    for file_name in diffs.keys():
         time_stamp = ""
         diff_stamp = ""
         if enable_time_stamp:
             time_stamp: str = make_time_stamp() + "\n"
 
         if enable_diff_stamp:
-            diffs: Diffs = git_diff()
             if is_active_file(file_name):
                 diff_stamp: str = make_diff_stamp(file_name, diffs, separator=separator) + "\n"
 
-        stamp: str = "{0}{1}".format(time_stamp, diff_stamp)
-        stamps[file_name] = stamp
+        if diff_stamp:
+            stamp: str = "{0}{1}".format(time_stamp, diff_stamp)
+            stamps[file_name] = stamp
 
     return stamps
 
 
 if __name__ == "__main__":
-    pprint(git_diff())
-    print(make_diff_stamp("test/test2.txt", git_diff()))
+    config = load_config()
+    root_path = config["root_path"]
+    uuid = config["uuid"]
+    path = "{}/docs/{}/dummy1.txt".format(root_path, uuid)
+    # pprint(git_diff())
+    # print(make_diff_stamp(path, git_diff()))
+    print(combine_stamp())

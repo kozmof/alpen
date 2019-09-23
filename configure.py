@@ -1,3 +1,4 @@
+import re
 import os
 import json
 from time import time
@@ -12,7 +13,7 @@ INITIAL_CONFIG: Config = {
     "root_path": "",
     "targets": [],
     "stops": [],
-    "masks": [".md"],
+    "masks": [".md", ".txt"],
     "enable_mask": True,
     "enable_ascii_art": False,
 }
@@ -139,19 +140,19 @@ def config_editor(editor: str) -> None:
     update_config("editor", editor)
 
 
-def is_active_file(file_naem: str) -> bool:
+def is_active_file(file_name: str) -> bool:
     config: Config = load_config()
     stops: List[str] = config["stops"]
     masks: List[str] = config["masks"]
     targets: List[str] = config["targets"]
 
-    if file_naem in stops:
+    if file_name in stops:
         return False
     elif file_name in targets:
         return True
     else:
         for mask in masks:
-            if re.match(".*" + mask + "$", file_naem):
+            if re.match(".*" + mask + "$", file_name):
                 return True
         return False
 
