@@ -41,12 +41,9 @@ def changed_files() -> List[str]:
     lines: List[str] = output.split("\n")
     files: List[str] = []
     pattern: str = "(\tmodified:|\tnew file:)"
-    break_pattern: str = "Changes not staged for commit:"
 
     for line in lines:
-        if re.match(break_pattern, line):
-            break
-        elif re.match(pattern, line):
+        if re.match(pattern, line):
             file_name: str = re.sub(pattern, "", line).strip()
             if file_name not in files:
                 files.append(file_name)
@@ -83,19 +80,18 @@ def make_sign_stamp():
     pass
 
 
-def combine_stamp(enable_time_stamp: bool = True, enable_diff_stamp: bool = True, separator: str = "=" * 8) -> Stamps:
+def combine_stamp(enable_time_stamp: bool = True, separator: str = "=" * 8) -> Stamps:
     stamps = {}
-    diffs: Diffs = git_diff()
 
-    for file_name in diffs.keys():
+    for file_name in changed_files():
         time_stamp = ""
         diff_stamp = ""
         if enable_time_stamp:
             time_stamp: str = make_time_stamp() + "\n"
 
-        if enable_diff_stamp:
-            if is_active_file(file_name):
-                diff_stamp: str = make_diff_stamp(file_name, diffs, separator=separator) + "\n"
+        diffs: Diffs = git_diff()
+        if is_active_file(file_name):
+            diff_stamp: str = make_diff_stamp(file_name, diffs, separator=separator) + "\n"
 
         if diff_stamp:
             stamp: str = "{0}{1}".format(time_stamp, diff_stamp)
@@ -111,4 +107,5 @@ if __name__ == "__main__":
     path = "{}/docs/{}/dummy1.txt".format(root_path, uuid)
     # pprint(git_diff())
     # print(make_diff_stamp(path, git_diff()))
-    print(combine_stamp())
+    for key, text in combine_stamp().items():
+        print(key, text)
