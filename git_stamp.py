@@ -12,13 +12,17 @@ Stamps = NewType("Stamps", Dict[str, List[str]])
 
 
 def git_diff() -> Diffs:
+    cmd1: str = "git diff --histogram"
+    cmd2: str = "git diff --histogram --staged"
+
     config: Config = load_config()
     root_path = config["root_path"]
-    cmd: str = "git diff --histogram"
     cwd = os.getcwd()
     os.chdir(root_path)
-    output: str = subprocess.check_output(cmd, shell=True).decode("utf-8")
+    output: str = subprocess.check_output(cmd1, shell=True).decode("utf-8")
+    output += subprocess.check_output(cmd2, shell=True).decode("utf-8")
     os.chdir(cwd)
+
     lines: List[str] = output.split("\n")
     separate_pattern: str = "diff --git "
     group: Diffs = {}
@@ -29,7 +33,7 @@ def git_diff() -> Diffs:
             file_name: str = re.sub("a/", "", re.sub(separate_pattern, "", line).split(" ")[0])
             group[file_name] = []
 
-        if file_name:
+        if file_name in group:
             group[file_name].append(line)
 
     return group
@@ -37,7 +41,14 @@ def git_diff() -> Diffs:
 
 def changed_files() -> List[str]:
     cmd: str = "git status"
+
+    config: Config = load_config()
+    root_path: str = config["root_path"]
+    cwd = os.getcwd()
+    os.chdir(root_path)
     output: str = subprocess.check_output(cmd, shell=True).decode("utf-8")
+    os.chdir(cwd)
+
     lines: List[str] = output.split("\n")
     files: List[str] = []
     pattern: str = "(\tmodified:|\tnew file:)"
@@ -53,7 +64,14 @@ def changed_files() -> List[str]:
 
 def untraced_files() -> List[str]:
     cmd: str = "git status"
+
+    config: Config = load_config()
+    root_path: str = config["root_path"]
+    cwd = os.getcwd()
+    os.chdir(root_path)
     output: str = subprocess.check_output(cmd, shell=True).decode("utf-8")
+    os.chdir(cwd)
+
     lines: List[str] = output.split("\n")
     files: List[str] = []
     pattern: str = "Untracked files:"
@@ -67,6 +85,22 @@ def untraced_files() -> List[str]:
             files.append(file_name)
 
     return files
+
+
+def auto_track():
+    config: Config = load_config()
+    uuid: str = config["uuid"]
+    files: List[str] = untraced_files()
+    track_dir = "docs/{}".format(uuid)
+    for file_name in files:
+        if re.match(track_dir, file_name):
+            cmd: str = "git add {}".format(file_name)
+            config: Config = load_config
+            root_path: str = config["root_path"]
+            cwd = os.getcwd()
+            os.chdir(root_path)
+            output: str = subprocess.check_output(cmd, shell=True).decode("utf-8")
+            os.chdir(cwd)
 
 
 def fullpath(files: List[str]) -> List[str]:
@@ -100,6 +134,7 @@ def make_sign_stamp():
 
 def combine_stamp(enable_time_stamp: bool = True, separator: str = "=" * 8) -> Stamps:
     stamps = {}
+    diffs: Diffs = git_diff()
 
     for file_name in changed_files():
         time_stamp = ""
@@ -107,8 +142,7 @@ def combine_stamp(enable_time_stamp: bool = True, separator: str = "=" * 8) -> S
         if enable_time_stamp:
             time_stamp: str = make_time_stamp() + "\n"
 
-        diffs: Diffs = git_diff()
-        if is_active_file(file_name):
+        if is_active_file(file_name) or True:
             diff_stamp: str = make_diff_stamp(file_name, diffs, separator=separator) + "\n"
 
         if diff_stamp:
@@ -125,6 +159,4 @@ if __name__ == "__main__":
     path = "{}/docs/{}/dummy1.txt".format(root_path, uuid)
     # pprint(git_diff())
     # print(make_diff_stamp(path, git_diff()))
-    print(untraced_files())
-    for key, text in combine_stamp().items():
-        print(key, text)
+    pprint(combine_stamp())
