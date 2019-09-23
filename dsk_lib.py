@@ -3,10 +3,9 @@ import cmd
 import subprocess
 from pprint import pprint
 from git_stamp import git_diff
-from configure import load_config, Config
+from typing import List, Callable
 from command_registry import register_command 
-from configure import document_dir
-from typing import List
+from configure import load_config, load_shorthand, document_dir, Config, Shorthand
 
 
 def ascii_art():
@@ -19,11 +18,17 @@ def ascii_art():
 
 
 class DSKShell(cmd.Cmd):
+    shorthand: Shorthand = load_shorthand()
     description = "commands\n"\
-                  " build: build texts\n"\
-                  " list: list all documents\n"\
-                  " edit: edit documents\n"\
-                  " exit: exit"
+                  " build ({build_short}): build texts\n"\
+                  " list ({list_short}): list all documents\n"\
+                  " edit ({edit_short}): edit documents\n"\
+                  " clear ({clear_short}): clear\n"\
+                  " quit ({quit_short}): quit".format(build_short=shorthand["build"],
+                                                      list_short=shorthand["list"],
+                                                      edit_short=shorthand["edit"],
+                                                      clear_short=shorthand["clear"],
+                                                      quit_short=shorthand["quit"])
 
     intro = "{}{}".format(ascii_art(), description)  
     prompt = "|> "
@@ -60,5 +65,18 @@ class DSKShell(cmd.Cmd):
         subprocess.run(["clear"])
         print(self.intro)
 
-    def do_exit(self, arg):
+    def do_quit(self, arg):
         return True
+
+    @classmethod
+    def set_shorthand(cls):
+        shorthand: Shorthand = load_shorthand()
+        mmapper: Dict[str, Callable] = {
+          "build": cls.do_build,
+          "list": cls.do_list,
+          "edit": cls.do_edit,
+          "clear": cls.do_clear,
+          "quit": cls.do_quit
+        }
+        for key, value in shorthand.items():
+            setattr(cls, "do_{}".format(value), mmapper[key])

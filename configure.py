@@ -4,7 +4,9 @@ from time import time
 from uuid import uuid4
 from typing import Dict, List, Union, NewType
 Config = NewType("Config", Dict[str, Union[str, List[str]]])
+Shorthand = NewType("Shorthand", Dict[str, Union[str, str]])
 ConfigBackup = NewType("ConfigBackup", Dict[str, Config])
+
 
 INITIAL_CONFIG: Config = {
     "root_path": "",
@@ -12,8 +14,18 @@ INITIAL_CONFIG: Config = {
     "stops": [],
     "masks": [".md"],
     "enable_mask": True,
-    "enable_ascii_art": False
+    "enable_ascii_art": False,
 }
+
+
+INITIAL_SHORTHAND: Shorthand = {
+    "build": "b",
+    "list": "l",
+    "edit": "e",
+    "clear": "c",
+    "quit": "q"
+}
+
 
 """
 PRIORITY
@@ -25,11 +37,28 @@ PRIORITY
 ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
 CONFIG_PATH: str = ROOT_DIR + "/" + "config.json"
 CONFIG_BACKUP_PATH: str = ROOT_DIR + "/" + ".backup_config.json"
+SHORTHAND_PATH = ROOT_DIR + "/" + "shorthand.json"
 
 
 def init() -> None:
     with open(CONFIG_PATH, "w") as f:
         json.dump(INITIAL_CONFIG, f)
+
+    with open(SHORTHAND_PATH, "w") as f:
+        json.dump(INITIAL_SHORTHAND, f)
+
+
+def load_config(backup=False) -> Union[Config, ConfigBackup]:
+    if not backup: 
+        cpath = CONFIG_PATH
+    else:
+        cpath = CONFIG_BACKUP_PATH
+
+    if os.path.isfile(cpath):
+        with open(cpath, "r") as f:
+            return json.load(f)
+    else:     
+        raise Exception("{} not found".format(cpath))
 
 
 def load_config(backup=False) -> Union[Config, ConfigBackup]:
@@ -61,7 +90,7 @@ def update_config(key: str, value: any, halt_if_exists: bool = False, backup_lim
 
         if update:
             with open(CONFIG_PATH, "w") as f:
-                config[key]: Config = value
+                config[key] = value
                 json.dump(config, f)
 
             config_backup: ConfigBackup = load_config(backup=True)
@@ -77,6 +106,24 @@ def update_config(key: str, value: any, halt_if_exists: bool = False, backup_lim
 
     else:     
         raise Exception("config.json not found")
+
+
+def load_shorthand() -> Shorthand:
+    spath: str = SHORTHAND_PATH
+
+    if os.path.isfile(spath):
+        with open(spath, "r") as f:
+            return json.load(f)
+    else:     
+        raise Exception("{} not found".format(spath))
+
+
+def update_shorthand(key: str, value: str) -> None:
+    if os.path.isfile(SHORTHAND_PATH):
+        shorthand: shorthand = load_shorthand()
+        with open(SHORTHAND_PATH, "w") as f:
+            shorthand[key] = value
+            json.dump(config, f)
 
 
 def save_uuid() -> None:
@@ -124,6 +171,7 @@ def make_doc_directory():
 
 
 if __name__ == "__main__":
+    init()
     save_root_path()
     save_uuid()
     config_editor("code")

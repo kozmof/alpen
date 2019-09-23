@@ -1,4 +1,5 @@
 config.json
+shorthand.json
 .backup_config.json
 .*.swp
 __pycache__
