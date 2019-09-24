@@ -59,7 +59,7 @@ def load_config(backup=False) -> Union[Config, ConfigBackup]:
         with open(cpath, "r") as f:
             return json.load(f)
     else:     
-        raise Exception("{} not found".format(cpath))
+        raise Exception(f"{cpath} not found")
 
 
 def load_config(backup=False) -> Union[Config, ConfigBackup]:
@@ -72,7 +72,7 @@ def load_config(backup=False) -> Union[Config, ConfigBackup]:
         with open(cpath, "r") as f:
             return json.load(f)
     else:     
-        raise Exception("{} not found".format(cpath))
+        raise Exception(f"{cpath} not found")
 
 
 def update_config(key: str, value: any, halt_if_exists: bool = False, backup_limit=10) -> None:
@@ -116,7 +116,7 @@ def load_shorthand() -> Shorthand:
         with open(spath, "r") as f:
             return json.load(f)
     else:     
-        raise Exception("{} not found".format(spath))
+        raise Exception(f"{spath} not found")
 
 
 def update_shorthand(key: str, value: str) -> None:
@@ -161,7 +161,7 @@ def document_dir():
     config: Config = load_config()
     root_path: str = config["root_path"]
     uuid: str = config["uuid"]
-    doc_dir = "{}/docs/{}".format(root_path, uuid)
+    doc_dir = f"{root_path}/docs/{uuid}"
     return doc_dir
 
 

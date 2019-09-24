@@ -26,11 +26,11 @@ class DSKShell(cmd.Cmd):
                   " clear ({clear_short}): clear\n"\
                   " quit ({quit_short}): quit".format(build_short=shorthand["build"],
                                                       list_short=shorthand["list"],
-                                                      edit_short=shorthand["edit"],
                                                       clear_short=shorthand["clear"],
+                                                      edit_short=shorthand["edit"],
                                                       quit_short=shorthand["quit"])
 
-    intro = "{}{}".format(ascii_art(), description)  
+    intro = f"{ascii_art()}{description}"
     prompt = "|> "
 
     def do_build(self, arg):
@@ -79,4 +79,4 @@ class DSKShell(cmd.Cmd):
           "quit": cls.do_quit
         }
         for key, value in shorthand.items():
-            setattr(cls, "do_{}".format(value), mmapper[key])
+            setattr(cls, f"do_{value}", mmapper[key])

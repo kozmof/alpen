@@ -74,17 +74,17 @@ def auto_track():
     config: Config = load_config()
     uuid: str = config["uuid"]
     files: List[str] = untraced_files()
-    track_dir = "docs/{}".format(uuid)
+    track_dir = f"docs/{uuid}"
     for file_name in files:
         if re.match(track_dir, file_name):
-            cmd: str = "git add {}".format(file_name)
+            cmd: str = f"git add {file_name}"
             output: str = fixed_shell(cmd)
 
 
 def fullpath(files: List[str]) -> List[str]:
     config: Config = load_config()
     root_path: str = config["root_path"]
-    return ["{}/{}".format(root_path, file_name) for file_name in files]
+    return [f"{root_path}/{file_name}" for file_name in files]
 
 
 def make_time_stamp() -> str:
@@ -100,7 +100,7 @@ def make_diff_stamp(file_name: str, diffs: Diffs, separator: str = "") -> str:
     if file_name in diffs:
         stamp_text = "\n".join(diffs[file_name])
         if separator:
-            stamp_text = "{}\n{}".format(separator, stamp_text)
+            stamp_text = f"{separator}\n{stamp_text}"
 
     return stamp_text
 
@@ -119,7 +119,7 @@ def combine_stamp(enable_time_stamp: bool = True, separator: str = "=" * 8) -> S
             diff_stamp: str = make_diff_stamp(file_name, diffs, separator=separator) + "\n"
 
         if diff_stamp:
-            stamp: str = "{0}{1}".format(time_stamp, diff_stamp)
+            stamp: str = f"{time_stamp}{diff_stamp}"
             stamps[file_name] = stamp
 
     return stamps
@@ -129,7 +129,7 @@ if __name__ == "__main__":
     config = load_config()
     root_path = config["root_path"]
     uuid = config["uuid"]
-    path = "{}/docs/{}/dummy1.txt".format(root_path, uuid)
+    path = f"{root_path}/docs/{uuid}/dummy1.txt"
     # pprint(git_diff())
     # print(make_diff_stamp(path, git_diff()))
     pprint(combine_stamp())
