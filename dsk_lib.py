@@ -5,7 +5,7 @@ from pprint import pprint
 from git_stamp import git_diff
 from typing import List, Callable
 from command_registry import register_edit_command 
-from doc_ops import document_dir
+from dir_ops import document_dir
 from custom_types import Config, Shorthand
 from configure import load_config, load_shorthand
 

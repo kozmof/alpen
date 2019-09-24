@@ -3,7 +3,7 @@ import os
 import json
 from time import time
 from uuid import uuid4
-from doc_ops import make_doc_directory
+from dir_ops import make_doc_directory
 from typing import List, Union
 from custom_types import Config, Shorthand, ConfigBackup
 
