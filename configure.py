@@ -3,6 +3,7 @@ import os
 import json
 from time import time
 from uuid import uuid4
+from doc_ops import make_doc_directory
 from typing import Dict, List, Union, NewType
 Config = NewType("Config", Dict[str, Union[str, List[str]]])
 Shorthand = NewType("Shorthand", Dict[str, Union[str, str]])
@@ -155,20 +156,6 @@ def is_active_file(file_name: str) -> bool:
             if re.match(".*" + mask + "$", file_name):
                 return True
         return False
-
-
-def document_dir():
-    config: Config = load_config()
-    root_path: str = config["root_path"]
-    uuid: str = config["uuid"]
-    doc_dir = f"{root_path}/docs/{uuid}"
-    return doc_dir
-
-
-def make_doc_directory():
-    doc_dir = document_dir()
-    if not os.path.isdir(doc_dir):
-        os.makedirs(doc_dir)
 
 
 if __name__ == "__main__":

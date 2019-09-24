@@ -1,6 +1,6 @@
 import re
 from typing import List, Dict
-from configure import document_dir
+from doc_ops import document_dir
 
 def register_edit_command(editor: str, user_input: str) -> List[str]:
     elements = list(filter(lambda x:x, user_input.split(" ")))

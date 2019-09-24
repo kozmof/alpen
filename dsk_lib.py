@@ -5,7 +5,8 @@ from pprint import pprint
 from git_stamp import git_diff
 from typing import List, Callable
 from command_registry import register_edit_command 
-from configure import load_config, load_shorthand, document_dir, Config, Shorthand
+from doc_ops import document_dir
+from configure import load_config, load_shorthand, Config, Shorthand
 
 
 def ascii_art():
