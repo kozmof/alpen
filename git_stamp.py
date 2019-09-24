@@ -1,10 +1,11 @@
 import os
 import re
-import subprocess
+from shell import fixed_shell
 from datetime import datetime, timezone
 from typing import List, Dict, NewType
 from configure import load_config, is_active_file, Config
 from pprint import pprint
+
 
 Datetime = NewType("Datetime", datetime)
 Diffs = NewType("Diffs", Dict[str, List[str]])
@@ -14,14 +15,8 @@ Stamps = NewType("Stamps", Dict[str, List[str]])
 def git_diff() -> Diffs:
     cmd1: str = "git diff --histogram"
     cmd2: str = "git diff --histogram --staged"
-
-    config: Config = load_config()
-    root_path = config["root_path"]
-    cwd = os.getcwd()
-    os.chdir(root_path)
-    output: str = subprocess.check_output(cmd1, shell=True).decode("utf-8")
-    output += subprocess.check_output(cmd2, shell=True).decode("utf-8")
-    os.chdir(cwd)
+    output: str = fixed_shell(cmd1)
+    output += fixed_shell(cmd2)
 
     lines: List[str] = output.split("\n")
     separate_pattern: str = "diff --git "
@@ -41,13 +36,7 @@ def git_diff() -> Diffs:
 
 def changed_files() -> List[str]:
     cmd: str = "git status"
-
-    config: Config = load_config()
-    root_path: str = config["root_path"]
-    cwd = os.getcwd()
-    os.chdir(root_path)
-    output: str = subprocess.check_output(cmd, shell=True).decode("utf-8")
-    os.chdir(cwd)
+    output: str = fixed_shell(cmd)
 
     lines: List[str] = output.split("\n")
     files: List[str] = []
@@ -64,13 +53,7 @@ def changed_files() -> List[str]:
 
 def untraced_files() -> List[str]:
     cmd: str = "git status"
-
-    config: Config = load_config()
-    root_path: str = config["root_path"]
-    cwd = os.getcwd()
-    os.chdir(root_path)
-    output: str = subprocess.check_output(cmd, shell=True).decode("utf-8")
-    os.chdir(cwd)
+    output: str = fixed_shell(cmd)
 
     lines: List[str] = output.split("\n")
     files: List[str] = []
@@ -95,12 +78,7 @@ def auto_track():
     for file_name in files:
         if re.match(track_dir, file_name):
             cmd: str = "git add {}".format(file_name)
-            config: Config = load_config
-            root_path: str = config["root_path"]
-            cwd = os.getcwd()
-            os.chdir(root_path)
-            output: str = subprocess.check_output(cmd, shell=True).decode("utf-8")
-            os.chdir(cwd)
+            output: str = fixed_shell(cmd)
 
 
 def fullpath(files: List[str]) -> List[str]:
@@ -127,11 +105,6 @@ def make_diff_stamp(file_name: str, diffs: Diffs, separator: str = "") -> str:
     return stamp_text
 
 
-# Reserved
-def make_sign_stamp():
-    pass
-
-
 def combine_stamp(enable_time_stamp: bool = True, separator: str = "=" * 8) -> Stamps:
     stamps = {}
     diffs: Diffs = git_diff()
@@ -142,7 +115,7 @@ def combine_stamp(enable_time_stamp: bool = True, separator: str = "=" * 8) -> S
         if enable_time_stamp:
             time_stamp: str = make_time_stamp() + "\n"
 
-        if is_active_file(file_name) or True:
+        if is_active_file(file_name):
             diff_stamp: str = make_diff_stamp(file_name, diffs, separator=separator) + "\n"
 
         if diff_stamp:
