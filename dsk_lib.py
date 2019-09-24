@@ -4,7 +4,7 @@ import subprocess
 from pprint import pprint
 from git_stamp import git_diff
 from typing import List, Callable
-from command_registry import register_command 
+from command_registry import register_edit_command 
 from configure import load_config, load_shorthand, document_dir, Config, Shorthand
 
 
@@ -55,7 +55,7 @@ class DSKShell(cmd.Cmd):
     def do_edit(self, arg):
         config: Config = load_config()
         editor: str = config["editor"]
-        command: List[str] = register_command(editor, arg)
+        command: List[str] = register_edit_command(editor, arg)
         subprocess.run(command)
 
     def complete_edit(self, text: str, linei: str, start_index: int, end_index: int) -> List[str]:
