@@ -6,7 +6,8 @@ from git_stamp import git_diff
 from typing import List, Callable
 from command_registry import register_edit_command 
 from doc_ops import document_dir
-from configure import load_config, load_shorthand, Config, Shorthand
+from custom_types import Config, Shorthand
+from configure import load_config, load_shorthand
 
 
 def ascii_art():
@@ -38,7 +39,8 @@ class DSKShell(cmd.Cmd):
         pass
 
     def do_list(self, arg):
-        doc_dir = document_dir()
+        config: Config = load_config()
+        doc_dir = document_dir(config)
         for file_name in sorted(os.listdir(doc_dir)):
             print(file_name)
 

@@ -2,14 +2,10 @@ import os
 import re
 from shell import fixed_shell
 from datetime import datetime, timezone
-from typing import List, Dict, NewType
+from typing import List, Dict
 from configure import load_config, is_active_file, Config
+from custom_types import Datetime, Diffs, Stamps
 from pprint import pprint
-
-
-Datetime = NewType("Datetime", datetime)
-Diffs = NewType("Diffs", Dict[str, List[str]])
-Stamps = NewType("Stamps", Dict[str, List[str]])
 
 
 def git_diff() -> Diffs:

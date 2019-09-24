@@ -4,10 +4,8 @@ import json
 from time import time
 from uuid import uuid4
 from doc_ops import make_doc_directory
-from typing import Dict, List, Union, NewType
-Config = NewType("Config", Dict[str, Union[str, List[str]]])
-Shorthand = NewType("Shorthand", Dict[str, Union[str, str]])
-ConfigBackup = NewType("ConfigBackup", Dict[str, Config])
+from typing import List, Union
+from custom_types import Config, Shorthand, ConfigBackup
 
 
 INITIAL_CONFIG: Config = {
@@ -163,4 +161,5 @@ if __name__ == "__main__":
     save_root_path()
     save_uuid()
     config_editor("code")
-    make_doc_directory()
+    config = load_config()
+    make_doc_directory(config)

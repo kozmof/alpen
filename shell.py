@@ -1,6 +1,7 @@
 import os
 import subprocess
-from configure import load_config, Config
+from custom_types import Config
+from configure import load_config
 
 
 def fixed_shell(cmd: str) -> str:
