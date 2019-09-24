@@ -3,16 +3,16 @@ import os
 import json
 from time import time
 from uuid import uuid4
-from dir_ops import make_doc_directory
 from typing import List, Union
 from custom_types import Config, Shorthand, ConfigBackup
+from dir_ops import make_doc_directory, make_history_directory
 
 
 INITIAL_CONFIG: Config = {
     "root_path": "",
     "targets": [],
     "stops": [],
-    "masks": [".md", ".txt"],
+    "masks": ["md", "txt"],
     "enable_mask": True,
     "enable_ascii_art": False,
 }
@@ -151,15 +151,16 @@ def is_active_file(file_name: str) -> bool:
         return True
     else:
         for mask in masks:
-            if re.match(".*" + mask + "$", file_name):
+            if re.match(f".*\.{mask}$", file_name):
                 return True
         return False
 
 
 if __name__ == "__main__":
-    init()
-    save_root_path()
-    save_uuid()
-    config_editor("code")
+    # init()
+    # save_root_path()
+    # save_uuid()
+    # config_editor("code")
     config = load_config()
-    make_doc_directory(config)
+    # make_doc_directory(config)
+    make_history_directory(config)

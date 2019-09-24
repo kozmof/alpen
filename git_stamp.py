@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from typing import List, Dict
 from configure import load_config, is_active_file, Config
 from custom_types import Datetime, Diffs, Stamps
+from dir_ops import history_dir
 from pprint import pprint
 
 
@@ -112,6 +113,7 @@ def combine_stamp(enable_time_stamp: bool = True, separator: str = "=" * 8) -> S
             time_stamp: str = make_time_stamp() + "\n"
 
         if is_active_file(file_name):
+            print("DEBUG")
             diff_stamp: str = make_diff_stamp(file_name, diffs, separator=separator) + "\n"
 
         if diff_stamp:
@@ -121,11 +123,26 @@ def combine_stamp(enable_time_stamp: bool = True, separator: str = "=" * 8) -> S
     return stamps
 
 
+def save_history() -> None:
+    config: Config = load_config()
+    uuid: str = config["uuid"]
+    root_path: str = config["root_path"]
+    hist_dir: str = history_dir(config)
+    stamps: Stamps = combine_stamp()
+    for file_name, stamp in stamps.items():
+        file_name = re.sub(f"docs/{uuid}/", "", file_name)
+        file_name = re.sub("\..*", "", file_name)
+        save_path = f"{hist_dir}/{file_name}.stamp"
+        print(save_path)
+        with open(save_path, "a") as f:
+            f.write(stamp)
+
+
 if __name__ == "__main__":
     config = load_config()
     root_path = config["root_path"]
     uuid = config["uuid"]
     path = f"{root_path}/docs/{uuid}/dummy1.txt"
     # pprint(git_diff())
-    # print(make_diff_stamp(path, git_diff()))
-    pprint(combine_stamp())
+    # print(make_diff_stamp(path, git_diff()))  
+    save_history()
