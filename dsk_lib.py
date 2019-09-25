@@ -25,11 +25,13 @@ class DSKShell(cmd.Cmd):
                   " build ({build_short}): build texts\n"\
                   " list ({list_short}): list all documents\n"\
                   " edit ({edit_short}): edit documents\n"\
+                  " diff ({diff_short}): show diff (before commit)\n"\
                   " clear ({clear_short}): clear\n"\
                   " quit ({quit_short}): quit".format(build_short=shorthand["build"],
                                                       list_short=shorthand["list"],
-                                                      clear_short=shorthand["clear"],
                                                       edit_short=shorthand["edit"],
+                                                      diff_short=shorthand["diff"],
+                                                      clear_short=shorthand["clear"],
                                                       quit_short=shorthand["quit"])
 
     intro = f"{ascii_art()}{description}"
@@ -78,6 +80,7 @@ class DSKShell(cmd.Cmd):
           "build": cls.do_build,
           "list": cls.do_list,
           "edit": cls.do_edit,
+          "diff": cls.do_diff,
           "clear": cls.do_clear,
           "quit": cls.do_quit
         }
