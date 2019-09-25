@@ -2,7 +2,7 @@ import os
 import cmd
 import subprocess
 from pprint import pprint
-from git_stamp import git_diff
+from git_stamp import combine_stamp
 from typing import List, Callable
 from command_registry import register_edit_command 
 from dir_ops import document_dir
@@ -53,7 +53,7 @@ class DSKShell(cmd.Cmd):
             print("DEBUG SEARCH")
 
     def do_diff(self, arg):
-        pprint(git_diff())
+        pprint(combine_stamp())
 
     def do_edit(self, arg):
         config: Config = load_config()

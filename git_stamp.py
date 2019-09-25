@@ -113,7 +113,6 @@ def combine_stamp(enable_time_stamp: bool = True, separator: str = "=" * 8) -> S
             time_stamp: str = make_time_stamp() + "\n"
 
         if is_active_file(file_name):
-            print("DEBUG")
             diff_stamp: str = make_diff_stamp(file_name, diffs, separator=separator) + "\n"
 
         if diff_stamp:
@@ -133,7 +132,6 @@ def save_history() -> None:
         file_name = re.sub(f"docs/{uuid}/", "", file_name)
         file_name = re.sub("\..*", "", file_name)
         save_path = f"{hist_dir}/{file_name}.stamp"
-        print(save_path)
         with open(save_path, "a") as f:
             f.write(stamp)
 
