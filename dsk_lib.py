@@ -2,6 +2,8 @@ import os
 import cmd
 import subprocess
 from pprint import pprint
+from color import color
+from parser import color_diff
 from git_stamp import combine_stamp
 from typing import List, Callable
 from command_registry import register_edit_command 
@@ -55,7 +57,9 @@ class DSKShell(cmd.Cmd):
             print("DEBUG SEARCH")
 
     def do_diff(self, arg):
-        pprint(combine_stamp())
+        for file_name, diff_text in combine_stamp(enable_time_stamp=False).items():
+            print(color(file_name, color_type="green"))
+            print(color_diff(diff_text))
 
     def do_edit(self, arg):
         config: Config = load_config()
