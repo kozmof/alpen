@@ -2,7 +2,7 @@ from typing import List
 from pprint import pprint
 
 
-def gprint(*texts, margin: int = 3) -> None:
+def grid_text(*texts, margin: int = 3) -> str:
     whole_max_len: List[int] = []
     max_height: int = 0
 
@@ -37,6 +37,11 @@ def gprint(*texts, margin: int = 3) -> None:
                     result_lines[rest_line_pos] += " " * whole_max_len[col_pos] + " " * margin
 
     result = "\n".join(result_lines)
+    return result
+
+
+def gprint(*texts, margin: int = 3) -> None:
+    result = grid_text(*texts)
     print(result)
             
 
