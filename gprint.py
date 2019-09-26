@@ -41,7 +41,7 @@ def grid_text(*texts, margin: int = 3) -> str:
 
 
 def gprint(*texts, margin: int = 3) -> None:
-    result = grid_text(*texts)
+    result = grid_text(*texts, margin=margin)
     print(result)
             
 
