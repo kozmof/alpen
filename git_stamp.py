@@ -110,7 +110,10 @@ def combine_stamp(enable_time_stamp: bool = True, separator: str = "=" * 8) -> S
         time_stamp = ""
         diff_stamp = ""
         if enable_time_stamp:
-            time_stamp: str = make_time_stamp() + "\n"
+            if separator:
+                time_stamp: str = f"{separator}\n{make_time_stamp()}\n"
+            else:
+                time_stamp: str = f"{make_time_stamp()}\n"
 
         if is_active_file(file_name):
             diff_stamp: str = make_diff_stamp(file_name, diffs, separator=separator) + "\n"
