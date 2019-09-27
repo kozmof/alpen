@@ -1,5 +1,4 @@
 from typing import List
-from pprint import pprint
 
 
 def grid_text(*texts, margin: int = 3) -> str:
@@ -43,10 +42,3 @@ def grid_text(*texts, margin: int = 3) -> str:
 def gprint(*texts, margin: int = 3) -> None:
     result = grid_text(*texts, margin=margin)
     print(result)
-            
-
-if __name__ == "__main__":        
-    t1 = "test\ntest2\ntes"
-    t2 = "a\nbb\nccc"
-    t3 = "12345\n678\n\n9"
-    gprint(t1, t2, t3)
