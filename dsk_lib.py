@@ -2,6 +2,7 @@ import os
 import cmd
 import subprocess
 from pprint import pprint
+from gprint import grid_text
 from color import color
 from parser import color_diff
 from git_stamp import combine_stamp
@@ -10,6 +11,7 @@ from command_registry import register_edit_command
 from dir_ops import document_dir
 from custom_types import Config, Shorthand
 from configure import load_config, load_shorthand
+from record import record_edited_file, read_edited_file_record
 
 
 def ascii_art():
@@ -19,6 +21,10 @@ def ascii_art():
         return art + "\n\n"
     else:
         return ""
+
+
+def change_log() -> str:
+    return f"recently edited\n{read_edited_file_record()}" 
 
 
 class DSKShell(cmd.Cmd):
@@ -36,7 +42,9 @@ class DSKShell(cmd.Cmd):
                                                       clear_short=shorthand["clear"],
                                                       quit_short=shorthand["quit"])
 
-    intro = f"{ascii_art()}{description}"
+    left_side = f"{ascii_art()}{description}"
+    right_side = change_log()
+    intro = grid_text(left_side, right_side, margin=5)
     prompt = "|> "
 
     def do_build(self, arg):
@@ -64,6 +72,7 @@ class DSKShell(cmd.Cmd):
     def do_edit(self, arg):
         config: Config = load_config()
         editor: str = config["editor"]
+        record_edited_file(arg)
         command: List[str] = register_edit_command(editor, arg)
         subprocess.run(command)
 
