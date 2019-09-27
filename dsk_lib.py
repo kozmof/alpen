@@ -81,7 +81,10 @@ class DSKShell(cmd.Cmd):
 
     def do_clear(self, arg):
         subprocess.run(["clear"])
-        print(self.intro)
+        left_side = f"{ascii_art()}{self.description}"
+        right_side = change_log()
+        intro = grid_text(left_side, right_side, margin=5)
+        print(intro)
 
     def do_quit(self, arg):
         return True
