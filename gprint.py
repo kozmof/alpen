@@ -1,4 +1,13 @@
 from typing import List
+from unicodedata import east_asian_width
+
+
+def count_wide_char(line):
+    count = 0
+    for char in line:
+        if east_asian_width(char) in ["W", "F", "A"]:
+            count += 1
+    return count
 
 
 def grid_text(*texts, margin: int = 3) -> str:
@@ -8,7 +17,7 @@ def grid_text(*texts, margin: int = 3) -> str:
     for text in texts:
         lines = text.split("\n")
         height = len(lines)
-        max_len = max([len(line) for line in lines])
+        max_len = max([len(line) + count_wide_char(line) for line in lines])
         whole_max_len.append(max_len)
         if max_height < height:
             max_height = height
@@ -21,9 +30,9 @@ def grid_text(*texts, margin: int = 3) -> str:
         lines = text.split("\n")
         for line_pos, line in enumerate(lines):
             if col_pos == last_col_pos:
-                padding = " " * (whole_max_len[col_pos] - len(line))
+                padding = " " * (whole_max_len[col_pos] - len(line) - count_wide_char(line))
             else:
-                padding = " " * (whole_max_len[col_pos] - len(line)) + " " * margin
+                padding = " " * (whole_max_len[col_pos] - len(line) - count_wide_char(line)) + " " * margin
             result_lines[line_pos] += f"{line}{padding}"
 
         if len(lines) < max_height:
