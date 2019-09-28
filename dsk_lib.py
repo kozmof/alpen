@@ -4,6 +4,7 @@ import subprocess
 from pprint import pprint
 from gprint import grid_text
 from color import color
+from todo import TODO_DIR_PATH, get_todo, toggle_check
 from parser import color_diff
 from git_stamp import combine_stamp
 from typing import List, Callable
@@ -33,18 +34,21 @@ class DSKShell(cmd.Cmd):
                   " build ({build_short}): build texts\n"\
                   " list ({list_short}): list all documents\n"\
                   " edit ({edit_short}): edit documents\n"\
+                  " todo ({todo_short}): edit todo list\n"\
                   " diff ({diff_short}): show diff (before commit)\n"\
                   " clear ({clear_short}): clear\n"\
                   " quit ({quit_short}): quit".format(build_short=shorthand["build"],
                                                       list_short=shorthand["list"],
                                                       edit_short=shorthand["edit"],
+                                                      todo_short=shorthand["todo"],
                                                       diff_short=shorthand["diff"],
                                                       clear_short=shorthand["clear"],
                                                       quit_short=shorthand["quit"])
 
-    left_side = f"{ascii_art()}{description}"
-    right_side = change_log()
-    intro = grid_text(left_side, right_side, margin=5)
+    grid_0 = f"{ascii_art()}{description}"
+    grid_1 = change_log()
+    grid_2 = get_todo()
+    intro = grid_text(grid_0, grid_1, grid_2, margin=5)
     prompt = "|> "
 
     def do_build(self, arg):
@@ -76,17 +80,36 @@ class DSKShell(cmd.Cmd):
         command: List[str] = register_edit_command(editor, arg)
         subprocess.run(command)
 
+    def do_todo(self, option):
+        if not option:
+            if os.path.isdir(TODO_DIR_PATH):
+                self.do_edit("todo/todo.md")
+            else:
+                os.makedirs(TODO_DIR_PATH)
+                self.do_edit("todo/todo.md")
+        else:
+            elems = option.split(" ")
+            if elems[0] == "t":
+                try:
+                    for possibly_num in elems[1:]:
+                        toggle_check(int(possibly_num))
+                except ValueError:
+                    pass
+
+        self.do_clear(None)              
+
     def complete_edit(self, text: str, linei: str, start_index: int, end_index: int) -> List[str]:
         return ["complete test"]
 
-    def do_clear(self, arg):
+    def do_clear(self, _):
         subprocess.run(["clear"])
-        left_side = f"{ascii_art()}{self.description}"
-        right_side = change_log()
-        intro = grid_text(left_side, right_side, margin=5)
+        grid_0 = f"{ascii_art()}{self.description}"
+        grid_1 = change_log()
+        grid_2 = get_todo()
+        intro = grid_text(grid_0, grid_1, grid_2, margin=5)
         print(intro)
 
-    def do_quit(self, arg):
+    def do_quit(self, _):
         return True
 
     @classmethod
@@ -96,6 +119,7 @@ class DSKShell(cmd.Cmd):
           "build": cls.do_build,
           "list": cls.do_list,
           "edit": cls.do_edit,
+          "todo": cls.do_todo,
           "diff": cls.do_diff,
           "clear": cls.do_clear,
           "quit": cls.do_quit

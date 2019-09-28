@@ -22,6 +22,7 @@ INITIAL_SHORTHAND: Shorthand = {
     "build": "b",
     "list": "l",
     "edit": "e",
+    "todo": "t",
     "diff": "d",
     "clear": "c",
     "quit": "q"
