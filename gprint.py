@@ -46,7 +46,7 @@ def grid_text(*texts, margin: int = 3) -> str:
                 else:
                     result_lines[rest_line_pos] += " " * whole_max_len[col_pos] + " " * margin
 
-    result = "\n".join(result_lines)
+    result = "\n".join([f"{TR_ST}{result_line}{TR_ED}" for result_line in result_lines])
     return result
 
 
