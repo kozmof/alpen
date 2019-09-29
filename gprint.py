@@ -9,6 +9,8 @@ def count_wide_char(line):
             count += 1
     return count
 
+TR_ST = "\033[?7l"
+TR_ED = "\033[?7h"
 
 def grid_text(*texts, margin: int = 3) -> str:
     whole_max_len: List[int] = []
