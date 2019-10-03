@@ -31,19 +31,27 @@ def git_diff() -> Diffs:
     return group
 
 
-def changed_files() -> List[str]:
+def changed_files(preserve_condition: bool = True) -> List[str]:
+    auto_track() #TODO back to untrack if preserve_condition is True
     cmd: str = "git status"
     output: str = fixed_shell(cmd)
 
     lines: List[str] = output.split("\n")
     files: List[str] = []
-    pattern: str = "(\tmodified:|\tnew file:)"
+    pattern: str = "(\tmodified:|\tnew file:|)"
+    deleted_pattern = "\tdeleted:" #TODO auto stage and unstage if new file exists
+    renamed_pattern = "\trenamed:" #TODO save rename log
 
     for line in lines:
+        is_renamed = re.match(renamed_pattern, line)
         if re.match(pattern, line):
             file_name: str = re.sub(pattern, "", line).strip()
             if file_name not in files:
                 files.append(file_name)
+        elif is_renamed:
+            file_names: str = re.sub(renamed_pattern, "", line).strip()
+            renamed_from, renamed_to = file_names.split(" -> ")
+            files.append(renamed_from)
 
     return files
 
@@ -104,9 +112,10 @@ def make_diff_stamp(file_name: str, diffs: Diffs, separator: str = "") -> str:
 
 def combine_stamp(enable_time_stamp: bool = True, separator: str = "=" * 8) -> Stamps:
     stamps = {}
+    file_names = changed_files()
     diffs: Diffs = git_diff()
 
-    for file_name in changed_files():
+    for file_name in file_names:
         time_stamp = ""
         diff_stamp = ""
         if enable_time_stamp:
