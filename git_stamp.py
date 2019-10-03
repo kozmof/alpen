@@ -48,7 +48,7 @@ def changed_files() -> List[str]:
     return files
 
 
-def untraced_files() -> List[str]:
+def untracked_files() -> List[str]:
     cmd: str = "git status"
     output: str = fixed_shell(cmd)
 
@@ -70,7 +70,7 @@ def untraced_files() -> List[str]:
 def auto_track():
     config: Config = load_config()
     uuid: str = config["uuid"]
-    files: List[str] = untraced_files()
+    files: List[str] = untracked_files()
     track_dir = f"docs/{uuid}"
     for file_name in files:
         if re.match(track_dir, file_name):
