@@ -31,16 +31,17 @@ def git_diff() -> Diffs:
     return group
 
 
+# untracked file + deleted file -> renamed file
 def changed_files(preserve_condition: bool = True) -> List[str]:
-    auto_track() #TODO back to untrack if preserve_condition is True
+    auto_track() # TODO back to untrack if preserve_condition is True
     cmd: str = "git status"
     output: str = fixed_shell(cmd)
 
     lines: List[str] = output.split("\n")
     files: List[str] = []
     pattern: str = "(\tmodified:|\tnew file:|)"
-    deleted_pattern = "\tdeleted:" #TODO auto stage and unstage if new file exists
-    renamed_pattern = "\trenamed:" #TODO save rename log
+    deleted_pattern = "\tdeleted:" # TODO auto stage and unstage if new file exists
+    renamed_pattern = "\trenamed:" # TODO save rename log
 
     for line in lines:
         is_renamed = re.match(renamed_pattern, line)
