@@ -11,9 +11,7 @@ from pprint import pprint
 
 def git_diff() -> Diffs:
     cmd1: str = "git diff --histogram"
-    cmd2: str = "git diff --histogram --staged"
     output: str = fixed_path_shell(cmd1)
-    output += fixed_path_shell(cmd2)
 
     lines: List[str] = output.split("\n")
     separate_pattern: str = "diff --git "
@@ -32,59 +30,31 @@ def git_diff() -> Diffs:
 
 
 # untracked file + deleted file -> renamed file
-def changed_files(preserve_condition: bool = True) -> List[str]:
-    auto_track() # TODO back to untrack if preserve_condition is True
+def changed_files() -> List[str]:
     cmd: str = "git status"
     output: str = fixed_path_shell(cmd)
 
     lines: List[str] = output.split("\n")
     files: List[str] = []
-    pattern: str = "(\tmodified:|\tnew file:|)"
-    deleted_pattern = "\tdeleted:" # TODO auto stage and unstage if new file exists
-    renamed_pattern = "\trenamed:" # TODO save rename log
+    pattern: str = "(\tmodified:|\tnew file:|\tdeleted:)"
+    renamed_pattern: str = "\trenamed:"
 
     for line in lines:
+        file_name = None
         is_renamed = re.match(renamed_pattern, line)
+
         if re.match(pattern, line):
             file_name: str = re.sub(pattern, "", line).strip()
+
             if file_name not in files:
                 files.append(file_name)
+
         elif is_renamed:
             file_names: str = re.sub(renamed_pattern, "", line).strip()
             renamed_from, renamed_to = file_names.split(" -> ")
             files.append(renamed_from)
 
     return files
-
-
-def untracked_files() -> List[str]:
-    cmd: str = "git status"
-    output: str = fixed_path_shell(cmd)
-
-    lines: List[str] = output.split("\n")
-    files: List[str] = []
-    pattern: str = "Untracked files:"
-    trace_start: bool  = False
-    for line in lines:
-        if re.match(pattern, line):
-            trace_start = True
-
-        if trace_start and re.match("\t", line):
-            file_name = line.strip()
-            files.append(file_name)
-
-    return files
-
-
-def auto_track():
-    config: Config = load_config()
-    uuid: str = config["uuid"]
-    files: List[str] = untracked_files()
-    track_dir = f"docs/{uuid}"
-    for file_name in files:
-        if re.match(track_dir, file_name):
-            cmd: str = f"git add {file_name}"
-            output: str = fixed_path_shell(cmd)
 
 
 def fullpath(files: List[str]) -> List[str]:
