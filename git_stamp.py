@@ -1,6 +1,6 @@
 import os
 import re
-from shell import fixed_shell
+from shell import fixed_path_shell
 from datetime import datetime, timezone
 from typing import List, Dict
 from configure import load_config, is_active_file, Config
@@ -12,8 +12,8 @@ from pprint import pprint
 def git_diff() -> Diffs:
     cmd1: str = "git diff --histogram"
     cmd2: str = "git diff --histogram --staged"
-    output: str = fixed_shell(cmd1)
-    output += fixed_shell(cmd2)
+    output: str = fixed_path_shell(cmd1)
+    output += fixed_path_shell(cmd2)
 
     lines: List[str] = output.split("\n")
     separate_pattern: str = "diff --git "
@@ -35,7 +35,7 @@ def git_diff() -> Diffs:
 def changed_files(preserve_condition: bool = True) -> List[str]:
     auto_track() # TODO back to untrack if preserve_condition is True
     cmd: str = "git status"
-    output: str = fixed_shell(cmd)
+    output: str = fixed_path_shell(cmd)
 
     lines: List[str] = output.split("\n")
     files: List[str] = []
@@ -59,7 +59,7 @@ def changed_files(preserve_condition: bool = True) -> List[str]:
 
 def untracked_files() -> List[str]:
     cmd: str = "git status"
-    output: str = fixed_shell(cmd)
+    output: str = fixed_path_shell(cmd)
 
     lines: List[str] = output.split("\n")
     files: List[str] = []
@@ -84,7 +84,7 @@ def auto_track():
     for file_name in files:
         if re.match(track_dir, file_name):
             cmd: str = f"git add {file_name}"
-            output: str = fixed_shell(cmd)
+            output: str = fixed_path_shell(cmd)
 
 
 def fullpath(files: List[str]) -> List[str]:

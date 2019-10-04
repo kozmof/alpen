@@ -4,7 +4,7 @@ from custom_types import Config
 from configure import load_config
 
 
-def fixed_shell(cmd: str) -> str:
+def fixed_path_shell(cmd: str) -> str:
     config: Config = load_config()
     root_path = config["root_path"]
     cwd = os.getcwd()
