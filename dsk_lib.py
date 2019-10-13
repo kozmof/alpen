@@ -87,7 +87,7 @@ class DSKShell(cmd.Cmd):
     def do_rename(self, arg):
         pass
     
-    def do_recover_history(self):
+    def do_recover_history(self, _):
         pass
 
     def do_todo(self, option):
