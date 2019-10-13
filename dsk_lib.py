@@ -9,10 +9,11 @@ from parser import color_diff
 from git_stamp import combine_stamp
 from typing import List, Callable
 from command_registry import register_edit_command 
-from dir_ops import document_dir
+from dir_ops import document_dir, history_dir
 from custom_types import Config, Shorthand
 from configure import load_config, load_shorthand
 from record import record_edited_file, read_edited_file_record
+from shell import fixed_path_shell
 
 
 def ascii_art():
@@ -85,7 +86,35 @@ class DSKShell(cmd.Cmd):
         subprocess.run(command)
 
     def do_rename(self, arg):
-        pass
+        names = arg.split(" ")
+        if len(names) != 2:
+            print("Invalid syntax. rename <rename_from> <rename_to>")
+        else:
+            original_name = names[0]
+            new_name = names[1]
+
+            doc_dir = document_dir()
+            original_path = f"{doc_dir}/{original_name}"
+            new_path = f"{doc_dir}/{new_name}"
+
+            hist_dir = history_dir()
+            original_hist_path = f"{hist_dir}/{original_name}"
+            new_hist_path = f"{hist_dir}/{new_name}"
+
+            if os.path.isfile(original_path):
+                if os.path.isfile(new_path):
+                    print(f"{new_name} is already existing. Choose another name")
+                else:
+                    command = f"mv {original_path} {new_path}"
+                    fixed_path_shell(command)
+                    if os.path.isfile(original_hist_path):
+                        command = f"mv {original_hist_path} {new_hist_path}"
+                        fixed_path_shell(command)
+                    else:
+                        print(f"History file not found: {original_hist_path}")
+            else:
+                print(f"No such a file: {original_name}")
+
     
     def do_recover_history(self, _):
         pass
