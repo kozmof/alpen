@@ -4,7 +4,6 @@ from typing import List
 from configure import load_config
 from dir_ops import document_dir
 
-
 TODO_DIR_PATH = f"{document_dir(load_config())}/todo"
 
 CHECK_SIGN: str = "- [x]"
@@ -25,6 +24,11 @@ def get_todo() -> str:
                     result_todo += line
 
             return result_todo
+    else:
+        with open(todo_file_path, "w") as f:
+            f.write("")
+
+        return ""
 
 
 def toggle_check(num: int) -> None:
