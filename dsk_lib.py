@@ -34,12 +34,16 @@ class DSKShell(cmd.Cmd):
                   " build ({build_short}): build texts\n"\
                   " list ({list_short}): list all documents\n"\
                   " edit ({edit_short}): edit documents\n"\
+                  " rename({rename_short}): raname a document\n"\
+                  " recover_history({recover_history_short}): recover a missing history file\n"\
                   " todo ({todo_short}): edit todo list\n"\
                   " diff ({diff_short}): show diff (before commit)\n"\
                   " clear ({clear_short}): clear\n"\
                   " quit ({quit_short}): quit".format(build_short=shorthand["build"],
                                                       list_short=shorthand["list"],
                                                       edit_short=shorthand["edit"],
+                                                      rename_short=shorthand["rename"],
+                                                      recover_history_short=shorthand["recover_history"],
                                                       todo_short=shorthand["todo"],
                                                       diff_short=shorthand["diff"],
                                                       clear_short=shorthand["clear"],
@@ -80,6 +84,12 @@ class DSKShell(cmd.Cmd):
         command: List[str] = register_edit_command(editor, arg)
         subprocess.run(command)
 
+    def do_rename(self, arg):
+        pass
+    
+    def do_recover_history(self):
+        pass
+
     def do_todo(self, option):
         if not option:
             if os.path.isdir(TODO_DIR_PATH):
@@ -119,6 +129,8 @@ class DSKShell(cmd.Cmd):
           "build": cls.do_build,
           "list": cls.do_list,
           "edit": cls.do_edit,
+          "rename": cls.do_rename,
+          "recover_history": cls.do_recover_history,
           "todo": cls.do_todo,
           "diff": cls.do_diff,
           "clear": cls.do_clear,

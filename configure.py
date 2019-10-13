@@ -22,6 +22,8 @@ INITIAL_SHORTHAND: Shorthand = {
     "build": "b",
     "list": "l",
     "edit": "e",
+    "rename": "r",
+    "recover_history": "rh",
     "todo": "t",
     "diff": "d",
     "clear": "c",
