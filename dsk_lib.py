@@ -89,15 +89,17 @@ class DSKShell(cmd.Cmd):
         if not result:
             names = arg.split(" ")
 
-        if len(names) != 2 or not result:
+        if not result and len(names) != 2:
             print("Invalid syntax. rename <rename_from> <rename_to>")
         else:
             if len(names) == 2:
                 original_name = names[0]
                 new_name = names[1]
-            else:
+            elif result:
                 original_name = arg[result[0].end():result[1].start()]
                 new_name = arg[result[2].end():result[3].start()]
+            else:
+                raise Exception("logical error")
 
             doc_dir = document_dir()
             original_path = f"{doc_dir}/{original_name}"
