@@ -91,6 +91,7 @@ class DSKShell(cmd.Cmd):
 
         if not result and len(names) != 2:
             print("Invalid syntax. rename <rename_from> <rename_to>")
+            return 
         else:
             if len(names) == 2:
                 original_name = names[0]
@@ -100,6 +101,10 @@ class DSKShell(cmd.Cmd):
                 new_name = arg[result[2].end():result[3].start()]
             else:
                 raise Exception("logical error")
+
+            if re.match("todo\/", original_name):
+                print("Move to a todo directory is not allowed.")
+                return 
 
             doc_dir = document_dir()
             original_path = f"{doc_dir}/{original_name}"
@@ -112,6 +117,7 @@ class DSKShell(cmd.Cmd):
             if os.path.isfile(original_path):
                 if os.path.isfile(new_path):
                     print(f"{new_name} is already existing. Choose another name")
+                    return 
                 else:
                     command = f"mv {original_path} {new_path}"
                     fixed_path_shell(command)
@@ -120,9 +126,10 @@ class DSKShell(cmd.Cmd):
                         fixed_path_shell(command)
                     else:
                         print(f"History file not found: {original_hist_path}")
+                        return
             else:
                 print(f"No such a file: {original_name}")
-
+                return
     
     # TODO implement
     def do_recover_history(self, _):
