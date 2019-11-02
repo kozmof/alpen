@@ -47,6 +47,7 @@ class DSKShell(cmd.Cmd):
     intro = grid_text(grid_0, grid_1, grid_2, margin=5)
     prompt = "|> "
 
+    # TODO implement
     def do_build(self, arg):
         pass
 
@@ -56,6 +57,7 @@ class DSKShell(cmd.Cmd):
         for file_name in sorted(os.listdir(doc_dir)):
             print(file_name)
 
+    # TODO implement
     def do_tag(self, arg):
         if arg == "add":
             print("DEBUG ADD")
@@ -106,10 +108,6 @@ class DSKShell(cmd.Cmd):
             else:
                 print(f"No such a file: {original_name}")
 
-    
-    def do_recover_history(self, _):
-        pass
-
     def do_todo(self, option):
         if not option:
             if os.path.isdir(TODO_DIR_PATH):
@@ -128,6 +126,7 @@ class DSKShell(cmd.Cmd):
 
         self.do_clear(None)              
 
+    # TODO implement
     def complete_edit(self, text: str, linei: str, start_index: int, end_index: int) -> List[str]:
         return ["complete test"]
 
