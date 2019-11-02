@@ -16,15 +16,6 @@ from record import record_edited_file, read_edited_file_record
 from shell import fixed_path_shell
 
 
-def ascii_art():
-    config: Config = load_config()
-    if config["enable_ascii_art"]:
-        art = " _____     ______     __  __ \n/\  __-.  /\  ___\   /\ \/ / \n\ \ \/\ \ \ \___  \  \ \  _\"-. \n \ \____-  \/\_____\  \ \_\ \_\ \n  \/____/   \/_____/   \/_/\/_/"
-        return art + "\n\n"
-    else:
-        return ""
-
-
 def change_log() -> str:
     return f"recently edited\n{read_edited_file_record()}" 
 
@@ -50,7 +41,7 @@ class DSKShell(cmd.Cmd):
                                                       clear_short=shorthand["clear"],
                                                       quit_short=shorthand["quit"])
 
-    grid_0 = f"{ascii_art()}{description}"
+    grid_0 = description
     grid_1 = change_log()
     grid_2 = get_todo()
     intro = grid_text(grid_0, grid_1, grid_2, margin=5)
@@ -142,7 +133,7 @@ class DSKShell(cmd.Cmd):
 
     def do_clear(self, _):
         subprocess.run(["clear"])
-        grid_0 = f"{ascii_art()}{self.description}"
+        grid_0 = self.description
         grid_1 = change_log()
         grid_2 = get_todo()
         intro = grid_text(grid_0, grid_1, grid_2, margin=5)

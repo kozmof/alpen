@@ -13,8 +13,7 @@ INITIAL_CONFIG: Config = {
     "targets": [],
     "stops": [],
     "masks": ["md", "txt"],
-    "enable_mask": True,
-    "enable_ascii_art": False,
+    "enable_mask": True
 }
 
 
