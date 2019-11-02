@@ -126,6 +126,7 @@ class DSKShell(cmd.Cmd):
     
     # TODO implement
     def do_recover_history(self, _):
+        # semi-auto recovering
         pass
 
     def do_todo(self, option):
