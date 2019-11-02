@@ -77,12 +77,27 @@ class DSKShell(cmd.Cmd):
         subprocess.run(command)
 
     def do_rename(self, arg):
-        names = arg.split(" ")
-        if len(names) != 2:
+        result_1 = list(re.findall("\'", arg))
+        result_2 = list(re.findall('\"', arg))
+        if len(result_1) == 4:
+            result = result_1
+        elif len(result_2) == 4:
+            result = result_2
+        else:
+            result = None
+
+        if not result:
+            names = arg.split(" ")
+
+        if len(names) != 2 or not result:
             print("Invalid syntax. rename <rename_from> <rename_to>")
         else:
-            original_name = names[0]
-            new_name = names[1]
+            if len(names) == 2:
+                original_name = names[0]
+                new_name = names[1]
+            else:
+                original_name = arg[result[0].end():result[1].start()]
+                new_name = arg[result[2].end():result[3].start()]
 
             doc_dir = document_dir()
             original_path = f"{doc_dir}/{original_name}"
