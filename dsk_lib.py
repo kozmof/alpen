@@ -1,3 +1,4 @@
+import re
 import os
 import cmd
 import subprocess
@@ -6,7 +7,7 @@ from gprint import grid_text
 from color import color
 from todo import TODO_DIR_PATH, get_todo, toggle_check
 from parser import color_diff
-from git_stamp import combine_stamp
+from git_stamp import combine_stamp, changed_files
 from typing import List, Callable
 from command_registry import register_edit_command 
 from dir_ops import document_dir, history_dir
@@ -27,6 +28,7 @@ class DSKShell(cmd.Cmd):
                   " list ({list_short}): list all documents\n"\
                   " edit ({edit_short}): edit documents\n"\
                   " rename ({rename_short}): raname a document\n"\
+                  " save_history ({save_history_short}): save diffs\n"\
                   " recover_history ({recover_history_short}): recover a missing history file\n"\
                   " todo ({todo_short}): edit todo list\n"\
                   " diff ({diff_short}): show diff (before commit)\n"\
@@ -35,6 +37,7 @@ class DSKShell(cmd.Cmd):
                                                       list_short=shorthand["list"],
                                                       edit_short=shorthand["edit"],
                                                       rename_short=shorthand["rename"],
+                                                      save_history_short=shorthand["save_history"],
                                                       recover_history_short=shorthand["recover_history"],
                                                       todo_short=shorthand["todo"],
                                                       diff_short=shorthand["diff"],
@@ -130,6 +133,14 @@ class DSKShell(cmd.Cmd):
             else:
                 print(f"No such a file: {original_name}")
                 return
+
+    # TODO implement
+    def do_save_history(self, _):
+        files = changed_files()
+        config: Config = load_config()
+        doc_pattern = "docs/{uuid}".format(uuid=config["uuid"])
+        doc_files = [file for file in files if re.match(doc_pattern, file)]
+        # TODO git command
     
     # TODO implement
     def do_recover_history(self, _):
@@ -177,6 +188,7 @@ class DSKShell(cmd.Cmd):
           "list": cls.do_list,
           "edit": cls.do_edit,
           "rename": cls.do_rename,
+          "save_history": cls.do_save_history,
           "recover_history": cls.do_recover_history,
           "todo": cls.do_todo,
           "diff": cls.do_diff,

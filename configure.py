@@ -22,6 +22,7 @@ INITIAL_SHORTHAND: Shorthand = {
     "list": "l",
     "edit": "e",
     "rename": "r",
+    "save_history": "sh",
     "recover_history": "rh",
     "todo": "t",
     "diff": "d",
