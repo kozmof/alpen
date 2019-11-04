@@ -1,5 +1,5 @@
 import os
-from custom_types import Config
+from .custom_types import Config
 
 
 def document_dir(config: Config) -> str:

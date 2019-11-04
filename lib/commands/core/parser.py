@@ -1,6 +1,6 @@
 import re
 from typing import List
-from color import CYANC, BLUEC, ENDC
+from .color import CYANC, BLUEC, ENDC
 
 
 def color_diff(diff_text: str) -> str:

@@ -1,12 +1,12 @@
 import os
 import re
-from shell import fixed_path_shell
-from datetime import datetime, timezone
-from typing import List, Dict
-from configure import load_config, is_active_file, Config
-from custom_types import Datetime, Diffs, Stamps
-from dir_ops import history_dir
 from pprint import pprint
+from typing import List, Dict
+from datetime import datetime, timezone
+from .shell import fixed_path_shell
+from .configure import load_config, is_active_file, Config
+from .custom_types import Datetime, Diffs, Stamps
+from .dir_ops import history_dir
 
 
 def git_diff() -> Diffs:

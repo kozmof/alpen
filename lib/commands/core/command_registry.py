@@ -1,8 +1,8 @@
 import re
 from typing import List
-from custom_types import Config
-from configure import load_config
-from dir_ops import document_dir
+from .custom_types import Config
+from .configure import load_config
+from .dir_ops import document_dir
 
 def register_edit_command(editor: str, user_input: str) -> List[str]:
     config: Config = load_config()

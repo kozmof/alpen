@@ -4,8 +4,8 @@ import json
 from time import time
 from uuid import uuid4
 from typing import List, Union
-from custom_types import Config, Shorthand, ConfigBackup
-from dir_ops import make_doc_directory, make_history_directory
+from .custom_types import Config, Shorthand, ConfigBackup
+from .dir_ops import make_doc_directory, make_history_directory
 
 
 INITIAL_CONFIG: Config = {

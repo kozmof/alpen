@@ -1,9 +1,9 @@
 import os
 from typing import Optional
 from datetime import datetime 
-from custom_types import Config
-from configure import load_config
-from dir_ops import document_dir
+from .custom_types import Config
+from .configure import load_config
+from .dir_ops import document_dir
 
 
 def record_edited_file(file_name):

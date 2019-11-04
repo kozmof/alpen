@@ -1,24 +1,21 @@
-import re
-import os
 import cmd
-import subprocess
-from pprint import pprint
-from gprint import grid_text
-from color import color
-from todo import TODO_DIR_PATH, get_todo, toggle_check
-from parser import color_diff
-from git_stamp import combine_stamp, changed_files
-from typing import List, Callable
-from command_registry import register_edit_command 
-from dir_ops import document_dir, history_dir
-from custom_types import Config, Shorthand
-from configure import load_config, load_shorthand
-from record import record_edited_file, read_edited_file_record
-from shell import fixed_path_shell
 
+from .commands.c_build import c_build
+from .commands.c_list import c_list
+from .commands.c_tag import c_tag
+from .commands.c_diff import c_diff
+from .commands.c_edit import c_edit
+from .commands.c_rename import c_rename
+from .commands.c_save_history import c_save_history
+from .commands.c_recover_history import c_recover_history
+from .commands.c_todo import c_todo
+from .commands.c_clear import c_clear, change_log
 
-def change_log() -> str:
-    return f"recently edited\n{read_edited_file_record()}" 
+from typing import Optional, List, Dict, Callable
+from .commands.core.gprint import grid_text
+from .commands.core.todo import get_todo
+from .commands.core.custom_types import Shorthand
+from .commands.core.configure import load_shorthand
 
 
 class DSKShell(cmd.Cmd):
@@ -50,132 +47,41 @@ class DSKShell(cmd.Cmd):
     intro = grid_text(grid_0, grid_1, grid_2, margin=5)
     prompt = "|> "
 
-    def do_build(self, arg):
-        pass
+    def do_build(self, _):
+        c_build()
 
-    def do_list(self, arg):
-        config: Config = load_config()
-        doc_dir = document_dir(config)
-        for file_name in sorted(os.listdir(doc_dir)):
-            print(file_name)
+    def do_list(self, _):
+        c_list()
 
     def do_tag(self, arg):
-        if arg == "add":
-            print("DEBUG ADD")
-        elif arg == "delete":
-            print("DEBUG DELETE")
-        elif arg == "search":
-            print("DEBUG SEARCH")
+        c_tag(arg)
 
-    def do_diff(self, arg):
-        for file_name, diff_text in combine_stamp(enable_time_stamp=False).items():
-            print(color(file_name, color_type="green"))
-            print(color_diff(diff_text))
+    def do_diff(self, _):
+        c_diff()
 
     def do_edit(self, arg):
-        config: Config = load_config()
-        editor: str = config["editor"]
-        record_edited_file(arg)
-        command: List[str] = register_edit_command(editor, arg)
-        subprocess.run(command)
+        c_edit(arg)
 
     def do_rename(self, arg):
-        result_1 = list(re.findall("\'", arg))
-        result_2 = list(re.findall('\"', arg))
-        if len(result_1) == 4:
-            result = result_1
-        elif len(result_2) == 4:
-            result = result_2
-        else:
-            result = None
-
-        if not result:
-            names = arg.split(" ")
-
-        if not result and len(names) != 2:
-            print("Invalid syntax. rename <rename_from> <rename_to>")
-            return 
-        else:
-            if len(names) == 2:
-                original_name = names[0]
-                new_name = names[1]
-            elif result:
-                original_name = arg[result[0].end():result[1].start()]
-                new_name = arg[result[2].end():result[3].start()]
-            else:
-                raise Exception("logical error")
-
-            if re.match("todo\/", original_name):
-                print("Move to a todo directory is not allowed.")
-                return 
-
-            doc_dir = document_dir()
-            original_path = f"{doc_dir}/{original_name}"
-            new_path = f"{doc_dir}/{new_name}"
-
-            hist_dir = history_dir()
-            original_hist_path = f"{hist_dir}/{original_name}"
-            new_hist_path = f"{hist_dir}/{new_name}"
-
-            if os.path.isfile(original_path):
-                if os.path.isfile(new_path):
-                    print(f"{new_name} is already existing. Choose another name")
-                    return 
-                else:
-                    command = f"mv {original_path} {new_path}"
-                    fixed_path_shell(command)
-                    if os.path.isfile(original_hist_path):
-                        command = f"mv {original_hist_path} {new_hist_path}"
-                        fixed_path_shell(command)
-                    else:
-                        print(f"History file not found: {original_hist_path}")
-                        return
-            else:
-                print(f"No such a file: {original_name}")
-                return
+        c_rename(arg)
 
     # TODO implement
     def do_save_history(self, _):
-        files = changed_files()
-        config: Config = load_config()
-        doc_pattern = "docs/{uuid}".format(uuid=config["uuid"])
-        doc_files = [file for file in files if re.match(doc_pattern, file)]
-        # TODO git command
+        c_save_history()
     
     # TODO implement
     def do_recover_history(self, _):
-        # semi-auto recovering
-        pass
+        c_recover_history()
 
     def do_todo(self, option):
-        if not option:
-            if os.path.isdir(TODO_DIR_PATH):
-                self.do_edit("todo/todo.md")
-            else:
-                os.makedirs(TODO_DIR_PATH)
-                self.do_edit("todo/todo.md")
-        else:
-            elems = option.split(" ")
-            if elems[0] == "t":
-                try:
-                    for possibly_num in elems[1:]:
-                        toggle_check(int(possibly_num))
-                except ValueError:
-                    pass
-
-        self.do_clear(None)              
+        c_todo(self, option)
 
     # TODO implement
     def complete_edit(self, text: str, linei: str, start_index: int, end_index: int) -> List[str]:
         return ["complete test"]
 
     def do_clear(self, _):
-        subprocess.run(["clear"])
-        grid_0 = self.description
-        grid_1 = change_log()
-        grid_2 = get_todo()
-        intro = grid_text(grid_0, grid_1, grid_2, margin=5)
-        print(intro)
+        c_clear(self.description)
 
     def do_quit(self, _):
         return True
