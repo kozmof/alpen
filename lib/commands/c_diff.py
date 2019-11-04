@@ -1,5 +1,6 @@
 from .core.git_stamp import combine_stamp
 from .core.color import color
+from .core.parser import color_diff
 
 
 def c_diff():
