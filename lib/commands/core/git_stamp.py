@@ -137,13 +137,3 @@ def save_history() -> None:
         save_path = f"{hist_dir}/{file_name}.txt"
         with open(save_path, "a") as f:
             f.write(stamp)
-
-
-if __name__ == "__main__":
-    config = load_config()
-    root_path = config["root_path"]
-    uuid = config["uuid"]
-    path = f"{root_path}/docs/{uuid}/dummy1.txt"
-    # pprint(git_diff())
-    # print(make_diff_stamp(path, git_diff()))  
-    save_history()
