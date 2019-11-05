@@ -1,12 +1,15 @@
 import re
 import os
+from .core.configure import load_config
 from .core.dir_ops import document_dir, history_dir
 from .core.shell import fixed_path_shell
+from .core.custom_types import Config
 
 
 def c_rename(arg):
     result_1 = list(re.findall("\'", arg))
     result_2 = list(re.findall('\"', arg))
+
     if len(result_1) == 4:
         result = result_1
     elif len(result_2) == 4:
@@ -21,6 +24,7 @@ def c_rename(arg):
         print("Invalid syntax. rename <rename_from> <rename_to>")
         return 
     else:
+        config: Config = load_config()
         if len(names) == 2:
             original_name = names[0]
             new_name = names[1]
@@ -34,11 +38,11 @@ def c_rename(arg):
             print("Move to a todo directory is not allowed.")
             return 
 
-        doc_dir = document_dir()
+        doc_dir = document_dir(config)
         original_path = f"{doc_dir}/{original_name}"
         new_path = f"{doc_dir}/{new_name}"
 
-        hist_dir = history_dir()
+        hist_dir = history_dir(config)
         original_hist_path = f"{hist_dir}/{original_name}"
         new_hist_path = f"{hist_dir}/{new_name}"
 
