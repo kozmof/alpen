@@ -1,5 +1,5 @@
 import os
-from .core.todo import toggle_check
+from .core.todo import toggle_check, TODO_DIR_PATH
 
 
 def c_todo(self, option):
