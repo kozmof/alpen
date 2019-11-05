@@ -5,7 +5,7 @@ from .core.dir_ops import document_dir, history_dir
 from .core.shell import fixed_path_shell
 from .core.custom_types import Config
 
-#TODO git rm
+
 def c_rename(arg):
     result_1 = list(re.findall("\'", arg))
     result_2 = list(re.findall('\"', arg))
@@ -25,6 +25,7 @@ def c_rename(arg):
         return 
     else:
         config: Config = load_config()
+        uuid = config["uuid"]
         if len(names) == 2:
             original_name = names[0]
             new_name = names[1]
@@ -51,11 +52,15 @@ def c_rename(arg):
                 print(f"{new_name} is already existing. Choose another name")
                 return 
             else:
-                command = f"mv {original_path} {new_path}"
-                fixed_path_shell(command)
+                doc_mv_command = f"mv {original_path} {new_path}"
+                fixed_path_shell(file_mv_command)
+                doc_rm_command = f"git rm .docs/{uuid}/{original_name}"
+                fixed_path_shell(doc_rm_command)
                 if os.path.isfile(original_hist_path):
-                    command = f"mv {original_hist_path} {new_hist_path}"
+                    hist_mv_command = f"mv {original_hist_path} {new_hist_path}"
                     fixed_path_shell(command)
+                    hist_rm_command = f"git rm .histories/{uuid}/{original_name}"
+                    fixed_path_shell(hist_rm_command)
                 else:
                     print(f"History file not found: {original_hist_path}")
                     return
