@@ -5,7 +5,7 @@ from .core.dir_ops import document_dir, history_dir
 from .core.shell import fixed_path_shell
 from .core.custom_types import Config
 
-
+#TODO git rm
 def c_rename(arg):
     result_1 = list(re.findall("\'", arg))
     result_2 = list(re.findall('\"', arg))
