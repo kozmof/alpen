@@ -9,6 +9,8 @@ def c_diff():
         print(color(file_name, color_type="green"))
         print(color_diff(diff_text))
 
-    for file_name in untracked_files():
+    untracked_f = untracked_files()
+    if untracked_f:
         print(color("Untracked files:", color_type="yellow"))
-        print(color("\t" + file_name, color_type="yellow"))
+        for file_name in untracked_files():
+            print(color("\t" + file_name, color_type="yellow"))
