@@ -1,0 +1,13 @@
+- [ ] c_build
+- [x] c_clear
+- [x] c_diff
+- [x] c_edit
+- [x] c_list (maybe it is better to remove a todo file)
+- [ ] c_recover_history
+- [x] c_rename
+- [ ] c_save_history
+- [ ] c_tag
+- [x] c_todo
+- [ ] show todo commands
+- [ ] truncate displayed text
+- [ ] align todo checkboxes (1 ~ 2 width)
