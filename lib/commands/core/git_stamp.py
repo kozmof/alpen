@@ -55,7 +55,7 @@ def changed_files() -> List[str]:
 
     lines: List[str] = output.split("\n")
     files: List[str] = []
-    pattern: str = "(\tmodified:|\tnew file:|\tdeleted:)"
+    pattern: str = "(\tmodified:|\tnew file:)"
     renamed_pattern: str = "\trenamed:"
 
     for line in lines:
