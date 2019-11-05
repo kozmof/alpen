@@ -6,6 +6,7 @@ from .core.configure import load_config
 
 # TODO if untracked files exist, ask whether add or not
 def c_save_history():
+    # TODO git stash
     files = changed_files()
     stamp = combine_stamp()
     config: Config = load_config()
@@ -18,4 +19,6 @@ def c_save_history():
         save_path = f"{root_path}/{history_path}"
         with open(save_path, "a") as f:
             f.write(stamp[file_name])
+
+        # TODO commit files
     
