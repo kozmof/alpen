@@ -29,7 +29,26 @@ def git_diff() -> Diffs:
     return group
 
 
-# untracked file + deleted file -> renamed file
+def untracked_files() -> List[str]:
+    cmd: str = "git status"
+    output: str = fixed_path_shell(cmd)
+    lines: List[str] = output.split("\n")
+    files: List[str] = []
+
+    untrack_start_patern = "Untracked files:"
+    untrack_file_patern = "\t"
+    untrack_area_start = False
+
+    for line in lines:
+        if re.match(untrack_start_patern, line):
+            untrack_area_start = True
+        if untrack_area_start:
+            if re.match(untrack_file_patern, line):
+                files.append(line.strip())
+
+    return files
+
+
 def changed_files() -> List[str]:
     cmd: str = "git status"
     output: str = fixed_path_shell(cmd)
@@ -86,6 +105,7 @@ def combine_stamp(enable_time_stamp: bool = True, separator: str = "=" * 8) -> S
     file_names = changed_files()
     diffs: Diffs = git_diff()
 
+    
     for file_name in file_names:
         time_stamp = ""
         diff_stamp = ""
