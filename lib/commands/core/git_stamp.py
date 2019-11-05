@@ -131,13 +131,13 @@ def save_history() -> None:
     root_path: str = config["root_path"]
     hist_dir: str = history_dir(config)
     stamps: Stamps = combine_stamp()
-    for file_name, stamp in stamps.items():
-        file_name = re.sub(f"docs/{uuid}/", "", file_name)
+    for file_name, stamp in stamps.items():, file_name)
         file_name = re.sub("\..*", "", file_name)
-        save_path = f"{hist_dir}/{file_name}.stamp"
+        save_path = f"{hist_dir}/{file_name}.txt"
         with open(save_path, "a") as f:
             f.write(stamp)
 
+        file_name = re.sub(f"docs/{uuid}/", ""
 
 if __name__ == "__main__":
     config = load_config()
