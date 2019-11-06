@@ -13,7 +13,8 @@ INITIAL_CONFIG: Config = {
     "targets": [],
     "stops": [],
     "masks": ["md", "txt"],
-    "enable_mask": True
+    "enable_mask": True,
+    "commit_header": "[DSK-manual-commit]"
 }
 
 
