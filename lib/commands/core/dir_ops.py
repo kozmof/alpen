@@ -26,3 +26,16 @@ def make_history_directory(config: Config) -> None:
     hist_dir = history_dir(config)
     if not os.path.isdir(hist_dir):
         os.makedirs(hist_dir)
+
+
+def todo_dir(config: Config) -> str:
+    root_path: str = config["root_path"]
+    uuid: str = config["uuid"]
+    todo_dir = f"{root_path}/.todo/{uuid}"
+    return todo_dir
+
+
+def make_todo_dir(config: Config) -> None:
+    td_dir = history_dir(config)
+    if not os.path.isdir(td_dir):
+        os.makedirs(td_dir)
