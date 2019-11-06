@@ -7,9 +7,7 @@ yes_command = ["Y", "YES"]
 
 def c_save_history():
     files = changed_files()
-    print(files)
     ut_files = untracked_files()
-    print(ut_files)
     stamp = combine_stamp()
     config: Config = load_config()
     uuid = config["uuid"]
@@ -28,8 +26,8 @@ def c_save_history():
     for file_name in doc_files + ut_doc_files:
         if not re.match(f"{doc_pattern}\/todo\/", file_name):
             print(f"Save change history of {file_name}?")
-            i = input()
-            if i.upper() in yes_command:
+            yes_or_no = input()
+            if yes_or_no.upper() in yes_command:
                 if re.match(f"{doc_pattern}\/", file_name):
                     print("Put a commit message")
                     user_message = input()
