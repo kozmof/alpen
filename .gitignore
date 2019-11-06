@@ -2,5 +2,6 @@ config.json
 shorthand.json
 .backup_config.json
 .edited_file_record
+.todo
 .*.swp
 __pycache__
