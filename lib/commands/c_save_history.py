@@ -2,10 +2,11 @@ import re
 from .core.git_stamp import changed_files, untracked_files, combine_stamp
 from .core.custom_types import Config
 from .core.configure import load_config
+from .core.shell import fixed_path_shell
 
 yes_command = ["Y", "YES"]
 
-def c_save_history():
+def c_save_history(debug=True):
     files = changed_files()
     ut_files = untracked_files()
     stamp = combine_stamp()
@@ -18,8 +19,6 @@ def c_save_history():
 
     doc_files = [file for file in files if re.match(doc_pattern, file)]
     ut_doc_files = [file for file in ut_files if re.match(doc_pattern, file)]
-    history_files = [file for file in files if re.match(history_pattern, file)]
-    ut_history_files = [file for file in ut_files if re.match(history_pattern, file)]
 
     history_commited_files = []
 
@@ -37,13 +36,21 @@ def c_save_history():
                     with open(save_path, "a") as f:
                         f.write(stamp[file_name])
 
-                    stage_and_commit_command = f"git add {file_name} && git commit -m {commit_header} {user_message}"
-                    print(stage_and_commit_command)
+                    stage_and_commit_command = f"git add {file_name} && git commit -m '{commit_header} {user_message}'"
+                    if debug:
+                        print(stage_and_commit_command)
+                    fixed_path_shell(stage_and_commit_command)
+
                     history_commited_files.append(history_path)
+
+    history_files = [file for file in files if re.match(history_pattern, file)]
+    ut_history_files = [file for file in ut_files if re.match(history_pattern, file)]
 
     for file_name in history_files + ut_history_files:
         if file_name in history_commited_files:
-            print("DEBUG")
-            print(file_name)
+            stage_and_commit_command = f"git add {file_name} && git commit -m '[DSK-history-auto-save] {file_name}'"
+            if debug:
+                print(stage_and_commit_command)
+            fixed_path_shell(stage_and_commit_command)
 
     
