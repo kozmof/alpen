@@ -44,6 +44,7 @@ class DSKShell(cmd.Cmd):
     intro = grid_text(grid_0, grid_1, grid_2, margin=5)
     prompt = "|> "
 
+    # TODO implement
     def do_build(self, _):
         c_build()
 
@@ -62,13 +63,8 @@ class DSKShell(cmd.Cmd):
     def do_rename(self, arg):
         c_rename(arg)
 
-    # TODO implement
     def do_save_history(self, _):
         c_save_history()
-    
-    # TODO implement
-    def do_recover_history(self, _):
-        c_recover_history()
 
     def do_todo(self, option):
         c_todo(self, option)
