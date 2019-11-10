@@ -1,4 +1,5 @@
 import re
+import os
 from .core.git_stamp import changed_files, untracked_files, combine_stamp
 from .core.custom_types import Config
 from .core.configure import load_config
@@ -32,7 +33,8 @@ def c_save_history(debug=True):
                     user_message = input()
                     history_path = re.sub("\.docs", ".histories", file_name)
                     root_path = config["root_path"]
-                    save_path = f"{root_path}/{history_path}"
+                    save_path_body = os.path.splitext(f"{root_path}/{history_path}")[0]
+                    save_path = f"{save_path_body}.md"
                     with open(save_path, "a") as f:
                         f.write(stamp[file_name])
 
