@@ -7,7 +7,6 @@ from .commands.c_diff import c_diff
 from .commands.c_edit import c_edit
 from .commands.c_rename import c_rename
 from .commands.c_save_history import c_save_history
-from .commands.c_recover_history import c_recover_history
 from .commands.c_todo import c_todo
 from .commands.c_clear import c_clear, change_log
 
@@ -26,7 +25,6 @@ class DSKShell(cmd.Cmd):
                   " edit ({edit_short}): edit documents\n"\
                   " rename ({rename_short}): raname a document\n"\
                   " save_history ({save_history_short}): save diffs\n"\
-                  " recover_history ({recover_history_short}): recover a missing history file\n"\
                   " todo ({todo_short}): edit todo list\n"\
                   " diff ({diff_short}): show diff (before commit)\n"\
                   " clear ({clear_short}): clear\n"\
@@ -35,7 +33,6 @@ class DSKShell(cmd.Cmd):
                                                       edit_short=shorthand["edit"],
                                                       rename_short=shorthand["rename"],
                                                       save_history_short=shorthand["save_history"],
-                                                      recover_history_short=shorthand["recover_history"],
                                                       todo_short=shorthand["todo"],
                                                       diff_short=shorthand["diff"],
                                                       clear_short=shorthand["clear"],
@@ -95,7 +92,6 @@ class DSKShell(cmd.Cmd):
           "edit": cls.do_edit,
           "rename": cls.do_rename,
           "save_history": cls.do_save_history,
-          "recover_history": cls.do_recover_history,
           "todo": cls.do_todo,
           "diff": cls.do_diff,
           "clear": cls.do_clear,

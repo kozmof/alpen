@@ -24,7 +24,6 @@ INITIAL_SHORTHAND: Shorthand = {
     "edit": "e",
     "rename": "r",
     "save_history": "sh",
-    "recover_history": "rh",
     "todo": "t",
     "diff": "d",
     "clear": "c",

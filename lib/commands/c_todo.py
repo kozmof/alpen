@@ -1,14 +1,15 @@
 import os
+from .c_edit import c_edit
 from .core.todo import toggle_check, TODO_DIR_PATH
 
 
 def c_todo(self, option):
     if not option:
         if os.path.isdir(TODO_DIR_PATH):
-            self.do_edit("todo/todo.md")
+            c_edit("todo.md", use_todo_dir=True)
         else:
             os.makedirs(TODO_DIR_PATH)
-            self.do_edit("todo/todo.md")
+            c_edit("todo.md", use_todo_dir=True)
     else:
         elems = option.split(" ")
         if elems[0] == "t":
