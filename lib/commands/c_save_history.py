@@ -3,9 +3,11 @@ import os
 from .core.git_stamp import changed_files, untracked_files, combine_stamp
 from .core.custom_types import Config
 from .core.configure import load_config
+from .core.consistency import check_history_consistecy
 from .core.shell import fixed_path_shell
 
 yes_command = ["Y", "YES"]
+
 
 def c_save_history(debug=True):
     files = changed_files()
@@ -22,6 +24,13 @@ def c_save_history(debug=True):
     ut_doc_files = [file for file in ut_files if re.match(doc_pattern, file)]
 
     history_commited_files = []
+    check_result = check_history_consistecy()
+
+    if not check_result:
+        print("Are you sure to continue?")
+        user_input = input()
+        if user_input.upper() not in yes_command:
+            return
 
     for file_name in doc_files + ut_doc_files:
         if not re.match(f"{doc_pattern}\/todo\/", file_name):
