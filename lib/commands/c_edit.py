@@ -18,7 +18,7 @@ def c_edit(arg, use_todo_dir=False):
     else:
         dir_path = document_dir(config)
 
-    doc_files: List = [f for f in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, f))]
+    doc_files: List = [file for file in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, file))]
     is_editable = False
     is_new_name = True
 
