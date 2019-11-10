@@ -12,10 +12,11 @@ from .core.dir_ops import document_dir, todo_dir
 def c_edit(arg, use_todo_dir=False):
     config: Config = load_config()
     editor: str = config["editor"]
-    record_edited_file(arg)
+
     if use_todo_dir:
         dir_path = todo_dir(config)
     else:
+        record_edited_file(arg)
         dir_path = document_dir(config)
 
     doc_files: List = [file for file in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, file))]
