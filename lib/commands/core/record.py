@@ -24,7 +24,7 @@ def read_edited_file_record(is_active_sign="A", is_not_active_sign="N") -> Optio
             records: List[str] = f.readlines()
             for record in reversed(records):
                 file_name = "".join(record.split(" ")[:-2])
-                full_path = f"{get_dir_path("DOCUMENT", config)}/{file_name}"
+                full_path = f"{get_dir_path('DOCUMENT', config)}/{file_name}"
                 if os.path.isfile(full_path):
                     result += f"[{is_active_sign}] {record}"
                 else:

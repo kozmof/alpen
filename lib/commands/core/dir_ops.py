@@ -2,7 +2,7 @@ import os
 from .custom_types import Config
 
 
-def get_dir_name(dir_type: str) -> str
+def get_dir_name(dir_type: str) -> str:
     if dir_type == "DOCUMENT":
         return ".docs"
     elif dir_type == "HISTORY":
