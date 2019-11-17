@@ -4,9 +4,9 @@ from .custom_types import Config
 
 def get_dir_name(dir_type: str) -> str
     if dir_type == "DOCUMENT":
-        return ".doc"
+        return ".docs"
     elif dir_type == "HISTORY":
-        return ".history"
+        return ".histories"
     elif dir_type == "TODO":
         return ".todo"
     elif dir_type == "TAG":
