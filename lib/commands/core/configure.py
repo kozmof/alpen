@@ -5,7 +5,7 @@ from time import time
 from uuid import uuid4
 from typing import List, Union
 from .custom_types import Config, Shorthand, ConfigBackup
-from .dir_ops import make_doc_directory, make_history_directory
+from .dir_ops import make_directory
 
 
 INITIAL_CONFIG: Config = {
@@ -153,5 +153,5 @@ if __name__ == "__main__":
     # save_uuid()
     # config_editor("code")
     config = load_config()
-    # make_doc_directory(config)
-    make_history_directory(config)
+    # make_directory("DOCUMENT", config)
+    make_directory("HISTORY", config)

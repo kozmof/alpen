@@ -2,9 +2,9 @@ import re
 import os
 from typing import List
 from .configure import load_config
-from .dir_ops import todo_dir
+from .dir_ops import get_dir_path 
 
-TODO_DIR_PATH = f"{todo_dir(load_config())}"
+TODO_DIR_PATH = f"{get_dir_path("TODO", load_config())}"
 
 CHECK_SIGN: str = "- [x]"
 UNCHECK_SIGN: str = "- [ ]"

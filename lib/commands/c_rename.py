@@ -1,7 +1,7 @@
 import re
 import os
 from .core.configure import load_config
-from .core.dir_ops import document_dir, history_dir
+from .core.dir_ops import get_dir_path
 from .core.shell import fixed_path_shell
 from .core.custom_types import Config
 
@@ -39,11 +39,11 @@ def c_rename(arg):
             print("Move to a todo directory is not allowed.")
             return 
 
-        doc_dir = document_dir(config)
+        doc_dir = get_dir_path("DOCUMENT", config)
         original_path = f"{doc_dir}/{original_name}"
         new_path = f"{doc_dir}/{new_name}"
 
-        hist_dir = history_dir(config)
+        hist_dir = get_dir_path("HISTORY", config)
         original_hist_path = f"{hist_dir}/{original_name}"
         new_hist_path = f"{hist_dir}/{new_name}"
 

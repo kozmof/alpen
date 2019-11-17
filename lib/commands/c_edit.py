@@ -6,7 +6,7 @@ from .core.custom_types import Config
 from .core.configure import load_config
 from .core.record import record_edited_file
 from .core.command_registry import register_edit_command
-from .core.dir_ops import document_dir, todo_dir
+from .core.dir_ops import get_dir_path
 
 
 def c_edit(arg, use_todo_dir=False):
@@ -14,10 +14,10 @@ def c_edit(arg, use_todo_dir=False):
     editor: str = config["editor"]
 
     if use_todo_dir:
-        dir_path = todo_dir(config)
+        dir_path = get_dir_path("TODO", config)
     else:
         record_edited_file(arg)
-        dir_path = document_dir(config)
+        dir_path = get_dir_path("DOCUMENT", config)
 
     doc_files: List = [file for file in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, file))]
     is_editable = False

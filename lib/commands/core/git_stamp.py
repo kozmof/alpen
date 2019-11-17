@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from .shell import fixed_path_shell
 from .configure import load_config, is_active_file, Config
 from .custom_types import Datetime, Diffs, Stamps
-from .dir_ops import history_dir
+from .dir_ops import get_dir_path
 
 
 def git_diff() -> Diffs:
@@ -129,7 +129,7 @@ def save_history() -> None:
     config: Config = load_config()
     uuid: str = config["uuid"]
     root_path: str = config["root_path"]
-    hist_dir: str = history_dir(config)
+    hist_dir: str = get_dir_path("HISTORY", config)
     stamps: Stamps = combine_stamp()
     for file_name, stamp in stamps.items():
         file_name = re.sub(f"\.docs/{uuid}/", "", file_name)
