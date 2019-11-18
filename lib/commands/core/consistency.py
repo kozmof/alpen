@@ -28,3 +28,20 @@ def doc_file_exists(file_name):
         return True
     else:
         return False
+
+
+def is_active_file(file_name: str) -> bool:
+    config: Config = load_config()
+    stops: List[str] = config["stops"]
+    masks: List[str] = config["masks"]
+    targets: List[str] = config["targets"]
+
+    if file_name in stops:
+        return False
+    elif file_name in targets:
+        return True
+    else:
+        for mask in masks:
+            if re.match(f".*\.{mask}$", file_name):
+                return True
+        return False

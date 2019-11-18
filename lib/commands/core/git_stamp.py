@@ -4,8 +4,9 @@ from pprint import pprint
 from typing import List, Dict
 from datetime import datetime, timezone
 from .shell import fixed_path_shell
-from .configure import load_config, is_active_file, Config
+from .configure import load_config, Config
 from .custom_types import Datetime, Diffs, Stamps
+from .consistency import is_active_file
 from .dir_ops import get_dir_path
 
 
