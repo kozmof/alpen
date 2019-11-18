@@ -2,10 +2,8 @@ METADATA_FILE = "metadata.json"
 CURENT_FORMAT_VERSION = "1.0"
 
 FORMAT = {
-    "1.0": {
-        "tag": [],
-        "version": "1.0"
-    }
+  "tag": [],
+  "version": CURENT_FORMAT_VERSION
 }
 
 
@@ -16,22 +14,19 @@ def init_metadata(file_name):
 
 
 def version_check(metadata):
-    versions = {}
-
-    for v in FORMAT.keys():
-        has_all_keys = True
-        for key in FORMAT[v].keys():
-            if key in not metadata:
-                has_all_keys = False
-        versions[v] = has_all_keys
-
-    return versions
-
-
-def recover_missing_keys(metadata, version: str):
-    if version == "1.0":
-        for key in FORMAT["1.0"].keys():
-            if key not in metadata:
-                metadata[key] = FORMAT["1.0"][key]
+    if metadata["version"] == CURENT_FORMAT_VERSION:
+        return True
     else:
-        raise Exception(f"No such version: {version}")
+        return False
+
+
+def recover_missing_keys(metadata):
+    for key in FORMAT.keys():
+        if key not in metadata:
+            metadata[key] = FORMAT[key]
+
+    for key in metadata.keys:
+        if key not in FORMAT:
+            del metadata[key]
+
+    return metadata
