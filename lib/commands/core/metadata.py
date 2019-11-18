@@ -47,16 +47,25 @@ def f2t(file_name: str, config: Config) -> Optional[List[str]]:
                 return metadta[file_name]["tag"]
 
 
-def update_metadata_file(action_type: str, file_name: str, config: Config, tag_name: Optional[str] = None):
+def arg_check_m(action_type: str):
     if action_type == "ADD_TAG":
-        if tag_name is None:
-            raise Exception("Pass tag_name")
+        if tag_name is None and new_file_name:
+            raise Exception("Pass only tag_name")
+    elif action_type == "RENAME":
+        if new_file_name is None and tag_name:
+            raise Exception("Pass only new_file_name")
+    else:
+        raise Exception(f"No such action type: {action_type}")
 
+
+def update_metadata_file(action_type: str, file_name: str, config: Config, tag_name: Optional[str] = None, new_file_name: Optional[str] = None):
+    arg_check_m(config)
+    if action_type == "ADD_TAG":
         metadata_dir = get_dir_path("METADATA", config)
         metadata_file_path = f"{metadata_dir}/{METADATA_FILE}"
 
         if os.path.isfile(metadata_file_path):
-            with open(metadata_file_path, "r") as fpm:
+            with open(metadata_file_path, "r+") as fpm:
                 metadata = json.load(fpm)
 
                 if file_name in metadata:
@@ -81,5 +90,18 @@ def update_metadata_file(action_type: str, file_name: str, config: Config, tag_n
 
             with open(metadata_file_path, "w") as fpm:
                 json.dump(metadata, fpm)
+
+    elif action_type == "RENAME":
+        metadata_dir = get_dir_path("METADATA", config)
+        metadata_file_path = f"{metadata_dir}/{METADATA_FILE}"
+
+        if os.path.isfile(metadata_file_path):
+            with open(metaedata_file_path, "r+", as fpm):
+                metadata = json.load(fpm)
+                if file_name in metadta:
+                    metadata[new_file_name] = metadata[file_name]
+                    del metadata[file_name]
+
+                json.dump(metatdata, fpm)
     else:
         raise Exception(f"No such action type: {action_type}")
