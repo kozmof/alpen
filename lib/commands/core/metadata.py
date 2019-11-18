@@ -1,5 +1,5 @@
 import json
-from typing import Optional
+from typing import Optional, List
 from custom_types import Config
 
 METADATA_FILE = "metadata.json"
@@ -34,6 +34,17 @@ def recover_missing_keys(metadata):
             del metadata[key]
 
     return metadata
+
+
+def f2t(file_name: str, config: Config) -> Optional[List[str]]:
+    metadata_dir = get_dir_path("METADATA", config)
+    metadata_file_path = f"{metadata_dir}/{METADATA_FILE}"
+
+    if os.path.isfile(metadata_file_path):
+        with open(metadata_file_path, "r") as fpm:
+            metadta = json.load(fpm)
+            if file_name in metadta:
+                return metadta[file_name]["tag"]
 
 
 def update_metadata_file(action_type: str, file_name: str, config: Config, tag_name: Optional[str] = None):

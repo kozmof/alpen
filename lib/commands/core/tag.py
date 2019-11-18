@@ -1,6 +1,6 @@
 import os
 import json
-from typing import Optional
+from typing import Optional, List
 from configure import load_config
 from dir_ops import get_dir_path
 from metadata import (init_metadata, 
@@ -13,6 +13,17 @@ from custom_types import Config
 from consistency import doc_file_exists
 
 TAG_FILE = "tags.json"
+
+
+def t2f(tag_name: str, config: Config) -> Optional[List[str]]:
+    tag_dir = get_dir_path("TAG", config)
+    tag_file_path = f"{tag_dir}/{TAG_FILE}"
+
+    if os.path.isfile(tag_file_path):
+        with open(tag_file_path, "r") as fpt:
+            tag_data = json.load(fpt)
+            if tag_name in tag_data:
+                return tag_data[tag_name]
 
 
 def add_tag(file_name, tag_name):
