@@ -1,3 +1,6 @@
+import json
+from custom_types import Config
+
 METADATA_FILE = "metadata.json"
 CURENT_FORMAT_VERSION = "1.0"
 
@@ -30,3 +33,39 @@ def recover_missing_keys(metadata):
             del metadata[key]
 
     return metadata
+
+
+def update_metadata_file(action_type: str, file_name: str, tag_name, config: Config):
+    if action_type == "ADD_TAG":
+        metadata_dir = get_dir_path("METADATA", config)
+        metadata_file_path = f"{metadata_dir}/{METADATA_FILE}"
+
+
+        if os.path.isfile(metadata_file_path):
+            with open(metadata_file_path, "r") as fpm:
+                metadata = json.load(fpm)
+
+                if file_name in metadata:
+
+                    is_consistent = version_check(metadata):
+                    if not is_consistent:
+                        recover_missing_keys(metadata)
+
+                    if tag_name not in metadata[file_name]["tag"]:
+                        metadata[file_name]["tag"].append(tag)
+                else:
+                    key, data = init(file_name)
+                    metadata[key] = data
+                    metadata[key]["tag"].append(tag_name)
+
+                json.dump(metadata, fpm)
+        else:
+            metadata = {}
+            key, data = init_metadata(file_name)
+            metadata[key] = data
+            metadata[key]["tag"].append(tag_name)
+
+            with open(metadata_file_path, "w") as fpm:
+                json.dump(metadata, fpm)
+    else:
+        raise Exception(f"No such action type: {action_type}")
