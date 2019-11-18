@@ -45,7 +45,7 @@ def add_tag(file_name, tag_name):
 
                 is_consistent = version_check(metadata):
                 if not is_consistent:
-                    recover_missing_keys(metadata, CURENT_FORMAT_VERSION)
+                    recover_missing_keys(metadata)
 
                 if tag_name not in metadata[file_name]["tag"]:
                     metadata[file_name]["tag"].append(tag)
