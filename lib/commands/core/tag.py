@@ -1,5 +1,6 @@
 import os
 import json
+from typing import Optional
 from configure import load_config
 from dir_ops import get_dir_path
 from metadata import (init_metadata, 
@@ -20,12 +21,15 @@ def add_tag(file_name, tag_name):
         print(f"{doc_path} does not exist.")
         return
 
-    update_tag_file("ADD_TAG", file_name, tag_name, config)
-    update_metadata_file("ADD_TAG", file_name, tag_name, config)
+    update_tag_file("ADD_TAG", file_name, config, tag_name=tag_name)
+    update_metadata_file("ADD_TAG", file_name, config, tag_name=tag_name)
 
 
-def update_tag_file(action_type: str, file_name: str, tag_name: str, config: Config):
+def update_tag_file(action_type: str, file_name: str, config: Config, tag_name: Optional[str] = None):
     if action_type == "ADD_TAG":
+        if tag_name is None:
+            raise Exception("Pass tag_name")
+
         tag_dir = get_dir_path("TAG", config)
         tag_file_path = f"{tag_dir}/{TAG_FILE}"
 
@@ -46,4 +50,4 @@ def update_tag_file(action_type: str, file_name: str, tag_name: str, config: Con
             with open(tag_file_path, "w") as fpt:
                 json.dump(tags, fpt)
     else:
-        raise Exception(f"No such action type: {action_type}")
+        raise Exception("No such action type: {action_type}")

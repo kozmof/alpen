@@ -1,4 +1,5 @@
 import json
+from typing import Optional
 from custom_types import Config
 
 METADATA_FILE = "metadata.json"
@@ -35,11 +36,13 @@ def recover_missing_keys(metadata):
     return metadata
 
 
-def update_metadata_file(action_type: str, file_name: str, tag_name, config: Config):
+def update_metadata_file(action_type: str, file_name: str, config: Config, tag_name: Optional[str] = None):
     if action_type == "ADD_TAG":
+        if tag_name is None:
+            raise Exception("Pass tag_name")
+
         metadata_dir = get_dir_path("METADATA", config)
         metadata_file_path = f"{metadata_dir}/{METADATA_FILE}"
-
 
         if os.path.isfile(metadata_file_path):
             with open(metadata_file_path, "r") as fpm:
