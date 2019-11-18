@@ -13,6 +13,11 @@ TAG_FILE = "tags.json"
 
 def add_tag(file_name, tag_name):
     config: Config = load_config()
+    doc_dir = get_dir_path("DOCUMENT", config)
+    doc_path = f"{doc_dir}/{file_name}"
+    if os.path.isfile(doc_path):
+        print(f"{doc_path} does not exist.")
+        return
 
     tag_dir = get_dir_path("TAG", config)
     tag_file_path = f"{tag_dir}/{TAG_FILE}"
