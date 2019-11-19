@@ -4,37 +4,12 @@ from .core.configure import load_config
 from .core.dir_ops import get_dir_path
 from .core.shell import fixed_path_shell
 from .core.custom_types import Config
+from .core.rename import arg_to_names
 
 
 def c_rename(arg):
-    result_1 = list(re.findall("\'", arg))
-    result_2 = list(re.findall('\"', arg))
-
-    if len(result_1) == 4:
-        result = result_1
-    elif len(result_2) == 4:
-        result = result_2
-    else:
-        result = None
-
-    if not result:
-        names = arg.split(" ")
-
-    if not result and len(names) != 2:
-        print("Invalid syntax. rename <rename_from> <rename_to>")
-        return 
-    else:
-        config: Config = load_config()
-        uuid = config["uuid"]
-        if len(names) == 2:
-            original_name = names[0]
-            new_name = names[1]
-        elif result:
-            original_name = arg[result[0].end():result[1].start()]
-            new_name = arg[result[2].end():result[3].start()]
-        else:
-            raise Exception("logical error")
-
+    original_name, new_name = arg_to_names(arg)
+    if original_name and new_name:
         if re.match("todo\/", original_name):
             print("Move to a todo directory is not allowed.")
             return 
