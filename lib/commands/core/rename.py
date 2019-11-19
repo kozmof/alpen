@@ -1,6 +1,43 @@
-from tag import update_tag_file
-from metadata import update_metadata_file
-from custom_types import Config
+import re
+from typing import Tuple, Optional
+
+from .tag import update_tag_file
+from .metadata import update_metadata_file
+from .configure import load_config
+from .custom_types import Config
+
+def arg_to_names(arg) -> Tuple[Optional[str], Optional[str]]:
+    result_1 = list(re.findall("\'", arg))
+    result_2 = list(re.findall('\"', arg))
+    original_name = None
+    new_name = None
+
+    if len(result_1) == 4:
+        result = result_1
+    elif len(result_2) == 4:
+        result = result_2
+    else:
+        result = None
+
+    if not result:
+        names = arg.split(" ")
+
+    if not result and len(names) != 2:
+        print("Invalid syntax. rename <rename_from> <rename_to>")
+        return None, None
+    else:
+        config: Config = load_config()
+        uuid = config["uuid"]
+        if len(names) == 2:
+            original_name = names[0]
+            new_name = names[1]
+        elif result:
+            original_name = arg[result[0].end():result[1].start()]
+            new_name = arg[result[2].end():result[3].start()]
+        else:
+            raise Exception("logical error")
+
+    return original_name, new_name
 
 
 def apply_rename(file_name, new_file_name, config: Config):

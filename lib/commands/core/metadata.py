@@ -1,6 +1,6 @@
 import json
 from typing import Optional, List
-from custom_types import Config
+from .custom_types import Config
 
 METADATA_FILE = "metadata.json"
 CURENT_FORMAT_VERSION = "1.0"
@@ -70,7 +70,7 @@ def update_metadata_file(action_type: str, file_name: str, config: Config, tag_n
 
                 if file_name in metadata:
 
-                    is_consistent = version_check(metadata):
+                    is_consistent = version_check(metadata)
                     if not is_consistent:
                         recover_missing_keys(metadata)
 
@@ -96,7 +96,7 @@ def update_metadata_file(action_type: str, file_name: str, config: Config, tag_n
         metadata_file_path = f"{metadata_dir}/{METADATA_FILE}"
 
         if os.path.isfile(metadata_file_path):
-            with open(metaedata_file_path, "r+", as fpm):
+            with open(metaedata_file_path, "r+") as fpm:
                 metadata = json.load(fpm)
                 if file_name in metadta:
                     metadata[new_file_name] = metadata[file_name]

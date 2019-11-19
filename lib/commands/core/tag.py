@@ -1,17 +1,17 @@
 import os
 import json
 from typing import Optional, List
-from configure import load_config
-from dir_ops import get_dir_path
-from metadata import (init_metadata, 
+from .configure import load_config
+from .dir_ops import get_dir_path
+from .metadata import (init_metadata, 
                       version_check,
                       recover_missing_keys,
-                      update_metadata,
+                      update_metadata_file,
                       f2t,
                       METADATA_FILE,
                       CURENT_FORMAT_VERSION)
-from custom_types import Config
-from consistency import doc_file_exists
+from .custom_types import Config
+from .consistency import doc_file_exists
 
 TAG_FILE = "tags.json"
 
