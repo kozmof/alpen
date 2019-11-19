@@ -91,7 +91,7 @@ def update_metadata_file(action_type: str, file_name: str, config: Config, tag_n
             with open(metadata_file_path, "w") as fpm:
                 json.dump(metadata, fpm)
 
-    elif action_type == "RENAME":
+    elif action_type == "RENAME_FILE":
         metadata_dir = get_dir_path("METADATA", config)
         metadata_file_path = f"{metadata_dir}/{METADATA_FILE}"
 

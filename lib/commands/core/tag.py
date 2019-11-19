@@ -72,7 +72,7 @@ def update_tag_file(action_type: str, file_name: str, config: Config, tag_name: 
             with open(tag_file_path, "w") as fpt:
                 json.dump(tags, fpt)
 
-    elif action_type == "RENAME":
+    elif action_type == "RENAME_FILE":
         tag_names = f2t(file_name, config)
         if tag_names:
             tag_dir = get_dir_path("TAG", config)
