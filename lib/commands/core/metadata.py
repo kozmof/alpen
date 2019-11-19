@@ -42,9 +42,9 @@ def f2t(file_name: str, config: Config) -> Optional[List[str]]:
 
     if os.path.isfile(metadata_file_path):
         with open(metadata_file_path, "r") as fpm:
-            metadta = json.load(fpm)
-            if file_name in metadta:
-                return metadta[file_name]["tag"]
+            metadata = json.load(fpm)
+            if file_name in metadata:
+                return metadata[file_name]["tag"]
 
 
 def arg_check_m(action_type: str):
