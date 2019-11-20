@@ -4,7 +4,7 @@ from .core.configure import load_config
 from .core.dir_ops import get_dir_path
 from .core.shell import fixed_path_shell
 from .core.custom_types import Config
-from .core.rename import arg_to_names
+from .core.rename import arg_to_names, apply_rename
 
 
 def c_rename(arg):
@@ -31,6 +31,8 @@ def c_rename(arg):
                 fixed_path_shell(file_mv_command)
                 doc_rm_command = f"git rm .docs/{uuid}/{original_name}"
                 fixed_path_shell(doc_rm_command)
+                config: Config = load_config()
+                apply_rename(original_name, new_name)
                 if os.path.isfile(original_hist_path):
                     hist_mv_command = f"mv {original_hist_path} {new_hist_path}"
                     fixed_path_shell(command)
