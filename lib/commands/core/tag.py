@@ -22,8 +22,8 @@ def t2f(tag_name: str, config: Config) -> Optional[List[str]]:
 
 
 def arg_check_tag(action_type: str,
-                file_name: Optional[str], new_file_name: Optional[str],
-                tag_name: Optional[str], new_tag_name: Optional[str]):
+                  file_name: Optional[str], new_file_name: Optional[str],
+                  tag_name: Optional[str], new_tag_name: Optional[str]):
 
     if action_type == "ADD_TAG":
         if (file_name is None or tag_name is None) and (new_tag_name or new_file_name):
@@ -69,10 +69,10 @@ def update_tag_file(action_type: str, config: Config,
                     new_file_name: Optional[str] = None):
 
     arg_check_tag(action_type=action_type,
-                file_name=file_name,
-                new_file_name=new_file_name,
-                tag_name=tag_name,
-                new_tag_name=new_tag_name)
+                  file_name=file_name,
+                  new_file_name=new_file_name,
+                  tag_name=tag_name,
+                  new_tag_name=new_tag_name)
 
     if action_type == "ADD_TAG":
         tag_data = load_tag_data(config)
