@@ -47,8 +47,11 @@ def f2t(file_name: str, config: Config) -> Optional[List[str]]:
                 return metadata[file_name]["tag"]
 
 
-def arg_check_m(action_type: str):
+def arg_check_metadata(action_type: str):
     if action_type == "ADD_TAG":
+        if tag_name is None and new_file_name:
+            raise Exception("Pass only tag_name")
+    elif action_type == "REMOVE_TAG":
         if tag_name is None and new_file_name:
             raise Exception("Pass only tag_name")
     elif action_type == "RENAME_FILE":
@@ -78,7 +81,7 @@ def dump_metadata_json(metadata, config: Config):
 
 
 def update_metadata_file(action_type: str, file_name: str, config: Config, tag_name: Optional[str] = None, new_file_name: Optional[str] = None):
-    arg_check_m(config)
+    arg_check_metadata(config)
     if action_type == "ADD_TAG":
         metadata = load_metadata(config)
         if metadata:
