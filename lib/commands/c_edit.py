@@ -23,11 +23,11 @@ def c_edit(arg, use_todo_dir=False):
     is_editable = False
     is_new_name = True
 
-    for f in doc_files:
-        body, _ = os.path.splitext(f)
+    for file_name in doc_files:
+        body, _ = os.path.splitext(file_name)
         m_body = re.search(body, arg)
         if m_body:
-            m_full = re.search(f, arg)
+            m_full = re.search(file_name, arg)
             if m_full and (m_body.start() == m_full.start()):
                 is_editable = True
                 break
