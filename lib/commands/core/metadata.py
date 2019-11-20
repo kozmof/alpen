@@ -103,7 +103,6 @@ def update_metadata_file(action_type: str, file_name: str, config: Config,
         metadata = load_metadata(config)
         if metadata:
             if file_name in metadata:
-
                 is_consistent = version_check(metadata)
                 if not is_consistent:
                     recover_missing_keys(metadata)
