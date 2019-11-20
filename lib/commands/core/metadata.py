@@ -13,7 +13,7 @@ FORMAT = {
 
 def init_metadata(file_name):
     key = file_name
-    val = FORMAT[CURENT_FORMAT_VERSION]
+    val = FORMAT
     return key, val
 
 
