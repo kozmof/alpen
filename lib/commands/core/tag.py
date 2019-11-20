@@ -22,23 +22,24 @@ def t2f(tag_name: str, config: Config) -> Optional[List[str]]:
 
 
 def arg_check_t(action_type: str,
+                file_name: Optional[str],
                 tag_name: Optional[str], new_tag_name: Optional[str],
                 new_file_name: Optional[str]):
 
     if action_type == "ADD_TAG":
-        if tag_name is None and (new_tag_name or new_file_name):
+        if (file_name is None or tag_name is None) and (new_tag_name or new_file_name):
             raise Exception("Pass only tag_name")
 
     elif action_type == "REMOVE_TAG":
-        if tag_name is None and (new_tag_name or new_file_name):
+        if (file_name is None or tag_name is None) and (new_tag_name or new_file_name):
             raise Exception("Pass only tag_name")
 
     elif action_type == "RENAME_TAG":
-        if (tan_name is None or new_tag_name is None) and new_file_name:
+        if (tan_name is None or new_tag_name is None) and (file_name or new_file_name):
             raise Exception("Pass only tag_name and new_tag_name")
 
     elif action_type == "RENAME_FILE":
-        if new_file_name is None and (tag_name or new_tag_name):
+        if (file_name is None or new_file_name is None) and (tag_name or new_tag_name):
             raise Exception("Pass only new_file_name")
     else:
         raise Exception(f"No such action type: {action_type}")
@@ -63,11 +64,13 @@ def dump_tag_json(tag_data, config: Config):
             json.dump(tag_data, fpt)
 
 
-def update_tag_file(action_type: str, file_name: str, config: Config,
+def update_tag_file(action_type: str, config: Config,
+                    file_name: Optional[str] = None,
                     tag_name: Optional[str] = None, new_tag_name: Optional[str] = None,
                     new_file_name: Optional[str] = None):
 
     arg_check_t(action_type=action_type,
+                file_name=file_name,
                 tag_name=tag_name,
                 new_tag_name=new_tag_name,
                 new_file_name=new_file_name)

@@ -90,11 +90,13 @@ def dump_metadata_json(metadata, config: Config):
             json.dump(metadata, fpm)
 
 
-def update_metadata_file(action_type: str, file_name: str, config: Config,
+def update_metadata_file(action_type: str, config: Config,
+                         file_name: Optional[str] = None,
                          tag_name: Optional[str] = None, new_tag_name: Optional[str] = None,
                          new_file_name: Optional[str] = None):
 
     arg_check_metadata(action_type=action_type,
+                       file_name=file_name,
                        tag_name=tag_name,
                        new_tag_name=new_tag_name,
                        new_file_name=new_file_name)
