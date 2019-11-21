@@ -1,8 +1,7 @@
 import re
-from .core.git_stamp import combine_stamp
+from .core.git import combine_stamp, untracked_files
 from .core.color import color
 from .core.parser import color_diff
-from .core.git_stamp import untracked_files
 from .core.configure import load_config
 from .core.custom_types import Config
 

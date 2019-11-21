@@ -1,6 +1,6 @@
 import re
 import os
-from .core.git_stamp import changed_files, untracked_files, combine_stamp
+from .core.git import changed_files, untracked_files, combine_stamp
 from .core.custom_types import Config
 from .core.configure import load_config
 from .core.consistency import check_history_consistecy
