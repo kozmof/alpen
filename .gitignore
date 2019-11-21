@@ -1,5 +1,7 @@
 config.json
 shorthand.json
+metadata.json
+tags.json
 .backup_config.json
 .edited_file_record
 .todo
