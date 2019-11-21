@@ -124,17 +124,3 @@ def combine_stamp(enable_time_stamp: bool = True, separator: str = "=" * 8) -> S
             stamps[file_name] = stamp
 
     return stamps
-
-
-def save_history() -> None:
-    config: Config = load_config()
-    uuid: str = config["uuid"]
-    root_path: str = config["root_path"]
-    hist_dir: str = get_dir_path("HISTORY", config)
-    stamps: Stamps = combine_stamp()
-    for file_name, stamp in stamps.items():
-        file_name = re.sub(f"\.docs/{uuid}/", "", file_name)
-        file_name = re.sub("\..*", "", file_name)
-        save_path = f"{hist_dir}/{file_name}.txt"
-        with open(save_path, "a") as f:
-            f.write(stamp)
