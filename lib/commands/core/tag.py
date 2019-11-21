@@ -58,15 +58,16 @@ def dump_tag_json(tag_data, config: Config):
     tag_dir = get_dir_path("TAG", config)
     tag_file_path = f"{tag_dir}/{TAG_FILE}"
 
-    if os.path.isfile(tag_file_path):
-        with open(tag_file_path, "w") as fpt:
-            json.dump(tag_data, fpt)
+    if not os.path.isdir(tag_dir):
+        os.makedirs(tag_dir)
+
+    with open(tag_file_path, "w") as fpt:
+        json.dump(tag_data, fpt)
 
 
 def update_tag_file(action_type: str, config: Config,
-                    file_name: Optional[str] = None,
-                    tag_name: Optional[str] = None, new_tag_name: Optional[str] = None,
-                    new_file_name: Optional[str] = None):
+                    file_name: Optional[str] = None, new_file_name: Optional[str] = None,
+                    tag_name: Optional[str] = None, new_tag_name: Optional[str] = None):
 
     arg_check_tag(action_type=action_type,
                   file_name=file_name,
@@ -76,6 +77,7 @@ def update_tag_file(action_type: str, config: Config,
 
     if action_type == "ADD_TAG":
         tag_data = load_tag_data(config)
+
         if tag_data:
             if tag_name in tag_data:
                 if file_name not in tag_data[tag_name]:

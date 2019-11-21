@@ -1,6 +1,8 @@
+import os
 import json
 from typing import Optional, List
 from .custom_types import Config
+from .dir_ops import get_dir_path
 
 METADATA_FILE = "metadata.json"
 CURENT_FORMAT_VERSION = "1.0"
@@ -84,9 +86,11 @@ def dump_metadata_json(metadata, config: Config):
     metadata_dir = get_dir_path("METADATA", config)
     metadata_file_path = f"{metadata_dir}/{METADATA_FILE}"
 
-    if os.path.isfile(metadata_file_path):
-        with open(metadata_file_path, "w") as fpm:
-            json.dump(metadata, fpm)
+    if not os.path.isdir(metadata_dir):
+        os.makedirs(metadata_dir)
+
+    with open(metadata_file_path, "w") as fpm:
+        json.dump(metadata, fpm)
 
 
 def update_metadata_file(action_type: str, config: Config,
