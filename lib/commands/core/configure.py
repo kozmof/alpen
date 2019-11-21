@@ -22,9 +22,10 @@ INITIAL_SHORTHAND: Shorthand = {
     "build": "b",
     "list": "l",
     "edit": "e",
+    "tag": "tg",
     "rename": "r",
-    "save_history": "sh",
-    "todo": "t",
+    "save_history": "s",
+    "todo": "td",
     "diff": "d",
     "clear": "c",
     "quit": "q"

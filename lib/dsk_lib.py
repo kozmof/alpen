@@ -23,6 +23,7 @@ class DSKShell(cmd.Cmd):
                   " build ({build_short}): build texts\n"\
                   " list ({list_short}): list all documents\n"\
                   " edit ({edit_short}): edit documents\n"\
+                  " tag ({tag_short}): tag documents\n"\
                   " rename ({rename_short}): raname a document\n"\
                   " save_history ({save_history_short}): save diffs\n"\
                   " todo ({todo_short}): edit todo list\n"\
@@ -31,6 +32,7 @@ class DSKShell(cmd.Cmd):
                   " quit ({quit_short}): quit".format(build_short=shorthand["build"],
                                                       list_short=shorthand["list"],
                                                       edit_short=shorthand["edit"],
+                                                      tag_short=shorthand["tag"],
                                                       rename_short=shorthand["rename"],
                                                       save_history_short=shorthand["save_history"],
                                                       todo_short=shorthand["todo"],
@@ -86,6 +88,7 @@ class DSKShell(cmd.Cmd):
           "build": cls.do_build,
           "list": cls.do_list,
           "edit": cls.do_edit,
+          "tag": cls.do_tag,
           "rename": cls.do_rename,
           "save_history": cls.do_save_history,
           "todo": cls.do_todo,
