@@ -21,7 +21,7 @@ def check_history_consistecy() -> bool:
         return True
 
 
-def doc_file_exists(file_name):
+def doc_file_exists(file_name, config):
     doc_dir = get_dir_path("DOCUMENT", config)
     doc_path = f"{doc_dir}/{file_name}"
     if os.path.isfile(doc_path):
