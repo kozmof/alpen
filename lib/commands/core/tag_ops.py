@@ -24,9 +24,13 @@ def remove_tag(file_name, tag_name):
     else:
         update_tag_file("REMOVE_TAG", config, file_name=file_name, tag_name=tag_name)
         update_metadata_file("REMOVE_TAG", config, file_name=file_name, tag_name=tag_name)
+        print(f"{tag_name} removed from {file_name}")
 
 
 def rename_tag(tag_name, new_tag_name):
     config: Config = load_config()
     update_tag_file("RENAME_TAG", config, tag_name=tag_name, new_tag_name=new_tag_name)
     update_metadata_file("RENAME_TAG", config, tag_name=tag_name, new_tag_name=new_tag_name)
+    print(f"{tag_name} renamed to {new_tag_name}")
+
+    
