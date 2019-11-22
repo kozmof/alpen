@@ -19,8 +19,8 @@ def init_metadata(file_name):
     return key, val
 
 
-def version_check(metadata):
-    if metadata["version"] == CURENT_FORMAT_VERSION:
+def version_check(file_metadata):
+    if file_metadata["version"] == CURENT_FORMAT_VERSION:
         return True
     else:
         return False
@@ -108,14 +108,14 @@ def update_metadata_file(action_type: str, config: Config,
         metadata = load_metadata(config)
         if metadata:
             if file_name in metadata:
-                is_consistent = version_check(metadata)
+                is_consistent = version_check(metadata[file_name])
                 if not is_consistent:
                     recover_missing_keys(metadata)
 
                 if tag_name not in metadata[file_name]["tag"]:
-                    metadata[file_name]["tag"].append(tag)
+                    metadata[file_name]["tag"].append(tag_name)
             else:
-                key, data = init(file_name)
+                key, data = init_metadata(file_name)
                 metadata[key] = data
                 metadata[key]["tag"].append(tag_name)
 
