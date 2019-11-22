@@ -2,7 +2,7 @@ from .core.tag_ops import (add_tag,
                            remove_tag)
 
 def c_tag(arg):
-    options = arg.split(" ")
+    options = [option for option in arg.split(" ") if option]
     if options[0] == "add":
         if len(options) == 3:
             tag_name = options[1]
