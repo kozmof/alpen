@@ -96,6 +96,8 @@ def update_tag_file(action_type: str, config: Config,
         if tag_data and tag_name in tag_data:
             if file_name in tag_data[tag_name]:
                 tag_data[tag_name].remove(file_name)
+                if not tag_data[tag_name]:
+                    del tag_data[tag_name]
                 dump_tag_json(tag_data, config)
 
     elif action_type == "RENAME_TAG":
