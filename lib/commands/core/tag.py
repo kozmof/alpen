@@ -34,7 +34,7 @@ def arg_check_tag(action_type: str,
             raise Exception("Pass only tag_name")
 
     elif action_type == "RENAME_TAG":
-        if (tan_name is None or new_tag_name is None) and (file_name or new_file_name):
+        if (tag_name is None or new_tag_name is None) and (file_name or new_file_name):
             raise Exception("Pass only tag_name and new_tag_name")
 
     elif action_type == "RENAME_FILE":
