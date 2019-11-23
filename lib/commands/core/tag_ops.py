@@ -33,4 +33,14 @@ def rename_tag(tag_name, new_tag_name):
     update_metadata_file("RENAME_TAG", config, tag_name=tag_name, new_tag_name=new_tag_name)
     print(f"{tag_name} renamed to {new_tag_name}")
 
+
+def search_tag(tag_name):
+    config: Config = load_config()
+    update_tag_file("SEARCH_TAG", config, tag_name=tag_name)
+
+
+def show_all():
+    config: Config = load_config()
+    update_tag_fileo("SHOW_ALL", config)
+
     
