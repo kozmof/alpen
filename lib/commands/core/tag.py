@@ -62,7 +62,7 @@ def dump_tag_json(tag_data, config: Config):
         os.makedirs(tag_dir)
 
     with open(tag_file_path, "w") as fpt:
-        json.dump(tag_data, fpt)
+        json.dump(tag_data, fpt, indent=4, sort_keys=True)
 
 
 def update_tag_file(action_type: str, config: Config,

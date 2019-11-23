@@ -90,7 +90,7 @@ def dump_metadata_json(metadata, config: Config):
         os.makedirs(metadata_dir)
 
     with open(metadata_file_path, "w") as fpm:
-        json.dump(metadata, fpm)
+        json.dump(metadata, fpm, indent=4, sort_keys=True)
 
 
 def update_metadata_file(action_type: str, config: Config,

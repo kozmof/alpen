@@ -47,10 +47,10 @@ SHORTHAND_PATH = ROOT_DIR + "/" + "shorthand.json"
 
 def init() -> None:
     with open(CONFIG_PATH, "w") as f:
-        json.dump(INITIAL_CONFIG, f)
+        json.dump(INITIAL_CONFIG, f, indent=4, sort_keys=True)
 
     with open(SHORTHAND_PATH, "w") as f:
-        json.dump(INITIAL_SHORTHAND, f)
+        json.dump(INITIAL_SHORTHAND, f, indent=4, sort_keys=True)
 
 
 def load_config(backup=False) -> Union[Config, ConfigBackup]:
@@ -83,7 +83,7 @@ def update_config(key: str, value: any, halt_if_exists: bool = False, backup_lim
         if update:
             with open(CONFIG_PATH, "w") as f:
                 config[key] = value
-                json.dump(config, f)
+                json.dump(config, f, indent=4, sort_keys=True)
 
             config_backup: ConfigBackup = load_config(backup=True)
 
@@ -94,7 +94,7 @@ def update_config(key: str, value: any, halt_if_exists: bool = False, backup_lim
             with open(CONFIG_BACKUP_PATH, "w") as fb:
                 backup_key: str = str(int(time()))
                 config_backup[backup_key] = config
-                json.dump(config_backup, fb)
+                json.dump(config_backup, fb, indent=4, sort_keys=True)
 
     else:     
         raise Exception("config.json not found")
@@ -115,7 +115,7 @@ def update_shorthand(key: str, value: str) -> None:
         shorthand: shorthand = load_shorthand()
         with open(SHORTHAND_PATH, "w") as f:
             shorthand[key] = value
-            json.dump(config, f)
+            json.dump(config, f, indent=4, sort_keys=True)
 
 
 def save_uuid() -> None:
