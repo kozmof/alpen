@@ -54,19 +54,19 @@ def arg_check_metadata(action_type: str,
                        tag_name: Optional[str], new_tag_name: Optional[str]):
 
     if action_type == "ADD_TAG":
-        if tag_name is None and (new_tag_name or new_file_name):
+        if (tag_name is None) or (new_tag_name or new_file_name):
             raise Exception("Pass only tag_name")
 
     elif action_type == "REMOVE_TAG":
-        if tag_name is None and (new_tag_name or new_file_name):
+        if (tag_name is None) or (new_tag_name or new_file_name):
             raise Exception("Pass only tag_name")
 
     elif action_type == "RENAME_TAG":
-        if (tag_name is None or new_tag_name is None) and new_file_name:
+        if (tag_name is None or new_tag_name is None) or (new_file_name):
             raise Exception("Pasa only tag_name and new_tag_name")
 
     elif action_type == "RENAME_FILE":
-        if new_file_name is None and (tag_name or new_tag_name):
+        if (new_file_name is None) or (tag_name or new_tag_name):
             raise Exception("Pass only new_file_name")
     else:
         raise Exception(f"No such action type: {action_type}")
