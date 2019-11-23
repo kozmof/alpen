@@ -1,10 +1,16 @@
 from .core.tag_ops import (add_tag,
                            remove_tag,
-                           rename_tag)
+                           rename_tag,
+                           search_tag,
+                           show_all)
 
 def c_tag(arg):
     options = [option for option in arg.split(" ") if option]
-    if options[0] == "add":
+
+    if not len(options):
+        show_all()
+
+    elif options[0] == "add":
         if len(options) == 3:
             tag_name = options[1]
             file_name = options[2]
@@ -29,4 +35,8 @@ def c_tag(arg):
             print("Use tag rename <tag_name> <new_tag_name>")
 
     elif options[0] == "search":
-        print("DEBUG SEARCH")
+        if len(options) == 2:
+            tag_name = options[1]
+            search_tag(tag_name)
+        else:
+            print("Use tag search <tag_name>")

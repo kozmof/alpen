@@ -41,6 +41,6 @@ def search_tag(tag_name):
 
 def show_all():
     config: Config = load_config()
-    update_tag_fileo("SHOW_ALL", config)
+    update_tag_file("SHOW_ALL", config)
 
     
