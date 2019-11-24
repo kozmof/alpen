@@ -75,8 +75,12 @@ class DSKShell(cmd.Cmd):
     def complete_edit(self, text: str, linei: str, start_index: int, end_index: int) -> List[str]:
         return ["complete test"]
 
-    def do_clear(self, _):
-        c_clear(self.description)
+    def do_clear(self, option):
+        if option == "s":
+            show_grid = True
+        else:
+            show_grid = False
+        c_clear(self.description, show_grid=show_grid)
 
     def do_quit(self, _):
         return True
