@@ -27,7 +27,7 @@ class DSKShell(cmd.Cmd):
                   " rename ({rename_short}): raname a document\n"\
                   " save_history ({save_history_short}): save diffs\n"\
                   " todo ({todo_short}): edit todo list\n"\
-                  " diff ({diff_short}): show diff (before commit)\n"\
+                  " diff ({diff_short}): show diff (before stage)\n"\
                   " clear ({clear_short}): clear\n"\
                   " quit ({quit_short}): quit".format(build_short=shorthand["build"],
                                                       list_short=shorthand["list"],
