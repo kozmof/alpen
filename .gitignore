@@ -6,4 +6,6 @@ tags.json
 .edited_file_record
 .todo
 .*.swp
+dist/*
+node_modules/*
 __pycache__
