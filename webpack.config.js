@@ -16,6 +16,7 @@ module.exports = {
     module: {
         rules: [
             { test: /\.tsx?$/, loader: "ts-loader" }, 
+            { test: /\.md$/i, loader: "raw-loader" }, 
             { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
         ] 
     },
