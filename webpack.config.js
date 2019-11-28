@@ -17,8 +17,9 @@ module.exports = {
         rules: [
             { test: /\.tsx?$/, loader: "ts-loader" }, 
             { test: /\.md$/i, loader: "raw-loader" }, 
+            { test: /\.json$/, loader: "json-loader", type: "javascript/auto" }, 
             { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
-        ] 
+        ]
     },
 
     externals: {

@@ -24,6 +24,7 @@
   "devDependencies": {
     "@types/react": "^16.9.13",
     "@types/react-dom": "^16.9.4",
+    "json-loader": "^0.5.7",
     "raw-loader": "^4.0.0",
     "source-map-loader": "^0.2.4",
     "ts-loader": "^6.2.1",
