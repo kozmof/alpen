@@ -36,7 +36,7 @@ def make_build_config_file(file_names):
             } for file_name in file_names
         },
 
-        "tags" {tag: extract(file_names, tagged_files) for tag, tagged_files in tag_data.items()}
+        "tags": {tag: extract(file_names, tagged_files) for tag, tagged_files in tag_data.items()}
     }
 
     with open(BUILD_CONFIG_FILE, "w") as f:
