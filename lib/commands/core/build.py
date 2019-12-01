@@ -12,7 +12,7 @@ def extract(file_names, tagged_files):
     return [tagged_file for tagged_file in taggedfiles if tagged_file in file_names]
 
 
-def make_build_config(file_names):
+def make_build_config_file(file_names):
     config: Config = load_config()
     doc_dir = get_dir_path("DOCUMENT", config)
     history_dir = get_dir_path("HISTORY", config)
