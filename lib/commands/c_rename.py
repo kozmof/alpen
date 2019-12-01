@@ -42,5 +42,5 @@ def c_rename(arg):
                     print(f"History file not found: {original_hist_path}")
                     return
         else:
-            print(f"No such a file: {original_name}")
+            print(f"No such file: {original_name}")
             return
