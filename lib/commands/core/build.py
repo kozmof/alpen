@@ -2,8 +2,8 @@ import json
 from .configure import load_config
 from .dir_ops import get_dir_path
 from .custom_types import Config
-from .metadata import METADATA_FILE
-from .tag import TAG_FILE
+from .metadata import load_metadata, METADATA_FILE
+from .tag import load_tag_data, TAG_FILE
 
 BUILD_CONFIG_FILE = "build.config.json"
 
@@ -17,15 +17,8 @@ def make_build_config_file(file_names):
     doc_dir = get_dir_path("DOCUMENT", config)
     history_dir = get_dir_path("HISTORY", config)
 
-    metadata_dir = get_dir_path("METADATA", config)
-    metadata_file_path = f"{metadata_dir}/{METADATA_FILE}"
-    with open(metadata_file_path, "r") as f:
-        metadata = json.load(f)
-
-    tag_dir = get_dir_path("TAG", config)
-    tag_file_path = f"{tag_dir}/{TAG_FILE}"
-    with open(tag_file_path, "r") as f:
-        tag_data = json.load(f)
+    metadata = load_metadata(config)
+    tag_data = load_tag_data(config)
 
     build_config = {
         "pages": {
