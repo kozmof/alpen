@@ -5,6 +5,8 @@ from .custom_types import Config
 from .metadata import METADATA_FILE
 from .tag import TAG_FILE
 
+BUILD_CONFIG_FILE = "build.config.json"
+
 
 def extract(file_names, tagged_files):
     return [tagged_file for tagged_file in taggedfiles if tagged_file in file_names]
@@ -30,11 +32,12 @@ def make_build_config(file_names):
             file_name: {
                 "doc": f"{doc_dir}/{file_name}",
                 "history": f"{history_dir}/{file_name}",
-                "tag": metadata[file_name]
+                "tag": metadata[file_name] if file_name in metadata else []
             } for file_name in file_names
         },
 
         "tags" {tag: extract(file_names, tagged_files) for tag, tagged_files in tag_data.items()}
     }
 
-    return build_config
+    with open(BUILD_CONFIG_FILE, "w") as f:
+        json.dump(build_config, f, index=4, sort_keys=True)
