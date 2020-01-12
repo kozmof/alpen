@@ -3,11 +3,11 @@ import * as ReactDom from "react-dom";
 
 /*
 index
-+-------+-------+-------+-------+-------+-------+
-|key 0  |key 1  |key 2  |key 3  |key 4  |key 5  |
-+-------+-------+-------+-------+-------+-------+ ...
-|title 0|title 1|title 2|title 3|title 4|title 5|
-+-------+-------+-------+-------+-------+-------+ 
++-----------+-----------+-----------+-----------+-----------+-----------+
+|key 0      |key 1      |key 2      |key 3      |key 4      |key 5      |
++-----------+-----------+-----------+-----------+-----------+-----------+ ...
+|IndexInfo 0|IndexInfo 1|IndexInfo 2|IndexInfo 3|IndexInfo 4|IndexInfo 5|
++-----------+-----------+-----------+-----------+-----------+-----------+ 
 
 contents
 +---------+---------+---------+---------+---------+---------+
@@ -22,6 +22,12 @@ tags
 +-------+------+------+ 
 */
 
+type IndexInfo = {
+  title: string;
+  created_date: string;
+  revision_date: string;
+}
+
 type Tag = {
   tag: string;
   keys: Array<number>;
@@ -35,7 +41,7 @@ type Content = {
 }
 
 interface DefaultFrameProps {
-  index: Array<string>;
+  index: Array<IndexInfo>;
   contents: Array<Content>;
   tags: Array<Tag>;
 }
