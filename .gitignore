@@ -7,5 +7,5 @@ tags.json
 .todo
 .*.swp
 dist/*
-node_modules/*
+viewer/node_modules/*
 __pycache__
