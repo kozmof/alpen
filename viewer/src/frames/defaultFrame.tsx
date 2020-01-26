@@ -61,8 +61,10 @@ const dataCast = (fileNames: Array<string>,
   const tags: Array<Tag> = []
 
   for (const [idx, fileName] of fileNames.entries()) {
+    const text: string = texts[idx];
+    const title: string = text.split("\n")[0];
     const indexInfo: IndexInfo = {
-      "title": "",
+      "title": title,
       "createdDate": "",
       "revisionDate": ""
     }
@@ -70,8 +72,8 @@ const dataCast = (fileNames: Array<string>,
     const content_tags: Array<string> = tag[fileName];
 
     const content: Content = {
-      "title": "",
-      "text": texts[idx],
+      "title": title,
+      "text": text,
       "history": histories[idx],
       "tags": content_tags
     }
@@ -92,7 +94,7 @@ const dataCast = (fileNames: Array<string>,
       }
 
     for (const tagName in tagHolder) {
-        tags.push(tagHolder[tagName])
+        tags.push(tagHolder[tagName]);
     }
   }
 
