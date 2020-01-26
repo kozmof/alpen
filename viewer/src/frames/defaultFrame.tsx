@@ -24,13 +24,17 @@ tags
 
 type IndexInfo = {
   title: string;
-  created_date: string;
-  revision_date: string;
+  createdDate: string;
+  revisionDate: string;
 }
 
 type Tag = {
   tag: string;
   keys: Array<number>;
+}
+
+type TagHolder = {
+  [key: string]: Tag
 }
 
 type Content = {
@@ -44,4 +48,58 @@ interface DefaultFrameProps {
   index: Array<IndexInfo>;
   contents: Array<Content>;
   tags: Array<Tag>;
+}
+
+const dataCast = (fileNames: Array<string>,
+                  texts: Array<string>,
+                  histories: Array<string>,
+                  tag: any) // ?
+                  : DefaultFrameProps => {
+
+  const index: Array<IndexInfo> = [];
+  const contents: Array<Content> = [];
+  const tags: Array<Tag> = []
+
+  for (const [idx, text] of texts.entries()) {
+    const indexInfo: IndexInfo = {
+      "title": "",
+      "createdDate": "",
+      "revisionDate": ""
+    }
+
+    const fileName = fileNames[idx]
+    const content_tags: Array<string> = tag[fileName];
+
+    const content: Content = {
+      "title": "",
+      "text": text,
+      "history": histories[idx],
+      "tags": content_tags
+    }
+
+    index.push(indexInfo);
+    contents.push(content);
+
+    const tagHolder: TagHolder = {};
+    for (const tagName in tag[fileName]) {
+      if (tagName in tagHolder) {
+          tagHolder[tagName].keys.push(idx)
+        } else {
+          tagHolder[tagName] = {
+            "tag": tagName,
+            "keys": [idx]
+          }
+        }
+      }
+
+    for (const tagName in tagHolder) {
+        tags.push(tagHolder[tagName])
+    }
+  }
+
+  return {
+    "index": index,
+    "contents": contents,
+    "tags": tags
+  }
 }
