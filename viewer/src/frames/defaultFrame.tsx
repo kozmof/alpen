@@ -53,7 +53,7 @@ interface DefaultFrameProps {
 const dataCast = (fileNames: Array<string>,
                   texts: Array<string>,
                   histories: Array<string>,
-                  tag: any) // ?
+                  loaded_tags: any) // ?
                   : DefaultFrameProps => {
 
   const index: Array<IndexInfo> = [];
@@ -69,7 +69,7 @@ const dataCast = (fileNames: Array<string>,
       "revisionDate": ""
     }
 
-    const content_tags: Array<string> = tag[fileName];
+    const content_tags: Array<string> = loaded_tags[fileName];
 
     const content: Content = {
       "title": title,
@@ -82,7 +82,7 @@ const dataCast = (fileNames: Array<string>,
     contents.push(content);
 
     const tagHolder: TagHolder = {};
-    for (const tagName in tag[fileName]) {
+    for (const tagName in loaded_tags[fileName]) {
       if (tagName in tagHolder) {
           tagHolder[tagName].keys.push(idx)
         } else {
