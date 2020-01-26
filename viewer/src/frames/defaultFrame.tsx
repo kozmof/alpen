@@ -60,19 +60,18 @@ const dataCast = (fileNames: Array<string>,
   const contents: Array<Content> = [];
   const tags: Array<Tag> = []
 
-  for (const [idx, text] of texts.entries()) {
+  for (const [idx, fileName] of fileNames.entries()) {
     const indexInfo: IndexInfo = {
       "title": "",
       "createdDate": "",
       "revisionDate": ""
     }
 
-    const fileName = fileNames[idx]
     const content_tags: Array<string> = tag[fileName];
 
     const content: Content = {
       "title": "",
-      "text": text,
+      "text": texts[idx],
       "history": histories[idx],
       "tags": content_tags
     }
