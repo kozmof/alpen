@@ -45,7 +45,7 @@ type Content = {
 }
 
 interface DefaultFrameProps {
-  index: Array<IndexInfo>;
+  indicesInfo: Array<IndexInfo>;
   contents: Array<Content>;
   tags: Array<Tag>;
 }
@@ -53,10 +53,10 @@ interface DefaultFrameProps {
 const dataCast = (fileNames: Array<string>,
                   texts: Array<string>,
                   histories: Array<string>,
-                  loaded_tags: any) // ?
+                  loadedTags: any) // ?
                   : DefaultFrameProps => {
 
-  const index: Array<IndexInfo> = [];
+  const indicesInfo: Array<IndexInfo> = [];
   const contents: Array<Content> = [];
   const tags: Array<Tag> = []
 
@@ -69,7 +69,7 @@ const dataCast = (fileNames: Array<string>,
       "revisionDate": ""
     }
 
-    const content_tags: Array<string> = loaded_tags[fileName];
+    const content_tags: Array<string> = loadedTags[fileName];
 
     const content: Content = {
       "title": title,
@@ -78,11 +78,11 @@ const dataCast = (fileNames: Array<string>,
       "tags": content_tags
     }
 
-    index.push(indexInfo);
+    indicesInfo.push(indexInfo);
     contents.push(content);
 
     const tagHolder: TagHolder = {};
-    for (const tagName in loaded_tags[fileName]) {
+    for (const tagName in loadedTags[fileName]) {
       if (tagName in tagHolder) {
           tagHolder[tagName].keys.push(idx)
         } else {
@@ -99,8 +99,17 @@ const dataCast = (fileNames: Array<string>,
   }
 
   return {
-    "index": index,
+    "indicesInfo": indicesInfo,
     "contents": contents,
     "tags": tags
   }
+}
+
+const indexRender = (indicesInfo: Array<IndexInfo>) => {
+}
+
+const contentRender = (index: number, contents: Array<Content>) => {
+}
+
+const tagRender = (tags: Array<Tag>) => {
 }
