@@ -9,7 +9,7 @@ BUILD_CONFIG_FILE = "build.config.json"
 
 
 def extract(file_names, tagged_files):
-    return [tagged_file for tagged_file in taggedfiles if tagged_file in file_names]
+    return [tagged_file for tagged_file in tagged_files if tagged_file in file_names]
 
 
 def make_build_config_file(file_names):
@@ -25,7 +25,7 @@ def make_build_config_file(file_names):
             file_name: {
                 "doc": f"{doc_dir}/{file_name}",
                 "history": f"{history_dir}/{file_name}",
-                "tag": metadata[file_name] if file_name in metadata else []
+                "tag": metadata[file_name].get("tag", []) if file_name in metadata else []
             } for file_name in file_names
         },
 
@@ -33,4 +33,4 @@ def make_build_config_file(file_names):
     }
 
     with open(BUILD_CONFIG_FILE, "w") as f:
-        json.dump(build_config, f, index=4, sort_keys=True)
+        json.dump(build_config, f, indent=4, sort_keys=True)
