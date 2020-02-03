@@ -46,7 +46,6 @@ class DSKShell(cmd.Cmd):
     intro = grid_text(grid_0, grid_1, grid_2, margin=5)
     prompt = "|> "
 
-    # TODO implement
     def do_build(self, _):
         c_build()
 
