@@ -14,6 +14,7 @@ def extract(file_names, tagged_files):
 
 def make_build_config_file(file_names):
     config: Config = load_config()
+    root_dir = config["root_path"]
     doc_dir = get_dir_path("DOCUMENT", config)
     history_dir = get_dir_path("HISTORY", config)
 
@@ -32,5 +33,8 @@ def make_build_config_file(file_names):
         "tags": {tag: extract(file_names, tagged_files) for tag, tagged_files in tag_data.items()}
     }
 
-    with open(BUILD_CONFIG_FILE, "w") as f:
+    save_path = "{root_dir}/viewer/{build_file}".format(root_dir=root_dir,
+                                                        build_file=BUILD_CONFIG_FILE)
+
+    with open(save_path, "w") as f:
         json.dump(build_config, f, indent=4, sort_keys=True)

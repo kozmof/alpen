@@ -8,4 +8,5 @@ tags.json
 .*.swp
 dist/*
 viewer/node_modules/*
+viewer/build.config.json
 __pycache__
