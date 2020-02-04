@@ -14,7 +14,7 @@ INITIAL_CONFIG: Config = {
     "stops": [],
     "masks": ["md", "txt"],
     "enable_mask": True,
-    "commit_header": "[DSK-manual-commit]"
+    "commit_header": "[Rimbaud-manual-commit]"
 }
 
 

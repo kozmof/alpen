@@ -17,7 +17,7 @@ from .commands.core.custom_types import Shorthand
 from .commands.core.configure import load_shorthand
 
 
-class DSKShell(cmd.Cmd):
+class RimbaudShell(cmd.Cmd):
     shorthand: Shorthand = load_shorthand()
     description = "commands\n"\
                   " build ({build_short}): build texts\n"\

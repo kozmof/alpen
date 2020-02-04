@@ -1,5 +1,5 @@
 {
-  "name": "dsk",
+  "name": "rimbaud",
   "version": "1.0.0",
   "description": "Local writing environment",
   "main": "index.js",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kozmof/dsk.git"
+    "url": "git+https://github.com/kozmof/rimbaud.git"
   },
   "author": "Kozo Oeda",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kozmof/dsk/issues"
+    "url": "https://github.com/kozmof/rimbaud/issues"
   },
-  "homepage": "https://github.com/kozmof/dsk#readme",
+  "homepage": "https://github.com/kozmof/rimbaud#readme",
   "devDependencies": {
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",

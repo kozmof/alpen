@@ -59,7 +59,7 @@ def c_save_history(debug=True):
 
     for file_name in history_files + ut_history_files:
         if file_name in history_commited_files:
-            stage_and_commit_command = f"git add {file_name} && git commit -m '[DSK-history-auto-save] {file_name}'"
+            stage_and_commit_command = f"git add {file_name} && git commit -m '[Rimbaud-history-auto-save] {file_name}'"
             if debug:
                 print(stage_and_commit_command)
             fixed_path_shell(stage_and_commit_command)

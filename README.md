@@ -1,2 +1,2 @@
-# dsk
+# rimbaud
 [WIP] Local writing environment
