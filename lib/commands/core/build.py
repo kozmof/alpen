@@ -16,7 +16,6 @@ def extract(file_names, tagged_files):
 def load(path, force_md=False):
     if force_md:
         path = "{body}.md".format(body=os.path.splitext(path)[0])
-        
     if os.path.isfile(path):
         with open(path, "r") as f:
             return f.read()
