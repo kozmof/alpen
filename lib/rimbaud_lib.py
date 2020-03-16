@@ -16,10 +16,11 @@ from .commands.core.gprint import grid_text
 from .commands.core.todo import get_todo
 from .commands.core.custom_types import Shorthand
 from .commands.core.configure import load_shorthand
+from .commands.core.ascii import RIMBAUD_ASCII
 
 
 class RimbaudShell(cmd.Cmd):
-    grid_0 = "Welcome back hacker"
+    grid_0 = RIMBAUD_ASCII
     grid_1 = change_log()
     grid_2 = get_todo()
     intro = grid_text(grid_0, grid_1, grid_2, margin=5)
