@@ -14,7 +14,7 @@ INITIAL_CONFIG: Config = {
     "stops": [],
     "masks": ["md", "txt"],
     "enable_mask": True,
-    "commit_header": "[Rimbaud-manual-commit]"
+    "commit_header": "[rimbaud-manual-commit]"
 }
 
 
@@ -23,6 +23,7 @@ INITIAL_SHORTHAND: Shorthand = {
     "list": "l",
     "edit": "e",
     "tag": "ta",
+    "tutorial": "tu",
     "rename": "r",
     "save_history": "s",
     "todo": "to",

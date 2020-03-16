@@ -9,6 +9,7 @@ from .commands.c_rename import c_rename
 from .commands.c_save_history import c_save_history
 from .commands.c_todo import c_todo
 from .commands.c_clear import c_clear, change_log
+from .commands.c_tutorial import c_tutorial
 
 from typing import Optional, List, Dict, Callable
 from .commands.core.gprint import grid_text
@@ -18,29 +19,7 @@ from .commands.core.configure import load_shorthand
 
 
 class RimbaudShell(cmd.Cmd):
-    shorthand: Shorthand = load_shorthand()
-    description = "commands\n"\
-                  " build ({build_short}): build texts\n"\
-                  " list ({list_short}): list all documents\n"\
-                  " edit ({edit_short}): edit documents\n"\
-                  " tag ({tag_short}): tag documents\n"\
-                  " rename ({rename_short}): raname a document\n"\
-                  " save_history ({save_history_short}): save diffs\n"\
-                  " todo ({todo_short}): edit todo list\n"\
-                  " diff ({diff_short}): show diff (before stage)\n"\
-                  " clear ({clear_short}): clear\n"\
-                  " quit ({quit_short}): quit".format(build_short=shorthand["build"],
-                                                      list_short=shorthand["list"],
-                                                      edit_short=shorthand["edit"],
-                                                      tag_short=shorthand["tag"],
-                                                      rename_short=shorthand["rename"],
-                                                      save_history_short=shorthand["save_history"],
-                                                      todo_short=shorthand["todo"],
-                                                      diff_short=shorthand["diff"],
-                                                      clear_short=shorthand["clear"],
-                                                      quit_short=shorthand["quit"])
-
-    grid_0 = description
+    grid_0 = "Welcome back hacker"
     grid_1 = change_log()
     grid_2 = get_todo()
     intro = grid_text(grid_0, grid_1, grid_2, margin=5)
@@ -79,7 +58,10 @@ class RimbaudShell(cmd.Cmd):
             show_grid = True
         else:
             show_grid = False
-        c_clear(self.description, show_grid=show_grid)
+        c_clear(show_grid=show_grid)
+
+    def do_tutorial(self, _):
+        c_tutorial()
 
     def do_quit(self, _):
         return True
@@ -97,6 +79,7 @@ class RimbaudShell(cmd.Cmd):
           "todo": cls.do_todo,
           "diff": cls.do_diff,
           "clear": cls.do_clear,
+          "tutorial": cls.do_tutorial,
           "quit": cls.do_quit
         }
         for key, value in shorthand.items():
