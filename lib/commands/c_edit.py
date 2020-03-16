@@ -21,20 +21,23 @@ def c_edit(arg, use_todo_dir=False):
 
     doc_files: List = [file for file in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, file))]
     is_editable = False
-    is_new_name = True
+    is_new_file = True
 
-    for file_path in doc_files:
-        body, _ = os.path.splitext(file_path)
+    for file_name in doc_files:
+        body, _ = os.path.splitext(file_name)
         m_body = re.search(body, arg)
+        # True if a file body matchs to an input name
         if m_body:
-            m_full = re.search(file_path, arg)
+            m_full = re.search(file_name, arg)
+            # Check a full input is correct
             if m_full and (m_body.start() == m_full.start()):
                 is_editable = True
                 break
             else:
-                is_new_name = False
+                # False only if an input name has a same body and a different extension
+                is_new_file = False
 
-    if is_editable or is_new_name:
+    if is_editable or is_new_file:
         command: List[str] = register_edit_command(editor, arg, use_todo_dir=use_todo_dir)
         subprocess.run(command)
     else:
