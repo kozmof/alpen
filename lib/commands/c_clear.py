@@ -1,7 +1,7 @@
 import subprocess
-from .core.record import read_edited_file_record
-from .core.todo import get_todo
-from .core.gprint import grid_text
+from lib.commands.core.record import read_edited_file_record
+from lib.commands.core.todo import get_todo
+from lib.commands.core.gprint import grid_text
 
 
 def change_log() -> str:

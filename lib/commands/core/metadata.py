@@ -1,8 +1,8 @@
 import os
 import json
 from typing import Optional, List
-from .custom_types import Config
-from .dir_ops import get_dir_path
+from lib.commands.core.custom_types import Config
+from lib.commands.core.dir_ops import get_dir_path
 
 METADATA_FILE = "metadata.json"
 CURENT_FORMAT_VERSION = "1.0"
@@ -148,6 +148,6 @@ def update_metadata_file(action_type: str, config: Config,
         if metadata and file_name in metadata:
             metadata[new_file_name] = metadata[file_name]
             del metadata[file_name]
-            dump_metadata_json(metada, config)
+            dump_metadata_json(metadata, config)
     else:
         raise Exception(f"No such action type: {action_type}")

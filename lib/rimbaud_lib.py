@@ -1,22 +1,22 @@
 import cmd
 
-from .commands.c_build import c_build
-from .commands.c_list import c_list
-from .commands.c_tag import c_tag
-from .commands.c_diff import c_diff
-from .commands.c_edit import c_edit
-from .commands.c_rename import c_rename
-from .commands.c_save_history import c_save_history
-from .commands.c_todo import c_todo
-from .commands.c_clear import c_clear, change_log
-from .commands.c_tutorial import c_tutorial
+from lib.commands.c_build import c_build
+from lib.commands.c_list import c_list
+from lib.commands.c_tag import c_tag
+from lib.commands.c_diff import c_diff
+from lib.commands.c_edit import c_edit
+from lib.commands.c_rename import c_rename
+from lib.commands.c_save_history import c_save_history
+from lib.commands.c_todo import c_todo
+from lib.commands.c_clear import c_clear, change_log
+from lib.commands.c_tutorial import c_tutorial
 
 from typing import Optional, List, Dict, Callable
-from .commands.core.gprint import grid_text
-from .commands.core.todo import get_todo
-from .commands.core.custom_types import Shorthand
-from .commands.core.configure import load_shorthand
-from .commands.core.ascii import RIMBAUD_ASCII
+from lib.commands.core.gprint import grid_text
+from lib.commands.core.todo import get_todo
+from lib.commands.core.custom_types import Shorthand
+from lib.commands.core.configure import load_shorthand
+from lib.commands.core.ascii import RIMBAUD_ASCII
 
 
 class RimbaudShell(cmd.Cmd):

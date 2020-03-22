@@ -1,5 +1,5 @@
 import os
-from .custom_types import Config
+from lib.commands.core.custom_types import Config
 
 
 def get_dir_name(dir_type: str) -> str:

@@ -1,10 +1,10 @@
 import os
 import json
-from .configure import load_config
-from .dir_ops import get_dir_path
-from .custom_types import Config
-from .metadata import load_metadata, METADATA_FILE
-from .tag import load_tag_data, TAG_FILE
+from lib.commands.core.configure import load_config
+from lib.commands.core.dir_ops import get_dir_path
+from lib.commands.core.custom_types import Config
+from lib.commands.core.metadata import load_metadata, METADATA_FILE
+from lib.commands.core.tag import load_tag_data, TAG_FILE
 
 BUILD_PAYLOAD_FILE = "build.payload.json"
 

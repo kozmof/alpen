@@ -1,10 +1,10 @@
 import re
 from typing import Tuple, Optional
 
-from .tag import update_tag_file
-from .metadata import update_metadata_file
-from .configure import load_config
-from .custom_types import Config
+from lib.commands.core.tag import update_tag_file
+from lib.commands.core.metadata import update_metadata_file
+from lib.commands.core.configure import load_config
+from lib.commands.core.custom_types import Config
 
 def arg_to_names(arg) -> Tuple[Optional[str], Optional[str]]:
     result_1 = list(re.findall("\'", arg))
@@ -26,8 +26,6 @@ def arg_to_names(arg) -> Tuple[Optional[str], Optional[str]]:
         print("Invalid syntax. rename <rename_from> <rename_to>")
         return None, None
     else:
-        config: Config = load_config()
-        uuid = config["uuid"]
         if len(names) == 2:
             original_name = names[0]
             new_name = names[1]

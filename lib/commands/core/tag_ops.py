@@ -1,14 +1,14 @@
-from .configure import load_config
-from .tag import update_tag_file
-from .metadata import update_metadata_file
-from .consistency import doc_file_exists
-from .custom_types import Config
+from lib.commands.core.configure import load_config
+from lib.commands.core.tag import update_tag_file
+from lib.commands.core.metadata import update_metadata_file
+from lib.commands.core.consistency import doc_file_exists
+from lib.commands.core.custom_types import Config
 
 
 def add_tag(file_name, tag_name):
     config: Config = load_config()
     if not doc_file_exists(file_name, config):
-        print(f"{doc_path} does not exist.")
+        print(f"{file_name} does not exist.")
         return
     else:
         update_tag_file("ADD_TAG", config, file_name=file_name, tag_name=tag_name)
@@ -19,7 +19,7 @@ def add_tag(file_name, tag_name):
 def remove_tag(file_name, tag_name):
     config: Config = load_config()
     if not doc_file_exists(file_name, config):
-        print(f"{doc_path} does not exist.")
+        print(f"{file_name} does not exist.")
         return
     else:
         update_tag_file("REMOVE_TAG", config, file_name=file_name, tag_name=tag_name)

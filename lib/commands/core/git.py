@@ -3,11 +3,11 @@ import re
 from pprint import pprint
 from typing import List, Dict
 from datetime import datetime, timezone
-from .shell import fixed_path_shell
-from .configure import load_config, Config
-from .custom_types import Datetime, Diffs, Stamps
-from .consistency import is_active_file
-from .dir_ops import get_dir_path
+from lib.commands.core.shell import fixed_path_shell
+from lib.commands.core.configure import load_config, Config
+from lib.commands.core.custom_types import Datetime, Diffs, Stamps
+from lib.commands.core.consistency import is_active_file
+from lib.commands.core.dir_ops import get_dir_path
 
 
 def git_diff() -> Diffs:
@@ -71,7 +71,7 @@ def changed_files() -> List[str]:
 
         elif is_renamed:
             file_names: str = re.sub(renamed_pattern, "", line).strip()
-            renamed_from, renamed_to = file_names.split(" -> ")
+            renamed_from, _ = file_names.split(" -> ")
             files.append(renamed_from)
 
     return files

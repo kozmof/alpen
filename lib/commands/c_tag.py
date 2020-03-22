@@ -1,8 +1,8 @@
-from .core.tag_ops import (add_tag,
-                           remove_tag,
-                           rename_tag,
-                           search_tag,
-                           show_all)
+from lib.commands.core.tag_ops import (add_tag,
+                                       remove_tag,
+                                       rename_tag,
+                                       search_tag,
+                                       show_all)
 
 def c_tag(arg):
     options = [option for option in arg.split(" ") if option]

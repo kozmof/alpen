@@ -4,8 +4,8 @@ import json
 from time import time
 from uuid import uuid4
 from typing import List, Union
-from .custom_types import Config, Shorthand, ConfigBackup
-from .dir_ops import make_directory
+from lib.commands.core.custom_types import Config, Shorthand, ConfigBackup
+from lib.commands.core.dir_ops import make_directory
 
 
 INITIAL_CONFIG: Config = {
@@ -113,7 +113,7 @@ def load_shorthand() -> Shorthand:
 
 def update_shorthand(key: str, value: str) -> None:
     if os.path.isfile(SHORTHAND_PATH):
-        shorthand: shorthand = load_shorthand()
+        shorthand: Shorthand = load_shorthand()
         with open(SHORTHAND_PATH, "w") as f:
             shorthand[key] = value
             json.dump(config, f, indent=4, sort_keys=True)

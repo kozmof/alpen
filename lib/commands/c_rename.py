@@ -1,19 +1,21 @@
 import re
 import os
-from .core.configure import load_config
-from .core.dir_ops import get_dir_path
-from .core.shell import fixed_path_shell
-from .core.custom_types import Config
-from .core.rename import arg_to_names, apply_rename
+from lib.commands.core.configure import load_config, Config
+from lib.commands.core.dir_ops import get_dir_path
+from lib.commands.core.shell import fixed_path_shell
+from lib.commands.core.custom_types import Config
+from lib.commands.core.rename import arg_to_names, apply_rename
 
 
 def c_rename(arg):
     original_name, new_name = arg_to_names(arg)
     if original_name and new_name:
-        if re.match("todo\/", original_name):
+        if re.match(r"todo/", original_name):
             print("Move to a todo directory is not allowed.")
             return 
 
+        config: Config = load_config()
+        uuid = config["uuid"]
         doc_dir = get_dir_path("DOCUMENT", config)
         original_path = f"{doc_dir}/{original_name}"
         new_path = f"{doc_dir}/{new_name}"
@@ -27,15 +29,17 @@ def c_rename(arg):
                 print(f"{new_name} is already existing. Choose another name")
                 return 
             else:
-                doc_mv_command = f"mv {original_path} {new_path}"
+                file_mv_command = f"mv {original_path} {new_path}"
                 fixed_path_shell(file_mv_command)
                 doc_rm_command = f"git rm .docs/{uuid}/{original_name}"
                 fixed_path_shell(doc_rm_command)
                 config: Config = load_config()
-                apply_rename(original_name, new_name)
+                apply_rename(file_name=original_name,
+                             new_file_name=new_name,
+                             config=config)
                 if os.path.isfile(original_hist_path):
                     hist_mv_command = f"mv {original_hist_path} {new_hist_path}"
-                    fixed_path_shell(command)
+                    fixed_path_shell(hist_mv_command)
                     hist_rm_command = f"git rm .histories/{uuid}/{original_name}"
                     fixed_path_shell(hist_rm_command)
                 else:

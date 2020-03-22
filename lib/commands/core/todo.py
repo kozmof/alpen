@@ -1,8 +1,8 @@
 import re
 import os
 from typing import List
-from .configure import load_config
-from .dir_ops import get_dir_path 
+from lib.commands.core.configure import load_config
+from lib.commands.core.dir_ops import get_dir_path 
 
 TODO_DIR_PATH = f"{get_dir_path('TODO', load_config())}"
 

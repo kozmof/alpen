@@ -1,10 +1,10 @@
 import re
 import os
-from .core.git import changed_files, untracked_files, combine_stamp
-from .core.custom_types import Config
-from .core.configure import load_config
-from .core.consistency import check_history_consistecy
-from .core.shell import fixed_path_shell
+from lib.commands.core.git import changed_files, untracked_files, combine_stamp
+from lib.commands.core.custom_types import Config
+from lib.commands.core.configure import load_config
+from lib.commands.core.consistency import check_history_consistecy
+from lib.commands.core.shell import fixed_path_shell
 
 yes_command = ["Y", "YES"]
 
@@ -17,8 +17,8 @@ def c_save_history(debug=True):
     uuid = config["uuid"]
     commit_header = config["commit_header"]
 
-    doc_pattern = f"\.docs/{uuid}"
-    history_pattern = f"\.histories/{uuid}"
+    doc_pattern = fr".docs/{uuid}"
+    history_pattern = fr".histories/{uuid}"
 
     doc_files = [file for file in files if re.match(doc_pattern, file)]
     ut_doc_files = [file for file in ut_files if re.match(doc_pattern, file)]
@@ -33,14 +33,14 @@ def c_save_history(debug=True):
             return
 
     for file_name in doc_files + ut_doc_files:
-        if not re.match(f"{doc_pattern}\/todo\/", file_name):
+        if not re.match(fr"{doc_pattern}/todo/", file_name):
             print(f"Save change history of {file_name}?")
             yes_or_no = input()
             if yes_or_no.upper() in yes_command:
-                if re.match(f"{doc_pattern}\/", file_name):
+                if re.match(fr"{doc_pattern}/", file_name):
                     print("Put a commit message")
                     user_message = input()
-                    history_path = re.sub("\.docs", ".histories", file_name)
+                    history_path = re.sub(r".docs", ".histories", file_name)
                     root_path = config["root_path"]
                     save_path_body = os.path.splitext(f"{root_path}/{history_path}")[0]
                     save_path = f"{save_path_body}.md"

@@ -2,11 +2,11 @@ import os
 import json
 from pprint import pprint
 from typing import Optional, List
-from .configure import load_config
-from .dir_ops import get_dir_path
-from .metadata import (update_metadata_file,
+from lib.commands.core.configure import load_config
+from lib.commands.core.dir_ops import get_dir_path
+from lib.commands.core.metadata import (update_metadata_file,
                       f2t)
-from .custom_types import Config
+from lib.commands.core.custom_types import Config
 
 TAG_FILE = "tags.json"
 

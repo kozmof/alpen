@@ -1,4 +1,4 @@
-from .core.configure import load_shorthand, Shorthand
+from lib.commands.core.configure import load_shorthand, Shorthand
 
 
 def c_tutorial():
