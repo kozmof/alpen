@@ -12,6 +12,7 @@ INITIAL_CONFIG: Config = {
     "root_path": "",
     "targets": [],
     "stops": [],
+    "uuid": "",
     "masks": ["md", "txt"],
     "enable_mask": True,
     "commit_header": "[rimbaud-manual-commit]"
@@ -66,6 +67,9 @@ def load_config(backup=False) -> Union[Config, ConfigBackup]:
     if os.path.isfile(cpath):
         with open(cpath, "r") as f:
             return json.load(f)
+    elif backup:
+        backup_config = INITIAL_CONFIG.copy()
+        return backup_config
     else:     
         raise ConfigError(f"{cpath} not found")
 

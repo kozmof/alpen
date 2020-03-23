@@ -5,7 +5,11 @@ from lib.commands.core.configure import load_config, ConfigError
 from lib.commands.core.dir_ops import get_dir_path 
 
 try:
-    TODO_DIR_PATH = f"{get_dir_path('TODO', load_config())}"
+    todo_dir = get_dir_path('TODO', load_config())
+    if todo_dir:
+        TODO_DIR_PATH = f"{todo_dir}"
+    else:
+        TODO_DIR_PATH = None
 except ConfigError:
     TODO_DIR_PATH = None
 
