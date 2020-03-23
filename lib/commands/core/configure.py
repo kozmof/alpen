@@ -54,6 +54,9 @@ def init() -> None:
         json.dump(INITIAL_SHORTHAND, f, indent=4, sort_keys=True)
 
 
+class ConfigError(Exception):
+    ...
+
 def load_config(backup=False) -> Union[Config, ConfigBackup]:
     if not backup: 
         cpath = CONFIG_PATH
@@ -64,7 +67,7 @@ def load_config(backup=False) -> Union[Config, ConfigBackup]:
         with open(cpath, "r") as f:
             return json.load(f)
     else:     
-        raise Exception(f"{cpath} not found")
+        raise ConfigError(f"{cpath} not found")
 
 
 def update_config(key: str, value: any, halt_if_exists: bool = False, backup_limit=10) -> None:

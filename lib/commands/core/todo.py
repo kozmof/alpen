@@ -1,17 +1,23 @@
 import re
 import os
 from typing import List
-from lib.commands.core.configure import load_config
+from lib.commands.core.configure import load_config, ConfigError
 from lib.commands.core.dir_ops import get_dir_path 
 
-TODO_DIR_PATH = f"{get_dir_path('TODO', load_config())}"
+try:
+    TODO_DIR_PATH = f"{get_dir_path('TODO', load_config())}"
+except ConfigError:
+    TODO_DIR_PATH = None
 
 CHECK_SIGN: str = "- [x]"
 UNCHECK_SIGN: str = "- [ ]"
 
 
 def get_todo() -> str:
-    todo_file_path = f"{TODO_DIR_PATH}/todo.md"
+    if TODO_DIR_PATH:
+        todo_file_path = f"{TODO_DIR_PATH}/todo.md"
+    else:
+        return ""
     if os.path.isfile(todo_file_path):
         with open(todo_file_path, "r") as f:
             lines: List[str] = f.readlines()

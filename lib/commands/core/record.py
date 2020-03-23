@@ -2,7 +2,7 @@ import os
 from typing import Optional, List
 from datetime import datetime 
 from lib.commands.core.custom_types import Config
-from lib.commands.core.configure import load_config
+from lib.commands.core.configure import load_config, ConfigError
 from lib.commands.core.dir_ops import get_dir_path
 
 
@@ -15,7 +15,10 @@ def record_edited_file(file_name):
 
 
 def read_edited_file_record(is_active_sign="A", is_not_active_sign="N") -> Optional[str]:
-    config: Config = load_config()
+    try:
+        config: Config = load_config()
+    except ConfigError:
+        return None
     root_path: str = config["root_path"]
     record_path = f"{root_path}/.edited_file_record"
     if os.path.isfile(record_path):
