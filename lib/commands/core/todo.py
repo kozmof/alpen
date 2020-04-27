@@ -8,6 +8,8 @@ try:
     todo_dir = get_dir_path('TODO', load_config())
     if todo_dir:
         TODO_DIR_PATH = f"{todo_dir}"
+        if not os.path.isdir(TODO_DIR_PATH):
+            os.makedirs(TODO_DIR_PATH)
     else:
         TODO_DIR_PATH = None
 except ConfigError:
