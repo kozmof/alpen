@@ -15,8 +15,8 @@ def register_edit_command(editor: str, user_input: str, use_todo_dir: bool = Fal
         map(
             lambda x: dir_path + "/" + x if not re.match(
                 "{plus}|{minus}".format(
-                    plus=r"+",
-                    minus=r"-"),
+                    plus=r"\+",
+                    minus=r"\-"),
                     x
                 ) else x, elements
             )
