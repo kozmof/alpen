@@ -15,8 +15,8 @@ def c_diff():
                 print(color(file_name, color_type="green"))
                 print(color_diff(diff_text))
 
-    untracked_f = untraced_file_gpaths()
-    if untracked_f:
+    ut_gpaths = untraced_file_gpaths()
+    if ut_gpaths:
         print(color("Untracked files:", color_type="yellow"))
-        for file_name in untraced_file_gpaths():
-            print(color("\t" + file_name, color_type="yellow"))
+        for ut_gpath in ut_gpaths:
+            print(color("\t" + ut_gpath, color_type="yellow"))
