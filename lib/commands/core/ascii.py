@@ -12,6 +12,4 @@ RIMBAUD_ASCII = """
   @&%@@%(#%@%(/#%%#///(/
   @%&%%@%**/**((*%&##/&(
   @@&%%%&#*,*****%##&%#@
-       WELCOME BACK
-    LIVING GENIOUS POET
 """
