@@ -41,7 +41,7 @@ PRIORITY
 """
 
 
-ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
+ROOT_DIR = os.path.dirname(os.path.realpath(os.path.join(__file__, *([".."] * 3))))
 CONFIG_PATH: str = ROOT_DIR + "/" + "config.json"
 CONFIG_BACKUP_PATH: str = ROOT_DIR + "/" + ".backup_config.json"
 SHORTHAND_PATH = ROOT_DIR + "/" + "shorthand.json"
