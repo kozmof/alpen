@@ -14,7 +14,7 @@ def record_edited_file(file_name):
         f.write(f"{file_name} {time_stamp}\n")
 
 
-def read_edited_file_record(is_active_sign="A", is_not_active_sign="N") -> Optional[str]:
+def read_edited_file_record(active_sign="A", not_active_sign="N") -> Optional[str]:
     try:
         config: Config = load_config()
     except ConfigError:
@@ -29,8 +29,8 @@ def read_edited_file_record(is_active_sign="A", is_not_active_sign="N") -> Optio
                 file_name = "".join(record.split(" ")[:-2])
                 full_path = f"{get_dir_path('DOCUMENT', config)}/{file_name}"
                 if os.path.isfile(full_path):
-                    result += f"[{is_active_sign}] {record}"
+                    result += f"[{active_sign}] {record}"
                 else:
-                    result += f"[{is_not_active_sign}] {record}"
+                    result += f"[{not_active_sign}] {record}"
 
             return result
