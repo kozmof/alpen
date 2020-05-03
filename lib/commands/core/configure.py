@@ -13,7 +13,7 @@ INITIAL_CONFIG: Config = {
     "targets": [],
     "stops": [],
     "uuid": "",
-    "masks": ["md", "txt"],
+    "masks": ["md", "txt"], # REMOVE
     "enable_mask": True,
     "commit_header": "[rimbaud-manual-commit]"
 }
