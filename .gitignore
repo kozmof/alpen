@@ -6,7 +6,7 @@ tags.json
 .edited_file_record
 .todo
 .*.swp
-dist/*
+viewer/dist/*
 viewer/node_modules/*
 viewer/build.config.json
 __pycache__
