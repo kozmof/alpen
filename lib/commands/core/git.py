@@ -30,7 +30,7 @@ def git_diff() -> Diffs:
     return group
 
 
-def untracked_files() -> List[str]:
+def untraced_file_gpaths() -> List[str]:
     cmd: str = "git status"
     output: str = fixed_path_shell(cmd)
     lines: List[str] = output.split("\n")
@@ -50,7 +50,7 @@ def untracked_files() -> List[str]:
     return files
 
 
-def changed_files() -> List[str]:
+def changed_file_gpaths() -> List[str]:
     cmd: str = "git status"
     output: str = fixed_path_shell(cmd)
 
@@ -103,7 +103,7 @@ def make_diff_stamp(file_name: str, diffs: Diffs, separator: str = "") -> str:
 
 def combine_stamp(enable_time_stamp: bool = True, separator: str = "=" * 8) -> Stamps:
     stamps = {}
-    file_names = changed_files()
+    file_names = changed_file_gpaths()
     diffs: Diffs = git_diff()
 
     

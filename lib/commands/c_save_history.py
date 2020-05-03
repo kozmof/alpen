@@ -1,67 +1,58 @@
 import re
 import os
-from lib.commands.core.git import changed_files, untracked_files, combine_stamp
+from lib.commands.core.git import changed_file_gpaths, untraced_file_gpaths, combine_stamp
 from lib.commands.core.custom_types import Config
 from lib.commands.core.configure import load_config
-from lib.commands.core.consistency import check_history_consistecy
 from lib.commands.core.shell import fixed_path_shell
 
 yes_command = ["Y", "YES"]
 
 
 def c_save_history(debug=True):
-    files = changed_files()
-    ut_files = untracked_files()
+    gpaths = changed_file_gpaths()
+    ut_gpaths = untraced_file_gpaths()
     stamp = combine_stamp()
     config: Config = load_config()
     uuid = config["uuid"]
     commit_header = config["commit_header"]
 
-    doc_pattern = fr".docs/{uuid}"
-    history_pattern = fr".histories/{uuid}"
+    doc_uuid = fr".docs/{uuid}"
+    history_uuid = fr".histories/{uuid}"
 
-    doc_files = [file for file in files if re.match(doc_pattern, file)]
-    ut_doc_files = [file for file in ut_files if re.match(doc_pattern, file)]
+    doc_gpaths = [gpath for gpath in gpaths if re.match(doc_uuid, gpath)]
+    ut_gpaths = [ut_gpath for ut_gpath in ut_gpaths if re.match(doc_uuid, gpath)]
 
     history_commited_files = []
-    check_result = check_history_consistecy()
 
-    if not check_result:
-        print("Are you sure to continue?")
-        user_input = input()
-        if user_input.upper() not in yes_command:
-            return
+    for gpath in doc_gpaths + ut_gpaths:
+        print(f"Save change history of {gpath}?")
+        yes_or_no = input()
+        if yes_or_no.upper() in yes_command:
+            if re.match(fr"{doc_uuid}/", gpath):
+                print("Put a commit message")
+                user_message = input()
+                history_gpath = re.sub(r".docs", ".histories", gpath)
+                root_path = config["root_path"]
+                save_path_body, save_path_file_type = os.path.splitext(
+                    f"{root_path}/{history_gpath}"
+                    )
+                save_path = f"{save_path_body-save_path_file_type}.md"
+                with open(save_path, "a") as f:
+                    f.write(stamp[gpath])
 
-    for file_name in doc_files + ut_doc_files:
-        if not re.match(fr"{doc_pattern}/todo/", file_name):
-            print(f"Save change history of {file_name}?")
-            yes_or_no = input()
-            if yes_or_no.upper() in yes_command:
-                if re.match(fr"{doc_pattern}/", file_name):
-                    print("Put a commit message")
-                    user_message = input()
-                    history_path = re.sub(r".docs", ".histories", file_name)
-                    root_path = config["root_path"]
-                    save_path_body = os.path.splitext(f"{root_path}/{history_path}")[0]
-                    save_path = f"{save_path_body}.md"
-                    with open(save_path, "a") as f:
-                        f.write(stamp[file_name])
+                stage_and_commit_command = f"git add {gpath} && git commit -m '{commit_header} {user_message}'"
+                if debug:
+                    print(stage_and_commit_command)
+                fixed_path_shell(stage_and_commit_command)
 
-                    stage_and_commit_command = f"git add {file_name} && git commit -m '{commit_header} {user_message}'"
-                    if debug:
-                        print(stage_and_commit_command)
-                    fixed_path_shell(stage_and_commit_command)
+                history_commited_files.append(history_gpath)
 
-                    history_commited_files.append(history_path)
+    history_files = [gpath for gpath in gpaths if re.match(history_uuid, gpath)]
+    ut_history_files = [gpath for gpath in ut_gpaths if re.match(history_uuid, gpath)]
 
-    history_files = [file for file in files if re.match(history_pattern, file)]
-    ut_history_files = [file for file in ut_files if re.match(history_pattern, file)]
-
-    for file_name in history_files + ut_history_files:
-        if file_name in history_commited_files:
-            stage_and_commit_command = f"git add {file_name} && git commit -m '[Rimbaud-history-auto-save] {file_name}'"
+    for gpath in history_files + ut_history_files:
+        if gpath in history_commited_files:
+            stage_and_commit_command = f"git add {gpath} && git commit -m '[Rimbaud-history-auto-save] {gpath}'"
             if debug:
                 print(stage_and_commit_command)
             fixed_path_shell(stage_and_commit_command)
-
-    
