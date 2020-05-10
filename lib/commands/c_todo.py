@@ -15,7 +15,6 @@ def c_todo(self, option):
         if os.path.isdir(TODO_DIR_PATH):
             c_edit("todo.md", use_todo_dir=True)
         else:
-            os.makedirs(TODO_DIR_PATH)
             c_edit("todo.md", use_todo_dir=True)
     else:
         elems = option.split(" ")
