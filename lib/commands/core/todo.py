@@ -1,25 +1,22 @@
 import re
 import os
 from typing import List
-from lib.commands.core.configure import load_config, ConfigError
+from lib.commands.core.configure import load_config
 from lib.commands.core.dir_ops import get_dir_path 
-
-try:
-    todo_dir = get_dir_path('TODO', load_config())
-    if todo_dir:
-        TODO_DIR_PATH = f"{todo_dir}"
-        if not os.path.isdir(TODO_DIR_PATH):
-            os.makedirs(TODO_DIR_PATH)
-    else:
-        TODO_DIR_PATH = None
-except ConfigError:
-    TODO_DIR_PATH = None
 
 CHECK_SIGN: str = "- [x]"
 UNCHECK_SIGN: str = "- [ ]"
 
 
+def todo_dir_path():
+    return get_dir_path('TODO', load_config())
+
+
 def get_todo() -> str:
+    TODO_DIR_PATH = todo_dir_path()
+    if not os.path.isdir(TODO_DIR_PATH):
+        os.makedirs(TODO_DIR_PATH)
+
     if TODO_DIR_PATH:
         todo_file_path = f"{TODO_DIR_PATH}/todo.md"
     else:
@@ -44,6 +41,7 @@ def get_todo() -> str:
 
 
 def toggle_check(num: int) -> None:
+    TODO_DIR_PATH = todo_dir_path()
     new_todo: str = ""
     try:
         with open(f"{TODO_DIR_PATH}/todo.md", "r") as f:
