@@ -1,5 +1,5 @@
 {
-  "name": "rimbaud",
+  "name": "alpen",
   "version": "1.0.0",
   "description": "Local writing environment",
   "main": "index.js",
@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kozmof/rimbaud.git"
+    "url": "git+https://github.com/kozmof/alpen.git"
   },
   "author": "Kozo Oeda",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kozmof/rimbaud/issues"
+    "url": "https://github.com/kozmof/alpen/issues"
   },
-  "homepage": "https://github.com/kozmof/rimbaud#readme",
+  "homepage": "https://github.com/kozmof/alpen#readme",
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@storybook/addon-actions": "^5.3.18",

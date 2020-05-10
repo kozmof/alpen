@@ -15,7 +15,7 @@ INITIAL_CONFIG: Config = {
     "uuid": "",
     "masks": ["md", "txt"], # REMOVE
     "enable_mask": True,
-    "commit_header": "[rimbaud-manual-commit]"
+    "commit_header": "[alpen-manual-commit]"
 }
 
 

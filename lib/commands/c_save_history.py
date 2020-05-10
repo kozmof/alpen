@@ -52,7 +52,7 @@ def c_save_history(debug=True):
 
     for gpath in history_files + ut_history_files:
         if gpath in history_commited_files:
-            stage_and_commit_command = f"git add {gpath} && git commit -m '[Rimbaud-history-auto-save] {gpath}'"
+            stage_and_commit_command = f"git add {gpath} && git commit -m '[Alpen-history-auto-save] {gpath}'"
             if debug:
                 print(stage_and_commit_command)
             fixed_path_shell(stage_and_commit_command)

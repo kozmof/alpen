@@ -20,7 +20,7 @@ from lib.commands.core.custom_types import Shorthand
 from lib.commands.core.configure import load_shorthand
 
 
-class RimbaudShell(cmd.Cmd):
+class AlpenShell(cmd.Cmd):
     grid_0 = get_memo()
     grid_1 = change_log()
     grid_2 = get_todo()

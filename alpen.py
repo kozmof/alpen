@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import os
-from lib.rimbaud_lib import RimbaudShell
+from lib.alpen_lib import AlpenShell
 from lib.commands.core.configure import (init,
                                          save_root_path,
                                          save_uuid, config_editor,
@@ -12,8 +12,8 @@ from lib.commands.core.dir_ops import make_directory
 if __name__ == "__main__":
     if (os.path.isfile(CONFIG_PATH) and
         os.path.isfile(SHORTHAND_PATH)):
-        RimbaudShell.set_shorthand()
-        RimbaudShell().cmdloop()
+        AlpenShell.set_shorthand()
+        AlpenShell().cmdloop()
     else:
         print("Welcome!")
         init()
