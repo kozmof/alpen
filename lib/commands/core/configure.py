@@ -28,6 +28,7 @@ INITIAL_SHORTHAND: Shorthand = {
     "rename": "r",
     "save_history": "s",
     "todo": "to",
+    "memo": "m",
     "diff": "d",
     "clear": "c",
     "quit": "q"

@@ -10,6 +10,8 @@ def get_dir_name(dir_type: str) -> str:
         return ".histories"
     elif dir_type == "TODO":
         return ".todo"
+    elif dir_type == "MEMO":
+        return ".memo"
     elif dir_type == "TAG":
         return ".tags"
     elif dir_type == "METADATA":

@@ -8,19 +8,20 @@ from lib.commands.c_edit import c_edit
 from lib.commands.c_rename import c_rename
 from lib.commands.c_save_history import c_save_history
 from lib.commands.c_todo import c_todo
+from lib.commands.c_memo import c_memo
 from lib.commands.c_clear import c_clear, change_log
 from lib.commands.c_tutorial import c_tutorial
 
 from typing import Optional, List, Dict, Callable
 from lib.commands.core.gprint import grid_text
 from lib.commands.core.todo import get_todo
+from lib.commands.core.memo import get_memo
 from lib.commands.core.custom_types import Shorthand
 from lib.commands.core.configure import load_shorthand
-from lib.commands.core.ascii import RIMBAUD_ASCII
 
 
 class RimbaudShell(cmd.Cmd):
-    grid_0 = RIMBAUD_ASCII
+    grid_0 = get_memo()
     grid_1 = change_log()
     grid_2 = get_todo()
     intro = grid_text(grid_0, grid_1, grid_2, margin=5)
@@ -50,6 +51,9 @@ class RimbaudShell(cmd.Cmd):
     def do_todo(self, option):
         c_todo(self, option)
 
+    def do_memo(self, _):
+        c_memo(self)
+
     # TODO implement
     def complete_edit(self, text: str, linei: str, start_index: int, end_index: int) -> List[str]:
         return ["complete test"]
@@ -78,6 +82,7 @@ class RimbaudShell(cmd.Cmd):
           "rename": cls.do_rename,
           "save_history": cls.do_save_history,
           "todo": cls.do_todo,
+          "memo": cls.do_memo,
           "diff": cls.do_diff,
           "clear": cls.do_clear,
           "tutorial": cls.do_tutorial,
