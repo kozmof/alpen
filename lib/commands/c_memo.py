@@ -7,9 +7,9 @@ def c_memo(self):
     MEMO_DIR_PATH = memo_dir_path()
 
     if os.path.isdir(MEMO_DIR_PATH):
-        c_edit("todo.md", use_todo_dir=True)
+        c_edit("memo.md", use_memo_dir=True)
     else:
         os.makedirs(MEMO_DIR_PATH)
-        c_edit("todo.md", use_todo_dir=True)
+        c_edit("memo.md", use_memo_dir=True)
 
     self.do_clear(None)              

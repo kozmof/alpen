@@ -9,12 +9,14 @@ from lib.commands.core.command_registry import register_edit_command
 from lib.commands.core.dir_ops import get_dir_path
 
 
-def c_edit(arg, use_todo_dir=False):
+def c_edit(arg, use_todo_dir=False, use_memo_dir=False):
     config: Config = load_config()
     editor: str = config["editor"]
 
     if use_todo_dir:
         dir_path = get_dir_path("TODO", config)
+    elif use_memo_dir:
+        dir_path = get_dir_path("MEMO", config)
     else:
         record_edited_file(arg)
         dir_path = get_dir_path("DOCUMENT", config)
@@ -38,7 +40,12 @@ def c_edit(arg, use_todo_dir=False):
                 is_new_file = False
 
     if is_editable or is_new_file:
-        command: List[str] = register_edit_command(editor, arg, use_todo_dir=use_todo_dir)
+        command: List[str] = register_edit_command(
+            editor,
+            arg,
+            use_todo_dir=use_todo_dir,
+            use_memo_dir=use_memo_dir
+            )
         subprocess.run(command)
     else:
         print("Using a same name with different extensions are not allowed.")
