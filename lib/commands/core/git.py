@@ -6,7 +6,6 @@ from datetime import datetime, timezone
 from lib.commands.core.shell import fixed_path_shell
 from lib.commands.core.configure import load_config, Config
 from lib.commands.core.custom_types import Datetime, Diffs, Stamps
-from lib.commands.core.consistency import is_active_file
 from lib.commands.core.dir_ops import get_dir_path
 
 
@@ -92,35 +91,24 @@ def make_time_stamp() -> str:
 
 def make_diff_stamp(file_name: str, diffs: Diffs, separator: str = "") -> str:
     stamp_text: str = ""
-
     if file_name in diffs:
-        stamp_text = "\n".join(diffs[file_name])
+        stamp_text = "\n".join(
+            [line for line in diffs[file_name] if line != "\ No newline at end of file"]
+            )
         if separator:
             stamp_text = f"{separator}\n{stamp_text}"
 
     return stamp_text
 
 
-def combine_stamp(enable_time_stamp: bool = True, separator: str = "=" * 8) -> Stamps:
+def make_stamp() -> Stamps:
     stamps = {}
-    file_names = changed_file_gpaths()
+    gpaths = changed_file_gpaths()
     diffs: Diffs = git_diff()
 
-    
-    for file_name in file_names:
-        time_stamp = ""
-        diff_stamp = ""
-        if enable_time_stamp:
-            if separator:
-                time_stamp: str = f"{separator}\n{make_time_stamp()}\n"
-            else:
-                time_stamp: str = f"{make_time_stamp()}\n"
-
-        if is_active_file(file_name):
-            diff_stamp: str = make_diff_stamp(file_name, diffs, separator=separator) + "\n"
-
-        if diff_stamp:
-            stamp: str = f"{time_stamp}{diff_stamp}"
-            stamps[file_name] = stamp
+    for gpath in gpaths:
+        stamps[gpath] = {}
+        stamps[gpath]["timestamp"] = f"{make_time_stamp()}\n"
+        stamps[gpath]["diff"] = make_diff_stamp(gpath, diffs)
 
     return stamps

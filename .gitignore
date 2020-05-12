@@ -5,6 +5,7 @@ tags.json
 .backup_config.json
 .edited_file_record
 .todo
+.memo
 .*.swp
 viewer/dist/*
 viewer/node_modules/*

@@ -1,5 +1,5 @@
 import re
-from lib.commands.core.git import combine_stamp, untraced_file_gpaths
+from lib.commands.core.git import make_stamp, untraced_file_gpaths
 from lib.commands.core.color import color
 from lib.commands.core.parser import color_diff
 from lib.commands.core.configure import load_config
@@ -9,11 +9,11 @@ from lib.commands.core.custom_types import Config
 def c_diff():
     config: Config = load_config()
     uuid = config["uuid"]
-    for file_name, diff_text in combine_stamp(enable_time_stamp=False).items():
+    for file_name, stamp in make_stamp().items():
         if not re.match(fr".docs/{uuid}/todo", file_name):
             if re.match(fr".docs/{uuid}", file_name):
                 print(color(file_name, color_type="green"))
-                print(color_diff(diff_text))
+                print(color_diff(stamp["diff"]))
 
     ut_gpaths = untraced_file_gpaths()
     if ut_gpaths:

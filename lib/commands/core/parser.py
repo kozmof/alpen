@@ -8,9 +8,9 @@ def color_diff(diff_text: str) -> str:
     colored_text = ""
 
     for line in diff_lines:
-        if re.match(r"+", line):
+        if re.match(r"\+", line):
             colored_text += f"{CYANC}{line}{ENDC}\n" 
-        elif re.match(r"-", line):
+        elif re.match(r"\-", line):
             colored_text += f"{BLUEC}{line}{ENDC}\n" 
         else:
             colored_text += f"{line}\n"
