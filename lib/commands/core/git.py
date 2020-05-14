@@ -93,7 +93,7 @@ def make_diff_stamp(file_name: str, diffs: Diffs, separator: str = "") -> str:
     stamp_text: str = ""
     if file_name in diffs:
         stamp_text = "\n".join(
-            [line for line in diffs[file_name] if line != "\ No newline at end of file"]
+            [line for line in diffs[file_name] if line != r"\ No newline at end of file"]
             )
         if separator:
             stamp_text = f"{separator}\n{stamp_text}"

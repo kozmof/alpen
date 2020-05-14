@@ -1,7 +1,6 @@
 import re
 import os
 import json
-from pprint import pprint
 from lib.commands.core.git import changed_file_gpaths, untraced_file_gpaths, make_stamp
 from lib.commands.core.custom_types import Config
 from lib.commands.core.configure import load_config

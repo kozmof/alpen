@@ -7,7 +7,7 @@ tags.json
 .todo
 .memo
 .*.swp
-viewer/dist/*
-viewer/node_modules/*
-viewer/build.config.json
+publish/dist/*
+publish/node_modules/*
+publish/build.config.json
 __pycache__

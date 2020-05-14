@@ -1,2 +1,2 @@
-# alpen
-[WIP] Local writing environment
+## alpen
+[WIP] write-then-publish environment
