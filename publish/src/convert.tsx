@@ -10,9 +10,15 @@ type JSONPayload = {
       doc: string;
       history: Array<{diff: string; timestmap: string;}>;
       tag: string[];
+      domain: string[];
+      publishDate: string;
+      reviseDate: string;
     }
   }
   tags: {
     [tagName: string]: Hash[];
+  }
+  domain: {
+    [domainName: string]: Hash[];
   }
 }
