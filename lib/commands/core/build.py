@@ -9,7 +9,7 @@ from lib.commands.core.tag import load_tag_data
 from lib.commands.core.domain import load_domain_data
 
 """
-publish/payload/page/[file_name].json
+publish/payload/page/[uuid].json
                /title.payload.json
                /tag.payload.json
                /domain.payload.json
@@ -51,7 +51,7 @@ def load_json(path):
             return json.load(f)
 
 
-def make_build_config_file(file_names, debug=True):
+def make_payload_file(file_names, debug=True):
     print(type(file_names))
     config: Config = load_config()
     root_dir = config["root_path"]
