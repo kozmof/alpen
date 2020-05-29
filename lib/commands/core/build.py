@@ -9,7 +9,7 @@ from lib.commands.core.tag import load_tag_data
 from lib.commands.core.domain import load_domain_data
 
 """
-publish/payload/page/[uuid].json
+publish/payload/page/[uuid].payload.json
                /title.payload.json
                /tag.payload.json
                /domain.payload.json
@@ -66,21 +66,11 @@ def make_payload_file(file_names, debug=True):
     payload_tag = {}
     hash_map = {}
 
-    save_path_payload_dir = "{root_dir}/publish/payload/".format(
-        root_dir=root_dir
-    )
-    save_path_page_dir = "{payload_dir}/page".format(
-        payload_dir=save_path_payload_dir
-    )
-    save_path_title = "{save_dir}/title.payload.json".format(
-        save_dir=save_path_payload_dir
-    )
-    save_path_tag = "{save_dir}/tag.payload.json".format(
-        save_dir=save_path_payload_dir
-    )
-    save_path_domain = "{save_dir}/domain.payload.json".format(
-        save_dir=save_path_payload_dir
-    )
+    save_path_payload_dir = f"{root_dir}/publish/payload/"
+    save_path_page_dir = f"{save_path_payload_dir}/page"
+    save_path_title = f"{save_path_payload_dir}/title.payload.json"
+    save_path_tag = f"{save_path_payload_dir}/tag.payload.json"
+    save_path_domain = f"{save_path_payload_dir}/domain.payload.json"
 
     if not os.path.isdir(save_path_page_dir):
         os.makedirs(save_path_page_dir)
@@ -100,7 +90,7 @@ def make_payload_file(file_names, debug=True):
             publish_date = metadata[file_name].get("publish")
             revise_date = metadata[file_name].get("revise")
             uuid = metadata[file_name].get("uuid")
-            rel_path = "./{}".format(uuid)
+            rel_path = f"./{uuid}"
 
             payload_title[hsh] = {
                 "title": title,
@@ -120,10 +110,7 @@ def make_payload_file(file_names, debug=True):
                 "publishDate": publish_date,
                 "reviseDate": revise_date
             }
-            save_path_page = "{save_dir}/{build_file_page}.json".format(
-                save_dir=save_path_page_dir,
-                build_file_page=file_name
-                )
+            save_path_page = f"{save_path_page_dir}/{file_name}.payload.json"
 
             with open(save_path_page, "w") as f:
                 dump(payload_page, f, debug)
