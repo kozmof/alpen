@@ -16,7 +16,7 @@ publish/payload/page/[file_name].json
 """
 
 
-def dump(payload, debug):
+def dump(payload, f, debug):
     if debug:
         json.dump(payload, f, indent=4, sort_keys=True, ensure_ascii=True)
     else:
@@ -126,19 +126,19 @@ def make_build_config_file(file_names, debug=True):
                 )
 
             with open(save_path_page, "w") as f:
-                dump(payload_page, debug)
+                dump(payload_page, f, debug)
 
     with open(save_path_title, "w") as f:
-        dump(payload_title, debug)
+        dump(payload_title, f, debug)
 
     payload_tag = {
         tag: extract(file_names, tagged_files, hash_map) for tag, tagged_files in tag_data.items()
     }
     with open(save_path_tag, "w") as f:
-        dump(payload_tag, debug)
+        dump(payload_tag, f, debug)
 
     payload_domain = {
         domain: extract(file_names, domain_files, hash_map) for tag, domain_files in domain_data.items()
     }
     with open(save_path_domain, "w") as f:
-        dump(payload_domain, debug)
+        dump(payload_domain, f, debug)
