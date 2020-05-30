@@ -1,0 +1,18 @@
+{
+    "doc": "1. test\n2. test\n3. test",
+    "domain": [],
+    "fileName": "test",
+    "history": [
+        {
+            "diff": "diff --git a/.docs/25ac25de-6ccb-45c7-a63e-68cdec33b667/test b/.docs/25ac25de-6ccb-45c7-a63e-68cdec33b667/test\nindex d819251..5db1e43 100644\n--- a/.docs/25ac25de-6ccb-45c7-a63e-68cdec33b667/test\n+++ b/.docs/25ac25de-6ccb-45c7-a63e-68cdec33b667/test\n@@ -1,5 +1,2 @@\n 1. test\n-2. test\n-3. test\n-4. test\n-5. test\n\\ No newline at end of file\n+2. test\n\\ No newline at end of file",
+            "timestamp": "2020-05-12 21:44:01 JST\n"
+        },
+        {
+            "diff": "diff --git a/.docs/25ac25de-6ccb-45c7-a63e-68cdec33b667/test b/.docs/25ac25de-6ccb-45c7-a63e-68cdec33b667/test\nindex 5db1e43..25c1b8c 100644\n--- a/.docs/25ac25de-6ccb-45c7-a63e-68cdec33b667/test\n+++ b/.docs/25ac25de-6ccb-45c7-a63e-68cdec33b667/test\n@@ -1,2 +1,3 @@\n 1. test\n-2. test\n+2. test\n+3. test",
+            "timestamp": "2020-05-14 09:43:21 JST\n"
+        }
+    ],
+    "publishDate": "",
+    "reviseDate": "",
+    "tag": []
+}

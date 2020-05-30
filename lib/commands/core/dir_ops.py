@@ -14,6 +14,8 @@ def get_dir_name(dir_type: str) -> str:
         return ".memo"
     elif dir_type == "TAG":
         return ".tags"
+    elif dir_type == "DOMAIN":
+        return ".domains"
     elif dir_type == "METADATA":
         return ".metadata"
     else:
