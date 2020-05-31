@@ -4,7 +4,7 @@ from lib.commands.core.custom_types import Config
 from lib.commands.core.configure import load_config
 
 
-def fixed_path_shell(cmd: str) -> str:
+def fpshell(cmd: str) -> str:
     config: Config = load_config()
     root_path = config["root_path"]
     cwd = os.getcwd()

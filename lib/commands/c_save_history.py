@@ -4,7 +4,7 @@ import json
 from lib.commands.core.git import changed_file_gpaths, untraced_file_gpaths, make_stamp
 from lib.commands.core.custom_types import Config
 from lib.commands.core.configure import load_config
-from lib.commands.core.shell import fixed_path_shell
+from lib.commands.core.shell import fpshell
 
 yes_command = ["Y", "YES"]
 
@@ -57,7 +57,7 @@ def c_save_history(commit=True, debug=True):
                 if debug:
                     print(stage_and_commit_command)
                 if commit:
-                    fixed_path_shell(stage_and_commit_command)
+                    fpshell(stage_and_commit_command)
 
                 history_commited_files.append(history_gpath)
 
@@ -70,4 +70,4 @@ def c_save_history(commit=True, debug=True):
             if debug:
                 print(stage_and_commit_command)
             if commit:
-                fixed_path_shell(stage_and_commit_command)
+                fpshell(stage_and_commit_command)

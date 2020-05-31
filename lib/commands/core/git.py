@@ -3,7 +3,7 @@ import re
 from pprint import pprint
 from typing import List, Dict
 from datetime import datetime, timezone
-from lib.commands.core.shell import fixed_path_shell
+from lib.commands.core.shell import fpshell
 from lib.commands.core.configure import load_config, Config
 from lib.commands.core.custom_types import Datetime, Diffs, Stamps
 from lib.commands.core.dir_ops import get_dir_path
@@ -11,7 +11,7 @@ from lib.commands.core.dir_ops import get_dir_path
 
 def git_diff() -> Diffs:
     cmd1: str = "git diff --histogram"
-    output: str = fixed_path_shell(cmd1)
+    output: str = fpshell(cmd1)
 
     lines: List[str] = output.split("\n")
     separate_pattern: str = "diff --git "
@@ -31,7 +31,7 @@ def git_diff() -> Diffs:
 
 def untraced_file_gpaths() -> List[str]:
     cmd: str = "git status"
-    output: str = fixed_path_shell(cmd)
+    output: str = fpshell(cmd)
     lines: List[str] = output.split("\n")
     files: List[str] = []
 
@@ -51,7 +51,7 @@ def untraced_file_gpaths() -> List[str]:
 
 def changed_file_gpaths() -> List[str]:
     cmd: str = "git status"
-    output: str = fixed_path_shell(cmd)
+    output: str = fpshell(cmd)
 
     lines: List[str] = output.split("\n")
     files: List[str] = []
