@@ -20,7 +20,7 @@ if __name__ == "__main__":
         save_root_path()
         save_uuid()
         config_editor(editor="code")
-        dirs = ["DOCUMENT", "HISTORY", "TODO", "MEMO", "METADATA", "TAG"]
+        dirs = ["DOCUMENT", "HISTORY", "TODO", "MEMO", "METADATA", "TAG", "DOMAIN"]
         config  = load_config()
         for d in dirs:
             make_directory(d, config)

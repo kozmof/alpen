@@ -17,14 +17,18 @@ from lib.commands.core.gprint import grid_text
 from lib.commands.core.todo import get_todo
 from lib.commands.core.memo import get_memo
 from lib.commands.core.custom_types import Shorthand
-from lib.commands.core.configure import load_shorthand
+from lib.commands.core.configure import load_shorthand, has_config
 
 
 class AlpenShell(cmd.Cmd):
-    grid_0 = get_memo()
-    grid_1 = change_log()
-    grid_2 = get_todo()
-    intro = grid_text(grid_0, grid_1, grid_2, margin=5)
+    if has_config():
+        grid_0 = get_memo()
+        grid_1 = change_log()
+        grid_2 = get_todo()
+        intro = grid_text(grid_0, grid_1, grid_2, margin=5)
+    else:
+        intro = ""
+
     prompt = "|> "
 
     def do_build(self, _):

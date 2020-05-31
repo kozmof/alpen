@@ -75,6 +75,14 @@ def load_config(backup=False) -> Union[Config, ConfigBackup]:
         raise ConfigError(f"{cpath} not found")
 
 
+def has_config():
+    cpath = CONFIG_PATH
+    if os.path.isfile(cpath):
+        return True
+    else:
+        return False
+
+
 def update_config(key: str, value: any, halt_if_exists: bool = False, backup_limit=10) -> None:
     if os.path.isfile(CONFIG_PATH):
         config : Config = load_config()

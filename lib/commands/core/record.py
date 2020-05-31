@@ -15,10 +15,7 @@ def record_edited_file(file_name):
 
 
 def read_edited_file_record(active_sign="A", not_active_sign="N") -> Optional[str]:
-    try:
-        config: Config = load_config()
-    except ConfigError:
-        return None
+    config: Config = load_config()
     root_path: str = config["root_path"]
     record_path = f"{root_path}/.edited_file_record"
     if os.path.isfile(record_path):
