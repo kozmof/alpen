@@ -16,8 +16,8 @@ def load_tag_data(config: Config):
     tag_file_path = f"{tag_dir}/{TAG_FILE}"
 
     if os.path.isfile(tag_file_path):
-        with open(tag_file_path, "r") as fpt:
-            tag_data = json.load(fpt)
+        with open(tag_file_path, "r") as f:
+            tag_data = json.load(f)
             return tag_data
 
 
@@ -28,8 +28,8 @@ def dump_tag_json(tag_data, config: Config):
     if not os.path.isdir(tag_dir):
         os.makedirs(tag_dir)
 
-    with open(tag_file_path, "w") as fpt:
-        json.dump(tag_data, fpt, indent=4, sort_keys=True)
+    with open(tag_file_path, "w") as f:
+        json.dump(tag_data, f, indent=4, sort_keys=True)
 
 
 def update_tag_file(action_type: str, config: Config,
@@ -87,4 +87,4 @@ def update_tag_file(action_type: str, config: Config,
 
             dump_tag_json(tag_data, config)
     else:
-        raise Exception("No such action type: {action_type}")
+        raise Exception(f"No such action type: {action_type}")

@@ -16,8 +16,8 @@ def load_domain_data(config: Config):
     domain_file_path = f"{domain_dir}/{DOMAIN_FILE}"
 
     if os.path.isfile(domain_file_path):
-        with open(domain_file_path, "r") as fpt:
-            domain_data = json.load(fpt)
+        with open(domain_file_path, "r") as f:
+            domain_data = json.load(f)
             return domain_data
 
 
@@ -28,8 +28,8 @@ def dump_domain_json(domain_data, config: Config):
     if not os.path.isdir(domain_dir):
         os.makedirs(domain_dir)
 
-    with open(domain_file_path, "w") as fpt:
-        json.dump(domain_data, fpt, indent=4, sort_keys=True)
+    with open(domain_file_path, "w") as f:
+        json.dump(domain_data, f, indent=4, sort_keys=True)
 
 
 def update_domain_file(action_type: str, config: Config,
@@ -87,4 +87,4 @@ def update_domain_file(action_type: str, config: Config,
 
             dump_domain_json(domain_data, config)
     else:
-        raise Exception("No such action type: {action_type}")
+        raise Exception(f"No such action type: {action_type}")
