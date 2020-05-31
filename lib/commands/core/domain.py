@@ -22,37 +22,6 @@ def t2f(domain_name: str, config: Config) -> Optional[List[str]]:
                 return domain_data[domain_name]
 
 
-def arg_check_domain(action_type: str,
-                  file_name: Optional[str], new_file_name: Optional[str],
-                  domain_name: Optional[str], new_domain_name: Optional[str]):
-
-    if action_type == "ADD_DOMAIN":
-        if (file_name is None or domain_name is None) or (new_domain_name or new_file_name):
-            raise Exception("Pass only domain_name")
-
-    elif action_type == "REMOVE_DOMAIN":
-        if (file_name is None or domain_name is None) or (new_domain_name or new_file_name):
-            raise Exception("Pass only domain_name")
-
-    elif action_type == "RENAME_DOMAIN":
-        if (domain_name is None or new_domain_name is None) or (file_name or new_file_name):
-            raise Exception("Pass only domain_name and new_domain_name")
-
-    elif action_type == "SEARCH_DOMAIN":
-        if (domain_name is None) or (new_domain_name or file_name or new_file_name):
-            raise Exception("Pass only a domain_name")
-
-    elif action_type == "SHOW_ALL":
-        if domain_name or new_domain_name or file_name or new_file_name:
-            raise Exception("Pass only not optional args")
-
-    elif action_type == "RENAME_FILE":
-        if (file_name is None or new_file_name is None) or (domain_name or new_domain_name):
-            raise Exception("Pass only new_file_name")
-    else:
-        raise Exception(f"No such action type: {action_type}")
-
-
 def load_domain_data(config: Config):
     domain_dir = get_dir_path("DOMAIN", config)
     domain_file_path = f"{domain_dir}/{DOMAIN_FILE}"
@@ -77,12 +46,6 @@ def dump_domain_json(domain_data, config: Config):
 def update_domain_file(action_type: str, config: Config,
                     file_name: Optional[str] = None, new_file_name: Optional[str] = None,
                     domain_name: Optional[str] = None, new_domain_name: Optional[str] = None):
-
-    arg_check_domain(action_type=action_type,
-                  file_name=file_name,
-                  new_file_name=new_file_name,
-                  domain_name=domain_name,
-                  new_domain_name=new_domain_name)
 
     if action_type == "ADD_DOMAIN":
         domain_data = load_domain_data(config)

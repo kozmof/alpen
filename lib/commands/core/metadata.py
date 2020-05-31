@@ -1,5 +1,6 @@
 import os
 import json
+from uuid import uuid4
 from typing import Optional, List
 from lib.commands.core.custom_types import Config
 from lib.commands.core.dir_ops import get_dir_path
@@ -9,6 +10,10 @@ CURENT_FORMAT_VERSION = "1.0"
 
 FORMAT = {
   "tag": [],
+  "domain": [],
+  "first_finish": "",
+  "revise": "",
+  "uuid": "",
   "version": CURENT_FORMAT_VERSION
 }
 
@@ -16,6 +21,7 @@ FORMAT = {
 def init_metadata(file_name):
     key = file_name
     val = FORMAT
+    val["uuid"] = str(uuid4())
     return key, val
 
 
@@ -30,11 +36,9 @@ def recover_missing_keys(metadata):
     for key in FORMAT.keys():
         if key not in metadata:
             metadata[key] = FORMAT[key]
-
     for key in metadata.keys:
         if key not in FORMAT:
             del metadata[key]
-
     return metadata
 
 
@@ -47,29 +51,6 @@ def f2t(file_name: str, config: Config) -> Optional[List[str]]:
             metadata = json.load(fpm)
             if file_name in metadata:
                 return metadata[file_name]["tag"]
-
-
-def arg_check_metadata(action_type: str,
-                       file_name: Optional[str], new_file_name: Optional[str],
-                       tag_name: Optional[str], new_tag_name: Optional[str]):
-
-    if action_type == "ADD_TAG":
-        if (tag_name is None) or (new_tag_name or new_file_name):
-            raise Exception("Pass only tag_name")
-
-    elif action_type == "REMOVE_TAG":
-        if (tag_name is None) or (new_tag_name or new_file_name):
-            raise Exception("Pass only tag_name")
-
-    elif action_type == "RENAME_TAG":
-        if (tag_name is None or new_tag_name is None) or (new_file_name):
-            raise Exception("Pasa only tag_name and new_tag_name")
-
-    elif action_type == "RENAME_FILE":
-        if (new_file_name is None) or (tag_name or new_tag_name):
-            raise Exception("Pass only new_file_name")
-    else:
-        raise Exception(f"No such action type: {action_type}")
 
 
 def load_metadata(config: Config):
@@ -97,30 +78,22 @@ def update_metadata_file(action_type: str, config: Config,
                          file_name: Optional[str] = None,
                          tag_name: Optional[str] = None, new_tag_name: Optional[str] = None,
                          new_file_name: Optional[str] = None):
-
-    arg_check_metadata(action_type=action_type,
-                       file_name=file_name,
-                       new_file_name=new_file_name,
-                       tag_name=tag_name,
-                       new_tag_name=new_tag_name)
+    metadata = load_metadata(config)
+    if not metadata:
+        metadata = {}
+        key, data = init_metadata(file_name)
+        metadata[key] = data
+        metadata[key]["tag"].append(tag_name)
 
     if action_type == "ADD_TAG":
-        metadata = load_metadata(config)
-        if metadata:
-            if file_name in metadata:
-                is_consistent = version_check(metadata[file_name])
-                if not is_consistent:
-                    recover_missing_keys(metadata)
+        if file_name in metadata:
+            is_consistent = version_check(metadata[file_name])
+            if not is_consistent:
+                recover_missing_keys(metadata)
 
-                if tag_name not in metadata[file_name]["tag"]:
-                    metadata[file_name]["tag"].append(tag_name)
-            else:
-                key, data = init_metadata(file_name)
-                metadata[key] = data
-                metadata[key]["tag"].append(tag_name)
-
+            if tag_name not in metadata[file_name]["tag"]:
+                metadata[file_name]["tag"].append(tag_name)
         else:
-            metadata = {}
             key, data = init_metadata(file_name)
             metadata[key] = data
             metadata[key]["tag"].append(tag_name)
@@ -128,24 +101,20 @@ def update_metadata_file(action_type: str, config: Config,
         dump_metadata_json(metadata, config)
 
     elif action_type == "REMOVE_TAG":
-        metadata = load_metadata(config)
-        if metadata and file_name in metadata:
+        if file_name in metadata:
             if tag_name in metadata[file_name]["tag"]:
                 metadata[file_name]["tag"].remove(tag_name)
                 dump_metadata_json(metadata, config)
 
     elif action_type == "RENAME_TAG":
-        metadata = load_metadata(config)
-        if metadata: 
-            for file_name, data in metadata.items():
-                if tag_name in data["tag"]:
-                    metadata[file_name]["tag"].remove(tag_name)
-                    metadata[file_name]["tag"].append(new_tag_name)
-            dump_metadata_json(metadata, config)
+        for file_name, data in metadata.items():
+            if tag_name in data["tag"]:
+                metadata[file_name]["tag"].remove(tag_name)
+                metadata[file_name]["tag"].append(new_tag_name)
+        dump_metadata_json(metadata, config)
 
     elif action_type == "RENAME_FILE":
-        metadata = load_metadata(config)
-        if metadata and file_name in metadata:
+        if file_name in metadata:
             metadata[new_file_name] = metadata[file_name]
             del metadata[file_name]
             dump_metadata_json(metadata, config)

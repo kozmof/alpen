@@ -1,12 +1,14 @@
 import os
 import json
+from uuid import uuid4
 from hashlib import sha256
 from lib.commands.core.configure import load_config
 from lib.commands.core.dir_ops import get_dir_path
 from lib.commands.core.custom_types import Config
-from lib.commands.core.metadata import load_metadata
+from lib.commands.core.metadata import load_metadata, init_metadata, dump_metadata_json
 from lib.commands.core.tag import load_tag_data
 from lib.commands.core.domain import load_domain_data
+from lib.commands.core.git import make_time_stamp
 
 """
 publish/payload/page/[uuid].payload.json
@@ -51,12 +53,22 @@ def make_payload_file(file_names, debug=True):
     history_dir = get_dir_path("HISTORY", config)
 
     metadata = load_metadata(config) or {}
+    for file_name in file_names:
+        if file_name not in metadata:
+            metadata = {**metadata, **init_metadata(file_name)}
+            metadata["first_finish"] = make_time_stamp()
+        elif metadata[file_name].get("first_finish", None):
+            metadata[file_name]["revise"] = make_time_stamp()
+            if not metadata[file_name].get("uuid"):
+                print("Metadata doesn't have uuid. Regenerate uuid...")
+                metadata[file_name]["uuid"] = uuid4()
+    dump_metadata_json(metadata, config)
+
     tag_data = load_tag_data(config) or {}
     domain_data = load_domain_data(config) or {}
 
     payload_title = {}
     payload_tag = {}
-    hash_map = {}
 
     save_path_payload_dir = f"{root_dir}/publish/payload"
     save_path_page_dir = f"{save_path_payload_dir}/page"
@@ -75,21 +87,18 @@ def make_payload_file(file_names, debug=True):
             history = load_json(
                 f"{history_dir}/{os.path.splitext(file_name)[0]}-{os.path.splitext(file_name)[1]}.json"
             )
-            if file_name in metadata:
-                tag = metadata[file_name].get("tag", []) if file_name in metadata else []
-                domain = metadata[file_name].get("domain", []) if file_name in metadata else []
-                publish_date = metadata[file_name].get("publish")
-                revise_date = metadata[file_name].get("revise")
-                uuid = metadata[file_name].get("uuid")
-                rel_path = f"./{uuid}"
-            else:
-                raise Exception(f"Metadata not found: {file_name}")
+            tag = metadata[file_name].get("tag", []) if file_name in metadata else []
+            domain = metadata[file_name].get("domain", []) if file_name in metadata else []
+            ff_date = metadata[file_name].get("first_finish")
+            revise_date = metadata[file_name].get("revise")
+            uuid = metadata[file_name].get("uuid")
+            rel_path = f"./{uuid}"
 
             payload_title[file_name] = {
                 "title": title,
                 "tag": tag,
                 "domain": domain,
-                "publishDate": publish_date,
+                "firstFinishDate": ff_date,
                 "reviseDate": revise_date,
                 "relPath": rel_path,
                 "uuid": uuid
@@ -101,7 +110,7 @@ def make_payload_file(file_names, debug=True):
                 "history": history,
                 "tag": tag,
                 "domain": domain,
-                "publishDate": publish_date,
+                "firstFinishDate": ff_date,
                 "reviseDate": revise_date
             }
             save_path_page = f"{save_path_page_dir}/{file_name}.payload.json"
