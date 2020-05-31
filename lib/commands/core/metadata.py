@@ -77,6 +77,7 @@ def dump_metadata_json(metadata, config: Config):
 def update_metadata_file(action_type: str, config: Config,
                          file_name: Optional[str] = None,
                          tag_name: Optional[str] = None, new_tag_name: Optional[str] = None,
+                         domain_name: Optional[str] = None, new_domain_name: Optional[str] = None,
                          new_file_name: Optional[str] = None):
     metadata = load_metadata(config)
     if not metadata:
@@ -111,6 +112,34 @@ def update_metadata_file(action_type: str, config: Config,
             if tag_name in data["tag"]:
                 metadata[file_name]["tag"].remove(tag_name)
                 metadata[file_name]["tag"].append(new_tag_name)
+        dump_metadata_json(metadata, config)
+
+    elif action_type == "ADD_DOMAIN":
+        if file_name in metadata:
+            is_consistent = version_check(metadata[file_name])
+            if not is_consistent:
+                recover_missing_keys(metadata)
+
+            if domain_name not in metadata[file_name]["domain"]:
+                metadata[file_name]["domain"].append(domain_name)
+        else:
+            key, data = init_metadata(file_name)
+            metadata[key] = data
+            metadata[key]["domain"].append(domain_name)
+
+        dump_metadata_json(metadata, config)
+
+    elif action_type == "REMOVE_DOMAIN":
+        if file_name in metadata:
+            if domain_name in metadata[file_name]["domain"]:
+                metadata[file_name]["domain"].remove(domain_name)
+                dump_metadata_json(metadata, config)
+
+    elif action_type == "RENAME_DOMAIN":
+        for file_name, data in metadata.items():
+            if domain_name in data["domain"]:
+                metadata[file_name]["domain"].remove(domain_name)
+                metadata[file_name]["domain"].append(new_domain_name)
         dump_metadata_json(metadata, config)
 
     elif action_type == "RENAME_FILE":

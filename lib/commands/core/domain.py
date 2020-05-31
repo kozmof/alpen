@@ -11,17 +11,6 @@ from lib.commands.core.custom_types import Config
 DOMAIN_FILE = "domains.json"
 
 
-def t2f(domain_name: str, config: Config) -> Optional[List[str]]:
-    domain_dir = get_dir_path("DOMAIN", config)
-    domain_file_path = f"{domain_dir}/{DOMAIN_FILE}"
-
-    if os.path.isfile(domain_file_path):
-        with open(domain_file_path, "r") as fpt:
-            domain_data = json.load(fpt)
-            if domain_name in domain_data:
-                return domain_data[domain_name]
-
-
 def load_domain_data(config: Config):
     domain_dir = get_dir_path("DOMAIN", config)
     domain_file_path = f"{domain_dir}/{DOMAIN_FILE}"
@@ -44,8 +33,8 @@ def dump_domain_json(domain_data, config: Config):
 
 
 def update_domain_file(action_type: str, config: Config,
-                    file_name: Optional[str] = None, new_file_name: Optional[str] = None,
-                    domain_name: Optional[str] = None, new_domain_name: Optional[str] = None):
+                       file_name: Optional[str] = None, new_file_name: Optional[str] = None,
+                       domain_name: Optional[str] = None, new_domain_name: Optional[str] = None):
 
     if action_type == "ADD_DOMAIN":
         domain_data = load_domain_data(config)
