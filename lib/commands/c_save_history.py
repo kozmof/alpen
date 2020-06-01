@@ -1,7 +1,7 @@
 import re
 import os
 import json
-from lib.commands.core.git import changed_file_gpaths, untraced_file_gpaths, make_stamp
+from lib.commands.core.git import changed_file_gpaths, untracked_file_gpaths, make_stamp
 from lib.commands.core.custom_types import Config
 from lib.commands.core.configure import load_config
 from lib.commands.core.shell import fpshell
@@ -11,7 +11,7 @@ yes_command = ["Y", "YES"]
 
 def c_save_history(commit=True, debug=True):
     gpaths = changed_file_gpaths()
-    ut_gpaths = untraced_file_gpaths()
+    ut_gpaths = untracked_file_gpaths()
     stamp = make_stamp()
     config: Config = load_config()
     uuid = config["uuid"]

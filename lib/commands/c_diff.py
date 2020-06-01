@@ -1,5 +1,5 @@
 import re
-from lib.commands.core.git import make_stamp, untraced_file_gpaths
+from lib.commands.core.git import make_stamp, untracked_file_gpaths
 from lib.commands.core.color import color
 from lib.commands.core.parser import color_diff
 from lib.commands.core.configure import load_config
@@ -15,7 +15,7 @@ def c_diff():
                 print(color(file_name, color_type="green"))
                 print(color_diff(stamp["diff"]))
 
-    ut_gpaths = untraced_file_gpaths()
+    ut_gpaths = untracked_file_gpaths()
     if ut_gpaths:
         print(color("Untracked files:", color_type="yellow"))
         for ut_gpath in ut_gpaths:

@@ -6,6 +6,7 @@ tags.json
 .edited_file_record
 .todo
 .memo
+.histories
 .*.swp
 publish/dist/*
 publish/node_modules/*

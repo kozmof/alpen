@@ -34,9 +34,6 @@ def get_dir_path(dir_type: str, config: Config) -> Optional[str]:
 
 
 def make_directory(dir_type: str, config: Config) -> None:
-    dir_path = "{}/{}".format(
-        get_dir_path(dir_type, config),
-        config["uuid"]
-    )
+    dir_path = get_dir_path(dir_type, config),
     if not os.path.isdir(dir_path):
         os.makedirs(dir_path)

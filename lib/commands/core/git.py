@@ -29,7 +29,7 @@ def git_diff() -> Diffs:
     return group
 
 
-def untraced_file_gpaths() -> List[str]:
+def untracked_file_gpaths() -> List[str]:
     cmd: str = "git status"
     output: str = fpshell(cmd)
     lines: List[str] = output.split("\n")

@@ -21,7 +21,9 @@ FORMAT = {
 def init_metadata(file_name):
     key = file_name
     val = FORMAT
-    val["uuid"] = str(uuid4())
+    uuid = str(uuid4())
+    print(uuid)
+    val["uuid"] =  uuid
     return key, val
 
 

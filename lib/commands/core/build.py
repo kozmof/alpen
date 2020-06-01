@@ -1,5 +1,6 @@
 import os
 import json
+from copy import deepcopy
 from uuid import uuid4
 from hashlib import sha256
 from lib.commands.core.configure import load_config
@@ -55,8 +56,8 @@ def make_payload_file(file_names, debug=True):
     metadata = load_metadata(config) or {}
     for file_name in file_names:
         if file_name not in metadata:
-            metadata = {**metadata, **init_metadata(file_name)}
-            metadata["first_finish"] = make_time_stamp()
+            metadata = {**deepcopy(metadata), **dict([init_metadata(file_name)])}
+            metadata[file_name]["first_finish"] = make_time_stamp()
         elif metadata[file_name].get("first_finish", None):
             metadata[file_name]["revise"] = make_time_stamp()
             if not metadata[file_name].get("uuid"):
