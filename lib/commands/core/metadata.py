@@ -49,10 +49,21 @@ def f2t(file_name: str, config: Config) -> Optional[List[str]]:
     metadata_file_path = f"{metadata_dir}/{METADATA_FILE}"
 
     if os.path.isfile(metadata_file_path):
-        with open(metadata_file_path, "r") as fpm:
-            metadata = json.load(fpm)
+        with open(metadata_file_path, "r") as f:
+            metadata = json.load(f)
             if file_name in metadata:
                 return metadata[file_name]["tag"]
+
+k
+def f2d(file_name: str, config: Config) -> Optional[List[str]]:
+    metadata_dir = get_dir_path("METADATA", config)
+    metadata_file_path = f"{metadata_dir}/{METADATA_FILE}"
+
+    if os.path.isfile(metadata_file_path):
+        with open(metadata_file_path, "r") as f:
+            metadata = json.load(f)
+            if file_name in metadata:
+                return metadata[file_name]["domain"]
 
 
 def load_metadata(config: Config):
@@ -60,8 +71,8 @@ def load_metadata(config: Config):
     metadata_file_path = f"{metadata_dir}/{METADATA_FILE}"
 
     if os.path.isfile(metadata_file_path):
-        with open(metadata_file_path, "r") as fpm:
-            metadata = json.load(fpm)
+        with open(metadata_file_path, "r") as f:
+            metadata = json.load(f)
             return metadata
 
 
@@ -72,8 +83,8 @@ def dump_metadata_json(metadata, config: Config):
     if not os.path.isdir(metadata_dir):
         os.makedirs(metadata_dir)
 
-    with open(metadata_file_path, "w") as fpm:
-        json.dump(metadata, fpm, indent=4, sort_keys=True)
+    with open(metadata_file_path, "w") as f:
+        json.dump(metadata, f, indent=4, sort_keys=True)
 
 
 def update_metadata_file(action_type: str, config: Config,

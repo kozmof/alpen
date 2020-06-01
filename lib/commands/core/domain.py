@@ -4,8 +4,10 @@ from pprint import pprint
 from typing import Optional, List
 from lib.commands.core.configure import load_config
 from lib.commands.core.dir_ops import get_dir_path
-from lib.commands.core.metadata import (update_metadata_file,
-                      f2t)
+from lib.commands.core.metadata import (
+    update_metadata_file,
+    f2d
+    )
 from lib.commands.core.custom_types import Config
 
 DOMAIN_FILE = "domains.json"
