@@ -80,7 +80,7 @@ def update_domain_file(action_type: str, config: Config,
         pprint(domain_data)
 
     elif action_type == "RENAME_FILE":
-        domain_names = f2t(file_name, config)
+        domain_names = f2d(file_name, config)
         domain_data = load_domain_data(config)
         if domain_names and domain_data:
             for domain_name in domain_names:
