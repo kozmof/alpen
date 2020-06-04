@@ -18,12 +18,9 @@ def c_save_history(commit=True, debug=True):
     commit_header = config["commit_header"]
 
     doc_uuid = fr".docs/{uuid}"
-    history_uuid = fr".histories/{uuid}"
 
     doc_gpaths = [gpath for gpath in gpaths if re.match(doc_uuid, gpath)]
     ut_gpaths = [ut_gpath for ut_gpath in ut_gpaths if re.match(doc_uuid, ut_gpath)]
-
-    history_commited_files = []
 
     for gpath in doc_gpaths + ut_gpaths:
         print(f"Save change history of {gpath}? [y/N]")
@@ -58,16 +55,3 @@ def c_save_history(commit=True, debug=True):
                     print(stage_and_commit_command)
                 if commit:
                     fpshell(stage_and_commit_command)
-
-                history_commited_files.append(history_gpath)
-
-    history_files = [gpath for gpath in gpaths if re.match(history_uuid, gpath)]
-    ut_history_files = [gpath for gpath in ut_gpaths if re.match(history_uuid, gpath)]
-
-    for gpath in history_files + ut_history_files:
-        if gpath in history_commited_files:
-            stage_and_commit_command = f"git add {gpath} && git commit -m '[Alpen-history-auto-save] {gpath}'"
-            if debug:
-                print(stage_and_commit_command)
-            if commit:
-                fpshell(stage_and_commit_command)

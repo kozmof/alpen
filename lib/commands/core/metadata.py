@@ -54,6 +54,7 @@ def f2t(file_name: str, config: Config) -> Optional[List[str]]:
             if file_name in metadata:
                 return metadata[file_name]["tag"]
 
+
 def f2d(file_name: str, config: Config) -> Optional[List[str]]:
     metadata_dir = get_dir_path("METADATA", config)
     metadata_file_path = f"{metadata_dir}/{METADATA_FILE}"
