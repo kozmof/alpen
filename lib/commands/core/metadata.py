@@ -14,6 +14,7 @@ FORMAT = {
   "first_finish": "",
   "revise": "",
   "uuid": "",
+  "lang": "",
   "version": CURENT_FORMAT_VERSION
 }
 

@@ -90,3 +90,35 @@ def tfidf(bows):
     }
 
     return [_tf_idf(bow, doc_freq, N) for bow in bows]
+
+
+def merge(d1, d2):
+    _d3 = {**d1, **d2}
+    d3 = {
+        k: v + d1[k] if  k in d1 and k in d2 else v
+        for k, v in _d3.items()
+    }
+    return d3
+
+
+def make_dbows(doc_objs):
+    domains = []
+    docs = []
+    for doc_obj in doc_objs:
+        domains.append(doc_obj["domain"])
+        docs.append((doc_obj["text"], doc_obj["text_type"]))
+    bows = multibow(docs)
+    dbow = {}
+    for domain, bow in zip(domains, bows):
+        if domain:
+            if domain not in dbow:
+                dbow[domain] = bow
+            else:
+                dbow = merge(dbow, bow)
+    return dbow
+
+
+def domain_tfidf(dbows):
+    return {
+        domain: tfidf(dbow) for domain, dbow in dbows.items()
+    }
