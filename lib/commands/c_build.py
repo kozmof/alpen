@@ -10,11 +10,6 @@ from lib.commands.core.tfidf import (
 )
 
 
-def load(path):
-    with open(path, "r") as f:
-        return f.read()
-
-
 def c_build():
     from lib.commands.core.tfidf import tfidf, multibow
     config: Config = load_config()
