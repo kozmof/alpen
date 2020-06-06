@@ -8,6 +8,16 @@ from concurrent.futures import ThreadPoolExecutor
 from janome.analyzer import Analyzer
 from janome.charfilter import UnicodeNormalizeCharFilter
 from janome.tokenfilter import POSKeepFilter, CompoundNounFilter, TokenCountFilter
+from lib.commands.core.dir_ops import get_dir_path
+from lib.commands.core.metadata import load_metadata
+
+
+def load(path):
+    if os.path.isfile(path):
+        with open(path, "r") as f:
+            return f.read()
+    else:
+        return ""
 
 
 def setup_janome():
@@ -53,7 +63,7 @@ def calc_bow(doc):
                     bow[word] = 1
         return bow
     else:
-        return None
+        return {}
 
 
 def multibow(docs):
@@ -76,12 +86,15 @@ def tfidf(bows):
         return _pool[k]
 
     def _tf_idf(bow, doc_freq, N):
-        max_freq = bow[max(bow, key=bow.get)]
-        tfidf = {
-            k: (0.5 + 0.5 * (v / max_freq)) * log((N + 1)/(doc_freq[k] + 1))
-            for k, v in bow.items()
-        }
-        return tfidf
+        if bow:
+            max_freq = bow[max(bow, key=bow.get)]
+            tfidf = {
+                k: (0.5 + 0.5 * (v / max_freq)) * log((N + 1)/(doc_freq[k] + 1))
+                for k, v in bow.items()
+            }
+            return tfidf
+        else:
+            return {}
 
     N = len(bows)
     doc_freq = {
@@ -108,6 +121,45 @@ def de_merge(d1, d2):
     }
     d3 = {k: v for k, v in _d3.items() if v}
     return d3
+
+
+def make_doc_obj(file_name, doc_dir, metadata, text, text_type, bow, tfidf):
+    if text:
+        doc_obj = {}
+        doc_obj["text"] = text
+        doc_obj["domain"] = metadata[file_name]["domain"]
+        doc_obj["text_type"] = text_type
+        doc_obj["bow"] = bow
+        doc_obj["tfidf"] = tfidf
+        return doc_obj
+
+
+def make_doc_objs(file_names, config):
+    doc_dir = get_dir_path("DOCUMENT", config)
+    metadata = load_metadata(config)
+    docs = [
+        (text := load(f"{doc_dir}/{file_name}"), ...) for file_name in file_names #TODO
+    ]
+    bows = multibow(docs)
+    tfidfs = tfidf(bows=bows)
+
+    assert (file_names == 
+            docs ==
+            bows == 
+            tfidfs)
+               
+    doc_objs = [
+        dobj for i, file_name in enumerate(file_names)
+        if (dobj := make_doc_obj(
+            file_name=file_name,
+            doc_dir=doc_dir,
+            metadata=metadata,
+            text=docs[i][0],
+            text_type=docs[i][1],
+            bow=bows[i],
+            tfidf=tfidfs[i]))
+        ]
+    return doc_objs
 
 
 def make_dbows(doc_objs):
