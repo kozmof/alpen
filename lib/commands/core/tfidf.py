@@ -1,13 +1,10 @@
 import os
 import asyncio
-import stopwords as sw
+import lib.commands.core.stopwords as sw
 from pprint import pprint
 from math import log
 from multiprocessing import Pool
 from concurrent.futures import ThreadPoolExecutor
-from janome.analyzer import Analyzer
-from janome.charfilter import UnicodeNormalizeCharFilter
-from janome.tokenfilter import POSKeepFilter, CompoundNounFilter, TokenCountFilter
 from langdetect import detect
 from lib.commands.core.dir_ops import get_dir_path
 from lib.commands.core.metadata import load_metadata
@@ -22,6 +19,9 @@ def load(path):
 
 
 def setup_janome():
+    from janome.analyzer import Analyzer
+    from janome.charfilter import UnicodeNormalizeCharFilter
+    from janome.tokenfilter import POSKeepFilter, CompoundNounFilter, TokenCountFilter
     char_filters = [UnicodeNormalizeCharFilter()]
     token_filters = [CompoundNounFilter(), POSKeepFilter("名詞"), TokenCountFilter()]
     analyzer = Analyzer(
@@ -29,9 +29,6 @@ def setup_janome():
         token_filters=token_filters
         )
     return analyzer
-
-
-analyzer = setup_janome()
 
 
 def is_stopword(word, text_type):
@@ -45,6 +42,7 @@ def is_stopword(word, text_type):
 
 
 def calc_bow(doc):
+    analyzer = setup_janome()
     text, text_type = doc
     if text_type == "ja":
         bow = {}
@@ -70,7 +68,7 @@ def calc_bow(doc):
 def multibow(docs):
     cpuc =  os.cpu_count()
     dlen = len(docs)
-    pl = Pool(processes=dlen if cpuc > dlen else cpuc)
+    pl = Pool(processes=dlen or 1 if cpuc > dlen else cpuc)
     res = pl.map_async(calc_bow, docs)
     res.wait()
     if res.successful():
@@ -139,15 +137,15 @@ def make_doc_objs(file_names, config):
     doc_dir = get_dir_path("DOCUMENT", config)
     metadata = load_metadata(config)
     docs = [
-        (text := load(f"{doc_dir}/{file_name}"), detect(text)) for file_name in file_names
+        (text := load(f"{doc_dir}/{file_name}"), detect(text) if text else '') for file_name in file_names
     ]
     bows = multibow(docs)
     tfidfs = tfidf(bows=bows)
 
-    assert (file_names == 
-            docs ==
-            bows == 
-            tfidfs)
+    assert (len(file_names) ==
+            len(docs) ==
+            len(bows) == 
+            len(tfidfs))
                
     doc_objs = [
         dobj for i, file_name in enumerate(file_names)

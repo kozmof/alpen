@@ -11,7 +11,6 @@ from lib.commands.core.tfidf import (
 
 
 def c_build():
-    from lib.commands.core.tfidf import tfidf, multibow
     config: Config = load_config()
     doc_dir = get_dir_path("DOCUMENT", config)
     doc_files = os.listdir(doc_dir)
