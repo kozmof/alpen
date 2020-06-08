@@ -8,6 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 from janome.analyzer import Analyzer
 from janome.charfilter import UnicodeNormalizeCharFilter
 from janome.tokenfilter import POSKeepFilter, CompoundNounFilter, TokenCountFilter
+from langdetect import detect
 from lib.commands.core.dir_ops import get_dir_path
 from lib.commands.core.metadata import load_metadata
 
@@ -138,7 +139,7 @@ def make_doc_objs(file_names, config):
     doc_dir = get_dir_path("DOCUMENT", config)
     metadata = load_metadata(config)
     docs = [
-        (text := load(f"{doc_dir}/{file_name}"), ...) for file_name in file_names #TODO
+        (text := load(f"{doc_dir}/{file_name}"), detect(text)) for file_name in file_names
     ]
     bows = multibow(docs)
     tfidfs = tfidf(bows=bows)
