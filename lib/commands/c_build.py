@@ -13,9 +13,8 @@ from lib.commands.core.tfidf import (
 def c_build():
     config: Config = load_config()
     doc_dir = get_dir_path("DOCUMENT", config)
-    doc_files = os.listdir(doc_dir)
-    file_names = [f"{doc_dir}/{doc_file}" for doc_file in doc_files]
-    doc_objs = make_doc_objs(file_names, config)
-    dbows = make_dbows(doc_objs)
+    file_names = os.listdir(doc_dir)
+    doc_objs, bows = make_doc_objs(file_names, config)
+    dbows = make_dbows(doc_objs, bows)
     dtfidf = domain_tfidf(dbows)
-    make_payload_file(doc_files)
+    make_payload_file(file_names)

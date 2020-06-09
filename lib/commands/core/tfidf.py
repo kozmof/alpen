@@ -68,11 +68,9 @@ def calc_bow(doc):
 def multibow(docs):
     cpuc =  os.cpu_count()
     dlen = len(docs)
-    pl = Pool(processes=dlen or 1 if cpuc > dlen else cpuc)
-    res = pl.map_async(calc_bow, docs)
-    res.wait()
-    if res.successful():
-        return res.get()
+    with Pool(processes=dlen or 1 if cpuc > dlen else cpuc) as pl:
+        res = pl.map(calc_bow, docs)
+    return res
 
 
 def tfidf(bows):
@@ -158,16 +156,12 @@ def make_doc_objs(file_names, config):
             bow=bows[i],
             tfidf=tfidfs[i]))
         ]
-    return doc_objs
+    bows = [bows[i] for i, doc in enumerate(docs) if doc]
+    return doc_objs, bows
 
 
-def make_dbows(doc_objs):
-    domains = []
-    docs = []
-    for doc_obj in doc_objs:
-        domains.append(doc_obj["domain"])
-        docs.append((doc_obj["text"], doc_obj["text_type"]))
-    bows = multibow(docs)
+def make_dbows(doc_objs, bows):
+    domains = [doc_obj["domain"] for doc_obj in doc_objs]
     dbow = {}
     for domain, bow in zip(domains, bows):
         if domain:
