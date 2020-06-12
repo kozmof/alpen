@@ -67,12 +67,12 @@ def update_tag_file(action_type: str, config: Config,
         - RENAME_FILE: rename a file which links to tags
 
     Arg Patterns:
-        - ADD_TAG: file_name, tag_name
-        - REMOVE_TAG: file_name, tag_name
-        - RENAME_TAG: tag_name, new_tag_name
-        - SEARCH_TAG: tag_name
-        - SHOW_ALL: none
-        - RENAME_FILE: file_name, new_file_name
+        - ADD_TAG:      file_name, tag_name
+        - REMOVE_TAG:   file_name, tag_name
+        - RENAME_TAG:   tag_name, new_tag_name
+        - SEARCH_TAG:   tag_name
+        - SHOW_ALL:     none
+        - RENAME_FILE:  file_name, new_file_name
 
     Args:
         action_type (str): ADD_TAG, REMOVE_TAG, RENAME_TAG, SEARCH_TAG, SHOW_ALL, RENAM_FILE
