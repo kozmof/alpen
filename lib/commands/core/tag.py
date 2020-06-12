@@ -1,7 +1,9 @@
+"""Tag Utilities
+"""
 import os
 import json
 from pprint import pprint
-from typing import Optional, List
+from typing import Optional, List, Dict
 from lib.commands.core.configure import load_config
 from lib.commands.core.dir_ops import get_dir_path
 from lib.commands.core.metadata import (
@@ -13,7 +15,20 @@ from lib.commands.core.custom_types import Config
 TAG_FILE = "tags.json"
 
 
-def load_tag_data(config: Config):
+def load_tag_data(config: Config) -> Dict:
+    """Load all tag data
+    Structure:
+        - tag_data
+        {
+            [tag_name: str]:  List # file names
+        }
+
+    Args:
+        config (Config): Config data
+
+    Returns:
+        Dict: tag data
+    """
     tag_dir = get_dir_path("TAG", config)
     tag_file_path = f"{tag_dir}/{TAG_FILE}"
 
@@ -23,7 +38,13 @@ def load_tag_data(config: Config):
             return tag_data
 
 
-def dump_tag_json(tag_data, config: Config):
+def dump_tag_json(tag_data, config: Config) -> None:
+    """Dump tag data
+
+    Args:
+        tag_data (Dict): Tag data
+        config (Config): Config data
+    """
     tag_dir = get_dir_path("TAG", config)
     tag_file_path = f"{tag_dir}/{TAG_FILE}"
 
@@ -36,8 +57,34 @@ def dump_tag_json(tag_data, config: Config):
 
 def update_tag_file(action_type: str, config: Config,
                     file_name: Optional[str] = None, new_file_name: Optional[str] = None,
-                    tag_name: Optional[str] = None, new_tag_name: Optional[str] = None):
+                    tag_name: Optional[str] = None, new_tag_name: Optional[str] = None) -> None:
+    """Update tag file
+        - ADD_TAG: add a new tag
+        - REMOVE_TAG: remove a tag
+        - RENAME_TAG: rename a tag
+        - SEARCH_TAG: search a tag and print them
+        - SHOW_ALL: print all tag data
+        - RENAME_FILE: rename a file which links to tags
 
+    Arg Patterns:
+        - ADD_TAG: file_name, tag_name
+        - REMOVE_TAG: file_name, tag_name
+        - RENAME_TAG: tag_name, new_tag_name
+        - SEARCH_TAG: tag_name
+        - SHOW_ALL: none
+        - RENAME_FILE: file_name, new_file_name
+
+    Args:
+        action_type (str): ADD_TAG, REMOVE_TAG, RENAME_TAG, SEARCH_TAG, SHOW_ALL, RENAM_FILE
+        config (Config): Config file
+        file_name (Optional[str], optional): Use in ADD_TAG, REMOVE_TAG, RENAME_TAG, RENAME_FILE. Defaults to None.
+        new_file_name (Optional[str], optional): Use in RENAME_FILE. Defaults to None.
+        tag_name (Optional[str], optional): Use in ADD_TAG, REMOVE_TAG, SEARCH_TAG.  Defaults to None.
+        new_tag_name (Optional[str], optional): [description] Use in RENAME_TAG. Defaults to None.
+
+    Raises:
+        Exception: [description]
+    """
     if action_type == "ADD_TAG":
         tag_data = load_tag_data(config)
 
