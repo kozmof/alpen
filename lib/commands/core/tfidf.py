@@ -161,18 +161,19 @@ def make_doc_objs(file_names, config):
 
 
 def make_dbows(doc_objs, bows):
-    domains = [doc_obj["domain"] for doc_obj in doc_objs]
+    domain_pile = [doc_obj["domain"] for doc_obj in doc_objs]
     dbow = {}
-    for domain, bow in zip(domains, bows):
-        if domain:
-            if domain not in dbow:
-                dbow[domain] = bow
-            else:
-                dbow = merge(dbow, bow)
+    for domains, bow in zip(domain_pile, bows):
+        for domain in domains:
+            if domain:
+                if domain not in dbow:
+                    dbow[domain] = bow
+                else:
+                    dbow[domain] = merge(dbow, bow)
     return dbow
 
 
 def domain_tfidf(dbows):
     return {
-        domain: tfidf(dbow) for domain, dbow in dbows.items()
+        domain: tfidf([dbow]) for domain, dbow in dbows.items()
     }

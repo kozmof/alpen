@@ -130,7 +130,7 @@ def make_payload_file(file_names, debug=True):
 
     with open(save_path_domain, "w") as f:
         payload_domain = {
-            domain: extract(file_names, domain_files) for tag, domain_files in domain_data.items()
+            domain: extract(file_names, domain_files) for domain, domain_files in domain_data.items()
         }
         dump_json(payload_domain, f, debug)
 
