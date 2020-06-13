@@ -166,7 +166,7 @@ def prep_tag_source(path, config):
         f.write("TODO")
     with open(path_tag, "r") as f:
         tags = json.load(f)
-    for tag in tags.items():
+    for tag in tags.keys():
         if not os.path.isdir(sub_path := f"{path}/{tag}"):
             os.mkdir(sub_path)
         # tag/{tag}/index.tsx
@@ -182,7 +182,7 @@ def prep_domain_source(path, config):
         f.write("TODO")
     with open(path_domain, "r") as f:
         domains = json.load(f)
-    for domain in domains.items():
+    for domain in domains.keys():
         if not os.path.isdir(sub_path := f"{path}/{domain}"):
             os.mkdir(sub_path)
         # domain/{domain}/index.tsx
@@ -194,13 +194,13 @@ def make_index_tree(src):
     config: Config = load_config()
     if not os.path.isdir(path := f"{src}/title"):
         os.makedirs(path)
-        prep_title_source(path)
+    prep_title_source(path)
     if not os.path.isdir(path := f"{src}/page"):
         os.makedirs(path)
-        prep_page_source(path,config)
+    prep_page_source(path,config)
     if not os.path.isdir(path := f"{src}/tag"):
         os.makedirs(path)
-        prep_tag_source(path, config)
+    prep_tag_source(path, config)
     if not os.path.isdir(path := f"{src}/domain"):
         os.makedirs(path)
-        prep_domain_source(path, config)
+    prep_domain_source(path, config)
