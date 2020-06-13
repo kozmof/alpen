@@ -86,7 +86,7 @@ def tfidf(bows):
         if bow:
             max_freq = bow[max(bow, key=bow.get)]
             tfidf = {
-                k: (0.5 + 0.5 * (v / max_freq)) * log((N + 1)/(doc_freq[k] + 1))
+                k: (0.5 + 0.5 * (v / max_freq)) * log((N + 1)/(doc_freq[k]))
                 for k, v in bow.items()
             }
             return tfidf
@@ -174,6 +174,7 @@ def make_dbows(doc_objs, bows):
 
 
 def domain_tfidf(dbows):
+    domain_dbow = list(zip(*dbows.items()))
     return {
-        domain: tfidf([dbow]) for domain, dbow in dbows.items()
+        domain_dbow[0][i]: dbow for i, dbow in enumerate(tfidf(domain_dbow[1]))
     }
