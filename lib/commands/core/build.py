@@ -178,7 +178,7 @@ def prep_domain_source(path, config):
     root_dir = config["root_path"]
     payload_dir = f"{root_dir}/publish/payload"
     path_domain = f"{payload_dir}/domain.payload.json"
-    with open(f"{path}/domain_home.tsx", "w") as f:
+    with open(f"{path}/index.tsx", "w") as f:
         f.write("TODO")
     with open(path_domain, "r") as f:
         domains = json.load(f)
