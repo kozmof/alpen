@@ -11,6 +11,7 @@ from lib.commands.core.tag import load_tag_data
 from lib.commands.core.domain import load_domain_data
 from lib.commands.core.git import make_time_stamp
 
+
 """
 publish/payload/page/[uuid].payload.json
                /title.payload.json
