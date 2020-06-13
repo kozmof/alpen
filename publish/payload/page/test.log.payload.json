@@ -1,9 +1,11 @@
 {
     "doc": "this is a 2nd test",
-    "domain": [],
+    "domain": [
+        "test_domain"
+    ],
     "fileName": "test.log",
     "firstFinishDate": "2020-05-31 17:16:34 JST",
     "history": null,
-    "reviseDate": "2020-05-31 17:16:38 JST",
+    "reviseDate": "2020-06-13 09:23:17 JST",
     "tag": []
 }

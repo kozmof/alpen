@@ -1,1 +1,8 @@
-{}
+{
+    "test": [
+        "test.txt"
+    ],
+    "test2": [
+        "test.txt"
+    ]
+}
