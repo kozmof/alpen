@@ -139,7 +139,7 @@ def make_payload_file(file_names, debug=True):
 def prep_title_source(path):
     # title/index.tsx
     with open(f"{path}/index.tsx", "w") as f:
-        f.write(...)
+        f.write("TODO")
 
 
 def prep_page_source(path, config):
@@ -154,7 +154,7 @@ def prep_page_source(path, config):
             os.mkdir(sub_path)
         # page/123e4567-e89b-12d3-a456-426614174000/index.tsx
         with open(f"{sub_path}/index.tsx", "w") as f:
-            f.write(...)
+            f.write("TODO")
 
 
 def prep_tag_source(path, config):
@@ -163,7 +163,7 @@ def prep_tag_source(path, config):
     path_tag = f"{payload_dir}/tag.payload.json"
     # tag/index.tsx
     with open(f"{path}/index.tsx", "w") as f:
-        f.write(...)
+        f.write("TODO")
     with open(path_tag, "r") as f:
         tags = json.load(f)
     for tag in tags.items():
@@ -171,7 +171,7 @@ def prep_tag_source(path, config):
             os.mkdir(sub_path)
         # tag/{tag}/index.tsx
         with open(f"{sub_path}/index.tsx", "w") as f:
-            f.write(...)
+            f.write("TODO")
 
 
 def prep_domain_source(path, config):
@@ -179,7 +179,7 @@ def prep_domain_source(path, config):
     payload_dir = f"{root_dir}/publish/payload"
     path_domain = f"{payload_dir}/domain.payload.json"
     with open(f"{path}/domain_home.tsx", "w") as f:
-        f.write(...)
+        f.write("TODO")
     with open(path_domain, "r") as f:
         domains = json.load(f)
     for domain in domains.items():
@@ -187,7 +187,7 @@ def prep_domain_source(path, config):
             os.mkdir(sub_path)
         # domain/{domain}/index.tsx
         with open(f"{sub_path}/index.tsx", "w") as f:
-            f.write(...)
+            f.write("TODO")
 
 
 def make_index_tree(src):
