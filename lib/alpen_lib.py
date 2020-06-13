@@ -3,6 +3,7 @@ import cmd
 from lib.commands.c_build import c_build
 from lib.commands.c_list import c_list
 from lib.commands.c_tag import c_tag
+from lib.commands.c_domain import c_domain
 from lib.commands.c_diff import c_diff
 from lib.commands.c_edit import c_edit
 from lib.commands.c_rename import c_rename
@@ -39,6 +40,9 @@ class AlpenShell(cmd.Cmd):
 
     def do_tag(self, arg):
         c_tag(arg)
+
+    def do_domain(self, arg):
+        c_domain(arg)
 
     def do_diff(self, _):
         c_diff()
@@ -83,6 +87,7 @@ class AlpenShell(cmd.Cmd):
           "list": cls.do_list,
           "edit": cls.do_edit,
           "tag": cls.do_tag,
+          "domain": cls.do_domain,
           "rename": cls.do_rename,
           "save_history": cls.do_save_history,
           "todo": cls.do_todo,
