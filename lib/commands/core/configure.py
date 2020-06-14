@@ -10,6 +10,7 @@ from lib.commands.core.dir_ops import make_directory
 
 INITIAL_CONFIG: Config = {
     "root_path": "",
+    "user": "",
     "uuid": "",
     "commit_header": "[alpen-manual-commit]"
 }
@@ -135,3 +136,11 @@ def save_root_path() -> None:
 
 def config_editor(editor: str) -> None:
     update_config("editor", editor)
+
+
+def config_user(user: str) -> None:
+    update_config("user", user)
+
+
+def config_editor_file_pos(pos: int) -> None:
+    update_config("editor_file_pos", pos)
