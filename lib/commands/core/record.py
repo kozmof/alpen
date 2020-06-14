@@ -2,7 +2,7 @@ import os
 from typing import Optional, List
 from datetime import datetime 
 from lib.commands.core.custom_types import Config
-from lib.commands.core.configure import load_config, ConfigError
+from lib.commands.core.configure import load_config
 from lib.commands.core.dir_ops import get_dir_path
 
 
