@@ -17,8 +17,8 @@ from typing import Optional, List, Dict, Callable
 from lib.commands.core.gprint import grid_text
 from lib.commands.core.todo import get_todo
 from lib.commands.core.memo import get_memo
-from lib.commands.core.custom_types import Shorthand
-from lib.commands.core.configure import load_shorthand, has_config
+from lib.commands.core.custom_types import Shorthand, Config
+from lib.commands.core.configure import load_shorthand, load_config, has_config
 
 
 class AlpenShell(cmd.Cmd):
@@ -82,6 +82,8 @@ class AlpenShell(cmd.Cmd):
     @classmethod
     def set_shorthand(cls):
         shorthand: Shorthand = load_shorthand()
+        config: Config = load_config()
+        editor = config["editor"]
         mmapper: Dict[str, Callable] = {
           "build": cls.do_build,
           "list": cls.do_list,
@@ -95,7 +97,8 @@ class AlpenShell(cmd.Cmd):
           "diff": cls.do_diff,
           "clear": cls.do_clear,
           "tutorial": cls.do_tutorial,
-          "quit": cls.do_quit
+          "quit": cls.do_quit,
+          editor: cls.do_edit
         }
         for key, value in shorthand.items():
             setattr(cls, f"do_{value}", mmapper[key])
