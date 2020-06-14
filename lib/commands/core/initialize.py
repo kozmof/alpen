@@ -12,10 +12,10 @@ def initialize():
     init()
     save_root_path()
     save_uuid()
-    print("set user name")
+    print("Set user name")
     user = input()
     config_user(user=user)
-    print("set your editor. default is vi")
+    print("Set your editor. Default is vi")
     editor = input() or "vi"
     config_editor(editor=editor)
     if editor != "vi":
@@ -29,11 +29,11 @@ def initialize():
                 pos = int(pos)
                 is_valid_input = True
             except:
-                pass
+                print("Type a number")
     else:
         pos = 0
     config_editor_file_pos(pos=pos)
-    print("set your content deploy path")
+    print("Set your content deploy path")
     config_deploy_path(path=input())
     dirs = ["DOCUMENT", "HISTORY", "TODO", "MEMO", "METADATA", "TAG", "DOMAIN"]
     config  = load_config()
