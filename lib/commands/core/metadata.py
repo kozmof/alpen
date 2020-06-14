@@ -39,7 +39,7 @@ def recover_missing_keys(metadata):
     for key in FORMAT.keys():
         if key not in metadata:
             metadata[key] = FORMAT[key]
-    for key in metadata.keys:
+    for key in metadata.keys():
         if key not in FORMAT:
             del metadata[key]
     return metadata
