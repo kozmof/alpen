@@ -15,7 +15,7 @@ pip3 install langdetect
 - generate tsx
 
 ### Doc structure
-- domain [user|auto(Tf-Idf, cos similarity)]
+- doc [user]
+    - domain [user|auto(Tf-Idf, cos similarity)]
     - lang [auto(langdetect)]
-        - doc [user]
-            - tag [user]
+    - tag [user]
