@@ -127,7 +127,7 @@ def load_shorthand() -> Shorthand:
         raise Exception(f"{spath} not found")
 
 
-def update_shorthand(key: str, value: str) -> None:
+def update_shorthand(config: Config, key: str, value: str) -> None:
     if os.path.isfile(SHORTHAND_PATH):
         shorthand: Shorthand = load_shorthand()
         with open(SHORTHAND_PATH, "w") as f:
@@ -146,13 +146,3 @@ def save_root_path() -> None:
 
 def config_editor(editor: str) -> None:
     update_config("editor", editor)
-
-
-if __name__ == "__main__":
-    # init()
-    # save_root_path()
-    # save_uuid()
-    # config_editor("code")
-    config = load_config()
-    # make_directory("DOCUMENT", config)
-    make_directory("HISTORY", config)
