@@ -10,11 +10,7 @@ from lib.commands.core.dir_ops import make_directory
 
 INITIAL_CONFIG: Config = {
     "root_path": "",
-    "targets": [],
-    "stops": [],
     "uuid": "",
-    "masks": ["md", "txt"], # REMOVE
-    "enable_mask": True,
     "commit_header": "[alpen-manual-commit]"
 }
 
@@ -33,13 +29,6 @@ INITIAL_SHORTHAND: Shorthand = {
     "clear": "c",
     "quit": "q"
 }
-
-
-"""
-PRIORITY
-1. stops
-2. masks / targets
-"""
 
 
 ROOT_DIR = os.path.dirname(os.path.realpath(os.path.join(__file__, *([".."] * 3))))
