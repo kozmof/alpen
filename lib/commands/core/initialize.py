@@ -33,7 +33,7 @@ def initialize():
     else:
         pos = 0
     config_editor_file_pos(pos=pos)
-    print("Set your content deploy path")
+    print("Set your build path of contents")
     config_deploy_path(path=input())
     dirs = ["DOCUMENT", "HISTORY", "TODO", "MEMO", "METADATA", "TAG", "DOMAIN"]
     config  = load_config()
