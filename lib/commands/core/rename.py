@@ -2,6 +2,7 @@ import re
 from typing import Tuple, Optional
 
 from lib.commands.core.tag import update_tag_file
+from lib.commands.core.domain import update_domain_file
 from lib.commands.core.metadata import update_metadata_file
 from lib.commands.core.configure import load_config
 from lib.commands.core.custom_types import Config
@@ -40,4 +41,5 @@ def arg_to_names(arg) -> Tuple[Optional[str], Optional[str]]:
 
 def apply_rename(file_name, new_file_name, config: Config):
     update_tag_file("RENAME_FILE", config, file_name=file_name, new_file_name=new_file_name)
+    update_domain_file("RENAME_FILE", config, file_name=file_name, new_file_name=new_file_name)
     update_metadata_file("RENAME_FILE", config, file_name=file_name, new_file_name=new_file_name)
