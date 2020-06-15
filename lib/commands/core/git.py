@@ -306,7 +306,6 @@ def has_branch(branch_name: str) -> bool:
 def make_my_branch() -> None:
     """Make an user specific branch
     """
-
     config: Config = load_config()
     uuid = config["uuid"]
 
