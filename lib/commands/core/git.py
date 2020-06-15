@@ -1,3 +1,5 @@
+"""Git operations
+"""
 import os
 import re
 import json
@@ -12,7 +14,7 @@ from lib.commands.core.dir_ops import get_dir_path
 
 
 def git_diff() -> Diffs:
-    """Modify default diff of git
+    """Modify default diff of Git
 
     Example:
         (1)
@@ -162,6 +164,11 @@ def git_diff() -> Diffs:
 
 
 def untracked_file_gpaths() -> List[str]:
+    """Get git-style paths of untracked file
+
+    Returns:
+        List[str]: git-style paths of untracked files
+    """
     cmd: str = "git status"
     output: str = fpshell(cmd)
     lines: List[str] = output.split("\n")
@@ -182,6 +189,11 @@ def untracked_file_gpaths() -> List[str]:
 
 
 def changed_file_gpaths() -> List[str]:
+    """Get git-style paths of changed files
+
+    Returns:
+        List[str]: git-style paths of changed files
+    """
     cmd: str = "git status"
     output: str = fpshell(cmd)
 
@@ -208,30 +220,51 @@ def changed_file_gpaths() -> List[str]:
     return files
 
 
-def fullpath(files: List[str]) -> List[str]:
-    config: Config = load_config()
-    root_path: str = config["root_path"]
-    return [f"{root_path}/{file_name}" for file_name in files]
-
-
 def make_time_stamp() -> str:
+    """Make a timestamp with timezone of a computer
+    Example:
+        2020-05-12 21:44:01 GMT
+
+    Returns:
+        str: Timestamp
+    """
     now: Datetime = datetime.now()
     time: str = str(now.replace(microsecond=0))
     tzname: str = str(now.astimezone().tzname())
     return time + " " + tzname
 
 
-def make_diff_stamp(gpath: str, diffs: Diffs, separator: str = "") -> str:
+def make_diff_stamp(gpath: str, diffs: Diffs) -> str:
+    """Make a diff of a file
+
+    Args:
+        gpath (str): Git-style path
+        diffs (Diffs): Diffs
+
+    Returns:
+        str: Diff of a file
+    """
     stamp_text: str = ""
     if gpath in diffs:
         stamp_text = "\n".join(diffs[gpath])
-        if separator:
-            stamp_text = f"{separator}\n{stamp_text}"
 
     return stamp_text
 
 
 def make_stamp() -> Stamps:
+    """Combine stamps
+    Structure:
+        stamps:
+            {
+                [gpath: str]: {
+                    "timestamp": str,
+                    "diff": str
+                }
+            }
+
+    Returns:
+        Stamps: Stamp of files
+    """
     stamps = {}
     gpaths = changed_file_gpaths()
     diffs: Diffs = git_diff()
@@ -244,16 +277,26 @@ def make_stamp() -> Stamps:
     return stamps
 
 
-def has_branch(branch_name) -> bool:
+def has_branch(branch_name: str) -> bool:
+    """Check an existence of a branch
+
+    Args:
+        branch_name (str): Branch name
+
+    Returns:
+        bool: True if branch exists
+    """
     cmd = f"git show-branch --list"
     res = fpshell(cmd)
     branch_ls_raw = res.split("\n")
     recom = re.compile(r"\[.+\]")
     branch_ls = []
+
     for branch in branch_ls_raw:
         sobj = recom.search(branch)
         if sobj:
             branch_ls.append(branch[sobj.start() + 1:sobj.end() - 1])
+
     if branch_name in branch_ls:
         return True
     else:
@@ -261,8 +304,12 @@ def has_branch(branch_name) -> bool:
 
 
 def make_my_branch() -> None:
+    """Make an user specific branch
+    """
+
     config: Config = load_config()
     uuid = config["uuid"]
+
     if not has_branch(uuid):
         cmd = f"git branch {uuid}"
         fpshell(cmd)
