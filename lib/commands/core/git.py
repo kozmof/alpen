@@ -20,7 +20,7 @@ def git_diff() -> Diffs:
         +baz
         +foo
         +foo
-        +quix
+        +quux
         \ No newline at end of file
 
         =>
@@ -29,7 +29,7 @@ def git_diff() -> Diffs:
         +baz
         foo
         +foo
-        +quix
+        +quux
 
     Returns:
         Diffs: Diff of specific files
