@@ -11,7 +11,7 @@ from __future__ import annotations
 class Spinner:
     # Based on https://stackoverflow.com/questions/4995733/how-to-create-a-spinning-command-line-cursor
     def __init__(self, statement: str="", delay=0.03) -> None:
-        """Use with statement when initializing
+        """Use `with` statement when initializing
 
         Args:
             statement (str, optional): A text of the right side of the spinner. Defaults to "".
