@@ -12,7 +12,7 @@ from lib.commands.core.dir_ops import get_dir_path
 
 
 def git_diff() -> Diffs:
-    """Normalize default diff of git
+    """Modify default diff of git
 
     Example:
         (1)
