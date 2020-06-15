@@ -1,12 +1,33 @@
 import os
 import re
+import json
 from pprint import pprint
 from typing import List, Dict
 from datetime import datetime, timezone
 from lib.commands.core.shell import fpshell
-from lib.commands.core.configure import load_config, Config
+from lib.commands.core.configure import load_config
+from lib.commands.core.custom_types import Config
 from lib.commands.core.custom_types import Datetime, Diffs, Stamps
 from lib.commands.core.dir_ops import get_dir_path
+
+
+ROOT_DIR = os.path.dirname(os.path.realpath(os.path.join(__file__, *([".."] * 3))))
+USER_UUID_PATH: str = ROOT_DIR + "/" + "user-uuid.json"
+
+
+def load_user_uuid(): 
+    uupath = USER_UUID_PATH
+    if os.path.isfile(uupath):
+        with open(uupath, "r") as f:
+            return json.load(f)
+    else:
+        return {}
+
+
+def dump_user_uuid(user_uuid):
+    uupath = USER_UUID_PATH
+    with open(uupath, "w") as f:
+        json.dump(user_uuid, f)
 
 
 def git_diff() -> Diffs:
@@ -112,3 +133,59 @@ def make_stamp() -> Stamps:
         stamps[gpath]["diff"] = make_diff_stamp(gpath, diffs)
 
     return stamps
+
+
+def has_branch(branch_name) -> bool:
+    cmd = f"git show-branch --list"
+    res = fpshell(cmd)
+    branch_ls_raw = res.split("\n")
+    recom = re.compile(r"\[.+\]")
+    branch_ls = []
+    for branch in branch_ls_raw:
+        sobj = recom.search(branch)
+        if sobj:
+            branch_ls.append(branch[sobj.start() + 1:sobj.end() - 1])
+    if branch_name in branch_ls:
+        return True
+    else:
+        return False
+
+
+def make_my_branch() -> None:
+    config: Config = load_config()
+    uuid = config["uuid"]
+    if not has_branch(uuid):
+        cmd = f"git branch {uuid}"
+        fpshell(cmd)
+
+
+def make_feed_branch() -> None:
+    config: Config = load_config()
+    uuid = config["uuid"]
+    if not has_branch(f"{uuid}-feed"):
+        cmd = f"git branch {uuid}-feed"
+        fpshell(cmd)
+
+
+def add_repository(user, uuid) -> None:
+    cmd = f"git add remote {user} {uuid}"
+    fpshell(cmd)
+    user_uuid = load_user_uuid()
+    user_uuid[user] = uuid
+    dump_user_uuid(user_uuid)
+
+
+def update_repository(user) -> None:
+    config: Config = load_config()
+    uuid = config["uuid"]
+    if not has_branch(f"{uuid}-feed"):
+        make_feed_branch()
+    cmd1 = f"git checkout {uuid}-feed"
+    fpshell(cmd1)
+    user_uuid = load_user_uuid()
+    uuid = user_uuid.get(user, None)
+    if uuid:
+        cmd2 = f"git pull {user} {uuid}"
+        fpshell(cmd2)
+    cmd3 = f"git checkout {uuid}"
+    fpshell(cmd3)
