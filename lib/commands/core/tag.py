@@ -19,10 +19,10 @@ def load_tag_data(config: Config) -> Dict:
     """Load all tag data
 
     Structure:
-        - tag_data
-        {
-            [tag_name: str]:  List # file names
-        }
+        tag_data:
+            {
+                [tag_name: str]:  List # file names
+            }
 
     Args:
         config (Config): Config data
