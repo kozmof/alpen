@@ -14,6 +14,7 @@ from lib.commands.core.dir_ops import get_dir_path
 def git_diff() -> Diffs:
     """Normalize default diff of git
 
+    Exapmple:
         -foo
         \ No newline at end of file
         +bar
