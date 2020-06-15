@@ -39,7 +39,6 @@ def git_diff() -> Diffs:
             -foo
             +foo
             +bar
-            \ No newline at end of file
 
             ==>
 
