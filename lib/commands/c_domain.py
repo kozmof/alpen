@@ -1,15 +1,30 @@
-from lib.commands.core.domain_ops import (add_domain,
-                                       remove_domain,
-                                       rename_domain,
-                                       search_domain,
-                                       show_all)
+"""Command for domain operations
+"""
+from lib.commands.core.domain_ops import (
+    add_domain,
+    remove_domain,
+    rename_domain,
+    search_domain,
+    show_all
+    )
 
-def c_domain(arg):
+def c_domain(arg: str) -> None:
+    """Command for domain oprerations
+    Ops:
+    - add: Add a domain to a file
+    - remove Remove a domain to a file
+    - rename Rename a domain
+    - search Search a domain
+
+    Args:
+        arg (str): Arguments for domain
+    """
     options = [option for option in arg.split(" ") if option]
 
+    # -------------------------------------------------------
     if not len(options):
         show_all()
-
+    # -------------------------------------------------------
     elif options[0] == "add":
         if len(options) == 3:
             domain_name = options[1]
@@ -17,7 +32,7 @@ def c_domain(arg):
             add_domain(file_name, domain_name)
         else:
             print("Use domain add <domain_name> <file_name>")
-
+    # -------------------------------------------------------
     elif options[0] == "remove":
         if len(options) == 3:
             domain_name = options[1]
@@ -25,7 +40,7 @@ def c_domain(arg):
             remove_domain(file_name, domain_name)
         else:
             print("Use domain remove <domain_name> <file_name>")
-
+    # -------------------------------------------------------
     elif options[0] == "rename":
         if len(options) == 3:
             domain_name = options[1]
@@ -33,10 +48,11 @@ def c_domain(arg):
             rename_domain(domain_name, new_domain_name)
         else:
             print("Use domain rename <domain_name> <new_domain_name>")
-
+    # -------------------------------------------------------
     elif options[0] == "search":
         if len(options) == 2:
             domain_name = options[1]
             search_domain(domain_name)
         else:
             print("Use domain search <domain_name>")
+    # -------------------------------------------------------
