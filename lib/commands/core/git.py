@@ -40,15 +40,15 @@ def git_diff() -> Diffs:
     file_name = ""
     for i, line in enumerate(lines):
         if re.match(separate_pattern, line):
-            file_name: str = re.sub("a/", "", re.sub(separate_pattern, "", line).split(" ")[0])
-            group[file_name] = []
+            gpath: str = re.sub("a/", "", re.sub(separate_pattern, "", line).split(" ")[0])
+            group[gpath] = []
 
         if file_name in group and i > 1:
             if len(line) >= 2 and line[:2] == "@@":
                 continue
             elif len(line) >= 3 and (line[:3] == "+++" or line[:3] == "---"):
                 continue
-            group[file_name].append(line)
+            group[gpath].append(line)
 
     return group
 
@@ -113,11 +113,11 @@ def make_time_stamp() -> str:
     return time + " " + tzname
 
 
-def make_diff_stamp(file_name: str, diffs: Diffs, separator: str = "") -> str:
+def make_diff_stamp(gpath: str, diffs: Diffs, separator: str = "") -> str:
     stamp_text: str = ""
-    if file_name in diffs:
+    if gpath in diffs:
         stamp_text = "\n".join(
-            [line for line in diffs[file_name] if line != r"\ No newline at end of file"]
+            [line for line in diffs[gpath] if line != r"\ No newline at end of file"]
             )
         if separator:
             stamp_text = f"{separator}\n{stamp_text}"
