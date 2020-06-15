@@ -13,7 +13,7 @@ def c_domain(arg: str) -> None:
 
     Ops:
         - add: Add a domain to a file
-        - remove Remove a domain to a file
+        - remove Remove a domain from a file
         - rename Rename a domain
         - search Search a domain
 

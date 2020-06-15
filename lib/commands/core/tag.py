@@ -77,7 +77,7 @@ def update_tag_file(action_type: str, config: Config,
         - RENAME_FILE:  file_name, new_file_name
 
     Args:
-        action_type (str):                          ADD_TAG, REMOVE_TAG, RENAME_TAG, SEARCH_TAG, SHOW_ALL, RENAM_FILE
+        action_type (str):                          ADD_TAG, REMOVE_TAG, RENAME_TAG, SEARCH_TAG, SHOW_ALL, RENAME_FILE
         config (Config):                            Config file
         file_name (Optional[str], optional):        Use in ADD_TAG, REMOVE_TAG, RENAME_TAG, RENAME_FILE. Defaults to None.
         new_file_name (Optional[str], optional):    Use in RENAME_FILE. Defaults to None.
