@@ -12,6 +12,28 @@ from lib.commands.core.dir_ops import get_dir_path
 
 
 def git_diff() -> Diffs:
+    """Normalize default diff of git
+
+        -foo
+        \ No newline at end of file
+        +bar
+        +baz
+        +foo
+        +foo
+        +quix
+        \ No newline at end of file
+
+        =>
+
+        +bar
+        +baz
+        foo
+        +foo
+        +quix
+
+    Returns:
+        Diffs: Diff of specific files
+    """
     cmd1: str = "git diff --histogram"
     output: str = fpshell(cmd1)
 
