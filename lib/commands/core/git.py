@@ -11,25 +11,6 @@ from lib.commands.core.custom_types import Datetime, Diffs, Stamps
 from lib.commands.core.dir_ops import get_dir_path
 
 
-ROOT_DIR = os.path.dirname(os.path.realpath(os.path.join(__file__, *([".."] * 3))))
-USER_UUID_PATH: str = ROOT_DIR + "/" + "user-uuid.json"
-
-
-def load_user_uuid(): 
-    uupath = USER_UUID_PATH
-    if os.path.isfile(uupath):
-        with open(uupath, "r") as f:
-            return json.load(f)
-    else:
-        return {}
-
-
-def dump_user_uuid(user_uuid):
-    uupath = USER_UUID_PATH
-    with open(uupath, "w") as f:
-        json.dump(user_uuid, f)
-
-
 def git_diff() -> Diffs:
     cmd1: str = "git diff --histogram"
     output: str = fpshell(cmd1)
