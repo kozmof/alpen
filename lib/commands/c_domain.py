@@ -10,6 +10,7 @@ from lib.commands.core.domain_ops import (
 
 def c_domain(arg: str) -> None:
     """Command for domain oprerations
+
     Ops:
     - add: Add a domain to a file
     - remove Remove a domain to a file
