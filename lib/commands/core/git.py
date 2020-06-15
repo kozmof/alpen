@@ -37,16 +37,83 @@ def git_diff() -> Diffs:
     lines: List[str] = output.split("\n")
     separate_pattern: str = "diff --git "
     group: Diffs = {}
-    file_name = ""
+    gpath = ""
+    _lines = []
+    modify_lines = []
+
+    continue_again = False
+    skip_append  = False
+    is_modified = False
+    current_j = 0
+    current_k = 0
+
+    #---------------------------------------------------------------
+    # extract pairs
+    remove_lines1 = [
+        line for line in 
+            [
+                f"+{line[1:]}"
+                for line in lines
+                if len(line) > 0 and line[0] == "-" 
+            ]
+        if line in lines
+        ]
+    remove_lines2 = [f"-{line[1:]}" for line in lines if line in remove_lines1]
+    remove_lines1 = [f"+{line[1:]}" for line in remove_lines2]
+    assert len(remove_lines1) == len(remove_lines2)
+
+    #---------------------------------------------------------------
+    # parse and modify then extract
+    for i, line in enumerate(lines):
+        if continue_again:
+            continue_again = False
+            continue
+
+        if modify_lines and current_j < len(modify_lines):
+            for j, modify_line in enumerate(modify_lines[current_j:]):
+                if modify_line == line:
+                    line = line[1:]
+                    current_j = j + 1
+                    _lines.append(line)
+                    is_modified = True
+                    break
+            if is_modified:
+                is_modified = False
+                continue
+
+        if len(lines) > i + 1 and current_k < len(remove_lines1):
+            for k, remove_line2 in enumerate(remove_lines2[current_k:]):
+                if line == remove_line2:
+                    skip_append = True
+                    for remove_line1 in remove_lines1[current_k:]:
+                        if line[i + 1] == remove_line1:
+                            continue_again = True
+                            current_k = k + 1
+                        else:
+                            modify_lines.append(remove_line1)
+                            current_k = k + 1
+                        break
+                    break
+
+        if not skip_append:
+            _lines.append(line)
+        else:
+            skip_append = False
+    lines = _lines
+
+    #---------------------------------------------------------------
+    # match and extract
     for i, line in enumerate(lines):
         if re.match(separate_pattern, line):
             gpath: str = re.sub("a/", "", re.sub(separate_pattern, "", line).split(" ")[0])
             group[gpath] = []
 
-        if file_name in group and i > 1:
+        if gpath in group and i > 1:
             if len(line) >= 2 and line[:2] == "@@":
                 continue
             elif len(line) >= 3 and (line[:3] == "+++" or line[:3] == "---"):
+                continue
+            elif line == r"\ No newline at end of file":
                 continue
             group[gpath].append(line)
 
@@ -116,9 +183,7 @@ def make_time_stamp() -> str:
 def make_diff_stamp(gpath: str, diffs: Diffs, separator: str = "") -> str:
     stamp_text: str = ""
     if gpath in diffs:
-        stamp_text = "\n".join(
-            [line for line in diffs[gpath] if line != r"\ No newline at end of file"]
-            )
+        stamp_text = "\n".join(diffs[gpath])
         if separator:
             stamp_text = f"{separator}\n{stamp_text}"
 
