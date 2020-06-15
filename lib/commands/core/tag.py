@@ -17,6 +17,7 @@ TAG_FILE = "tags.json"
 
 def load_tag_data(config: Config) -> Dict:
     """Load all tag data
+
     Structure:
         - tag_data
         {
@@ -27,7 +28,7 @@ def load_tag_data(config: Config) -> Dict:
         config (Config): Config data
 
     Returns:
-        Dict: tag data
+        Dict: Tag data
     """
     tag_dir = get_dir_path("TAG", config)
     tag_file_path = f"{tag_dir}/{TAG_FILE}"
@@ -59,12 +60,13 @@ def update_tag_file(action_type: str, config: Config,
                     file_name: Optional[str] = None, new_file_name: Optional[str] = None,
                     tag_name: Optional[str] = None, new_tag_name: Optional[str] = None) -> None:
     """Update tag file
-        - ADD_TAG: add a new tag
-        - REMOVE_TAG: remove a tag
-        - RENAME_TAG: rename a tag
-        - SEARCH_TAG: search a tag and print them
-        - SHOW_ALL: print all tag data
-        - RENAME_FILE: rename a file which links to tags
+
+        - ADD_TAG: Add a new tag
+        - REMOVE_TAG: Remove a tag
+        - RENAME_TAG: Rename a tag
+        - SEARCH_TAG: Search a tag and print them
+        - SHOW_ALL: Print all tag data
+        - RENAME_FILE: Rename a file which links to tags
 
     Arg Patterns:
         - ADD_TAG:      file_name, tag_name
@@ -75,16 +77,18 @@ def update_tag_file(action_type: str, config: Config,
         - RENAME_FILE:  file_name, new_file_name
 
     Args:
-        action_type (str): ADD_TAG, REMOVE_TAG, RENAME_TAG, SEARCH_TAG, SHOW_ALL, RENAM_FILE
-        config (Config): Config file
-        file_name (Optional[str], optional): Use in ADD_TAG, REMOVE_TAG, RENAME_TAG, RENAME_FILE. Defaults to None.
-        new_file_name (Optional[str], optional): Use in RENAME_FILE. Defaults to None.
-        tag_name (Optional[str], optional): Use in ADD_TAG, REMOVE_TAG, SEARCH_TAG.  Defaults to None.
-        new_tag_name (Optional[str], optional): [description] Use in RENAME_TAG. Defaults to None.
+        action_type (str):                          ADD_TAG, REMOVE_TAG, RENAME_TAG, SEARCH_TAG, SHOW_ALL, RENAM_FILE
+        config (Config):                            Config file
+        file_name (Optional[str], optional):        Use in ADD_TAG, REMOVE_TAG, RENAME_TAG, RENAME_FILE. Defaults to None.
+        new_file_name (Optional[str], optional):    Use in RENAME_FILE. Defaults to None.
+        tag_name (Optional[str], optional):         Use in ADD_TAG, REMOVE_TAG, SEARCH_TAG.  Defaults to None.
+        new_tag_name (Optional[str], optional):     Use in RENAME_TAG. Defaults to None.
 
     Raises:
         Exception: [description]
     """
+    # -------------------------------------------------------
+    # ADD_TAG 
     if action_type == "ADD_TAG":
         tag_data = load_tag_data(config)
 
@@ -100,7 +104,8 @@ def update_tag_file(action_type: str, config: Config,
             tag_data[tag_name] = [file_name]
 
         dump_tag_json(tag_data, config)
-
+    # -------------------------------------------------------
+    # REMOVE_TAG
     elif action_type == "REMOVE_TAG":
         tag_data = load_tag_data(config)
         if tag_data and tag_name in tag_data:
@@ -109,23 +114,27 @@ def update_tag_file(action_type: str, config: Config,
                 if not tag_data[tag_name]:
                     del tag_data[tag_name]
                 dump_tag_json(tag_data, config)
-
+    # -------------------------------------------------------
+    # RENAME_TAG
     elif action_type == "RENAME_TAG":
         tag_data = load_tag_data(config)
         if tag_data and tag_name in tag_data:
             tag_data[new_tag_name] = tag_data[tag_name]
             del tag_data[tag_name]
             dump_tag_json(tag_data, config)
-
+    # -------------------------------------------------------
+    # SEARCH_TAG
     elif action_type == "SEARCH_TAG":
         tag_data = load_tag_data(config)
         if tag_data and tag_name in tag_data:
             pprint(tag_data[tag_name])
-
+    # -------------------------------------------------------
+    # SHOW_ALL
     elif action_type == "SHOW_ALL":
         tag_data = load_tag_data(config)
         pprint(tag_data)
-
+    # -------------------------------------------------------
+    # RENAME_FILE
     elif action_type == "RENAME_FILE":
         tag_names = f2t(file_name, config)
         tag_data = load_tag_data(config)
@@ -135,5 +144,6 @@ def update_tag_file(action_type: str, config: Config,
                 tag_data[tag_name].append(new_file_name)
 
             dump_tag_json(tag_data, config)
+    # -------------------------------------------------------
     else:
         raise Exception(f"No such action type: {action_type}")

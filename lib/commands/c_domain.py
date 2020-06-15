@@ -12,10 +12,10 @@ def c_domain(arg: str) -> None:
     """Command for domain oprerations
 
     Ops:
-    - add: Add a domain to a file
-    - remove Remove a domain to a file
-    - rename Rename a domain
-    - search Search a domain
+        - add: Add a domain to a file
+        - remove Remove a domain to a file
+        - rename Rename a domain
+        - search Search a domain
 
     Args:
         arg (str): Arguments for domain
