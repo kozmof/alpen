@@ -157,35 +157,3 @@ def make_my_branch() -> None:
     if not has_branch(uuid):
         cmd = f"git branch {uuid}"
         fpshell(cmd)
-
-
-def make_feed_branch() -> None:
-    config: Config = load_config()
-    uuid = config["uuid"]
-    if not has_branch(f"{uuid}-feed"):
-        cmd = f"git branch {uuid}-feed"
-        fpshell(cmd)
-
-
-def add_repository(user, uuid) -> None:
-    cmd = f"git add remote {user} {uuid}"
-    fpshell(cmd)
-    user_uuid = load_user_uuid()
-    user_uuid[user] = uuid
-    dump_user_uuid(user_uuid)
-
-
-def update_repository(user) -> None:
-    config: Config = load_config()
-    uuid = config["uuid"]
-    if not has_branch(f"{uuid}-feed"):
-        make_feed_branch()
-    cmd1 = f"git checkout {uuid}-feed"
-    fpshell(cmd1)
-    user_uuid = load_user_uuid()
-    uuid = user_uuid.get(user, None)
-    if uuid:
-        cmd2 = f"git pull {user} {uuid}"
-        fpshell(cmd2)
-    cmd3 = f"git checkout {uuid}"
-    fpshell(cmd3)
