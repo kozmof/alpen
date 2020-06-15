@@ -64,7 +64,7 @@ def update_tag_file(action_type: str, config: Config,
         - ADD_TAG: Add a new tag
         - REMOVE_TAG: Remove a tag
         - RENAME_TAG: Rename a tag
-        - SEARCH_TAG: Search a tag and print them
+        - SEARCH_TAG: Search a tag and print linked files
         - SHOW_ALL: Print all tag data
         - RENAME_FILE: Rename a file which links to tags
 
