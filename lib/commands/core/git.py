@@ -50,21 +50,24 @@ def git_diff() -> Diffs:
     cmd1: str = "git diff --histogram"
     output: str = fpshell(cmd1)
 
-    lines: List[str] = output.split("\n")
     separate_pattern: str = "diff --git "
+    lines: List[str] = output.split("\n")
+
+    _lines = []
+    _chunk = []
+    lchunk = []
+    _lchunk = []
+    modify_lines = []
+
     group: Diffs = {}
     gpath = ""
-    _lines = []
-    modify_lines = []
 
     continue_again = False
     skip_append  = False
     is_modified = False
     current_j = 0
     current_k = 0
-    _chunk = []
-    lchunk = []
-    _lchunk = []
+
     for line in lines:
         if len(line) > 10 and line[:11]:
             if separate_pattern == line[:11]:
@@ -75,6 +78,8 @@ def git_diff() -> Diffs:
     if _chunk:
         lchunk.append(_chunk)
 
+    #-------------------------------------------------------------------
+    # Process per a file then gather them
     for lines in lchunk:
         #---------------------------------------------------------------
         # extract pairs
@@ -133,7 +138,10 @@ def git_diff() -> Diffs:
         _lchunk.append(_lines)
         _lines = []
 
+    #---------------------------------------------------------------
+    # Gather them
     lines = [line for _lines in _lchunk for line in _lines]
+
     #---------------------------------------------------------------
     # match and extract
     for i, line in enumerate(lines):
