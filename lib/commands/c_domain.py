@@ -22,9 +22,11 @@ def c_domain(arg: str) -> None:
     options = [option for option in arg.split(" ") if option]
 
     # -------------------------------------------------------
+    # show all operation
     if not len(options):
         show_all()
     # -------------------------------------------------------
+    # add operation
     elif options[0] == "add":
         if len(options) == 3:
             domain_name = options[1]
@@ -33,6 +35,7 @@ def c_domain(arg: str) -> None:
         else:
             print("Use domain add <domain_name> <file_name>")
     # -------------------------------------------------------
+    # remove operation
     elif options[0] == "remove":
         if len(options) == 3:
             domain_name = options[1]
@@ -41,6 +44,7 @@ def c_domain(arg: str) -> None:
         else:
             print("Use domain remove <domain_name> <file_name>")
     # -------------------------------------------------------
+    # rename operatoin
     elif options[0] == "rename":
         if len(options) == 3:
             domain_name = options[1]
@@ -49,6 +53,7 @@ def c_domain(arg: str) -> None:
         else:
             print("Use domain rename <domain_name> <new_domain_name>")
     # -------------------------------------------------------
+    # search operation
     elif options[0] == "search":
         if len(options) == 2:
             domain_name = options[1]
