@@ -29,7 +29,7 @@ def git_diff() -> Diffs:
 
             +bar
             +baz
-            foo
+             foo
             +foo
             +quux
 
@@ -62,61 +62,79 @@ def git_diff() -> Diffs:
     is_modified = False
     current_j = 0
     current_k = 0
+    _chunk = []
+    lchunk = []
+    _lchunk = []
+    for line in lines:
+        if len(line) > 10 and line[:11]:
+            if separate_pattern == line[:11]:
+                if _chunk:
+                    lchunk.append(_chunk)
+                _chunk = []
+        _chunk.append(line)
+    if _chunk:
+        lchunk.append(_chunk)
 
-    #---------------------------------------------------------------
-    # extract pairs
-    remove_lines1 = [
-        line for line in 
-            [
-                f"+{line[1:]}"
-                for line in lines
-                if len(line) > 0 and line[0] == "-" 
+    for lines in lchunk:
+        #---------------------------------------------------------------
+        # extract pairs
+        remove_lines1 = [
+            line for line in 
+                [
+                    f"+{line[1:]}"
+                    for line in lines
+                    if len(line) > 0 and line[0] == "-" 
+                ]
+            if line in lines
             ]
-        if line in lines
-        ]
-    remove_lines2 = [f"-{line[1:]}" for line in lines if line in remove_lines1]
-    remove_lines1 = [f"+{line[1:]}" for line in remove_lines2]
-    assert len(remove_lines1) == len(remove_lines2)
+        remove_lines2 = [f"-{line[1:]}" for line in lines if line in remove_lines1]
 
-    #---------------------------------------------------------------
-    # parse and modify then extract
-    for i, line in enumerate(lines):
-        if continue_again:
-            continue_again = False
-            continue
+        if len(remove_lines2) > len(remove_lines1):
+            remove_lines2 = [f"-{line[1:]}" for line in remove_lines1]
+        else:
+            remove_lines1 = [f"+{line[1:]}" for line in remove_lines2]
+        assert len(remove_lines1) == len(remove_lines2)
 
-        if modify_lines and current_j < len(modify_lines):
-            for j, modify_line in enumerate(modify_lines[current_j:]):
-                if modify_line == line:
-                    line = line[1:]
-                    current_j = j + 1
-                    _lines.append(line)
-                    is_modified = True
-                    break
-            if is_modified:
-                is_modified = False
+        #---------------------------------------------------------------
+        # parse and modify then extract
+        for i, line in enumerate(lines):
+            if continue_again:
+                continue_again = False
                 continue
 
-        if len(lines) > i + 1 and current_k < len(remove_lines1):
-            for k, remove_line2 in enumerate(remove_lines2[current_k:]):
-                if line == remove_line2:
-                    skip_append = True
-                    for remove_line1 in remove_lines1[current_k:]:
-                        if line[i + 1] == remove_line1:
+            if modify_lines and current_j < len(modify_lines):
+                for j, modify_line in enumerate(modify_lines[current_j:]):
+                    if modify_line == line:
+                        line = f" {line[1:]}"
+                        current_j = j + 1
+                        _lines.append(line)
+                        is_modified = True
+                        break
+                if is_modified:
+                    is_modified = False
+                    continue
+
+            if len(lines) > i + 1 and current_k < len(remove_lines1):
+                for k, remove_line2 in enumerate(remove_lines2[current_k:]):
+                    if line == remove_line2:
+                        skip_append = True
+                        remove_line1 = remove_lines1[current_k]
+                        if lines[i + 1] == remove_line1:
                             continue_again = True
                             current_k = k + 1
                         else:
                             modify_lines.append(remove_line1)
                             current_k = k + 1
-                        break
                     break
 
-        if not skip_append:
-            _lines.append(line)
-        else:
-            skip_append = False
-    lines = _lines
+            if not skip_append:
+                _lines.append(line)
+            else:
+                skip_append = False
+        _lchunk.append(_lines)
+        _lines = []
 
+    lines = [line for _lines in _lchunk for line in _lines]
     #---------------------------------------------------------------
     # match and extract
     for i, line in enumerate(lines):
