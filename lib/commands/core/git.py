@@ -37,13 +37,13 @@ def git_diff() -> Diffs:
 
         (2)
             -foo
-            \ No newline at end of file
             +foo
             +bar
             \ No newline at end of file
 
             ==>
 
+             foo
             +bar
 
     Returns:
@@ -64,7 +64,6 @@ def git_diff() -> Diffs:
     group: Diffs = {}
     gpath = ""
 
-    continue_again = False
     skip_append  = False
     is_modified = False
     current_j = 0
@@ -85,6 +84,8 @@ def git_diff() -> Diffs:
     for lines in lchunk:
         #---------------------------------------------------------------
         # extract pairs
+
+        # actural minus length of plus list 
         remove_lines1 = [
             line for line in 
                 [
@@ -94,21 +95,27 @@ def git_diff() -> Diffs:
                 ]
             if line in lines
             ]
+        # actural plus length of minus list 
         remove_lines2 = [f"-{line[1:]}" for line in lines if line in remove_lines1]
 
-        if len(remove_lines2) > len(remove_lines1):
+        # Alighn actual shorter len
+        # No need to adust a len
+        if (len2 := len(remove_lines2)) == (len1 := len(remove_lines1)):
+            pass
+        # The case of actural plus len is lognger than actual minus len
+        # Adjust minus list which is actual plus len to the actual munus len
+        elif len2 > len1:
             remove_lines2 = [f"-{line[1:]}" for line in remove_lines1]
+        # The case of actural minus len is lognger than actual plus len
+        # Adjust plus list which is actual muinus len to the actual plus len
         else:
             remove_lines1 = [f"+{line[1:]}" for line in remove_lines2]
+
         assert len(remove_lines1) == len(remove_lines2)
 
         #---------------------------------------------------------------
         # parse and modify then extract
         for i, line in enumerate(lines):
-            if continue_again:
-                continue_again = False
-                continue
-
             if modify_lines and current_j < len(modify_lines):
                 for j, modify_line in enumerate(modify_lines[current_j:]):
                     if modify_line == line:
@@ -127,10 +134,7 @@ def git_diff() -> Diffs:
                         skip_append = True
                         remove_line1 = remove_lines1[current_k]
                         current_k = k + 1
-                        if lines[i + 1] == remove_line1:
-                            continue_again = True
-                        else:
-                            modify_lines.append(remove_line1)
+                        modify_lines.append(remove_line1)
                     break
 
             if not skip_append:
