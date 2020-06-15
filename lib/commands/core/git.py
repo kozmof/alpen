@@ -38,16 +38,12 @@ def git_diff() -> Diffs:
     separate_pattern: str = "diff --git "
     group: Diffs = {}
     file_name = ""
-    remove_candidates = [f"+{line[1:]}" for line in lines if len(line) > 0 and line[0] == "-"]
-    remove_lines1 = [line for line in lines if line in remove_candidates]
-    remove_lines2 = [f"-{line[1:]}" for line in remove_lines1]
-    lines = [line for line in lines if line not in remove_lines1 + remove_lines2]
-    for line in lines:
+    for i, line in enumerate(lines):
         if re.match(separate_pattern, line):
             file_name: str = re.sub("a/", "", re.sub(separate_pattern, "", line).split(" ")[0])
             group[file_name] = []
 
-        if file_name in group:
+        if file_name in group and i > 1:
             if len(line) >= 2 and line[:2] == "@@":
                 continue
             elif len(line) >= 3 and (line[:3] == "+++" or line[:3] == "---"):
