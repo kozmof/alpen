@@ -119,12 +119,11 @@ def git_diff() -> Diffs:
                     if line == remove_line2:
                         skip_append = True
                         remove_line1 = remove_lines1[current_k]
+                        current_k = k + 1
                         if lines[i + 1] == remove_line1:
                             continue_again = True
-                            current_k = k + 1
                         else:
                             modify_lines.append(remove_line1)
-                            current_k = k + 1
                     break
 
             if not skip_append:
