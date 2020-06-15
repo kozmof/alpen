@@ -24,7 +24,7 @@ def record_edited_file(file_name: str) -> None:
 
 
 def read_edited_file_record(active_sign: str="A", not_active_sign: str="N") -> Optional[str]:
-    """Read records of edited files
+    """Read whole records of edited files
 
     Args:
         active_sign (str, optional): A sign of file exists. Defaults to "A".
