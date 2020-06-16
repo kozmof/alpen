@@ -84,7 +84,7 @@ def git_diff() -> Diffs:
         #---------------------------------------------------------------
         # extract pairs
 
-        # A plus list which is actural minus length
+        # A plus list which is actural minus len
         remove_lines1 = [
             line for line in 
                 [
@@ -94,7 +94,7 @@ def git_diff() -> Diffs:
                 ]
             if line in lines
             ]
-        # A minus list which is actural plus length 
+        # A minus list which is actural plus len
         remove_lines2 = [f"-{line[1:]}" for line in lines if line in remove_lines1]
 
         # Align actual shorter len
@@ -102,7 +102,7 @@ def git_diff() -> Diffs:
         if (len2 := len(remove_lines2)) == (len1 := len(remove_lines1)):
             pass
         # The case of actural plus len is lognger than actual minus len
-        # Adjust minus list which is actual plus len to the actual munus len
+        # Adjust minus list which is actual plus len to the actual minus len
         elif len2 > len1:
             remove_lines2 = [f"-{line[1:]}" for line in remove_lines1]
         # The case of actural minus len is lognger than actual plus len
