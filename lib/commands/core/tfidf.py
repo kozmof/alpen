@@ -22,12 +22,14 @@ def setup_janome():
     from janome.analyzer import Analyzer
     from janome.charfilter import UnicodeNormalizeCharFilter
     from janome.tokenfilter import POSKeepFilter, CompoundNounFilter, TokenCountFilter
+
     char_filters = [UnicodeNormalizeCharFilter()]
     token_filters = [CompoundNounFilter(), POSKeepFilter("名詞"), TokenCountFilter()]
     analyzer = Analyzer(
         char_filters=char_filters,
         token_filters=token_filters
         )
+
     return analyzer
 
 
@@ -44,11 +46,13 @@ def is_stopword(word, text_type):
 def calc_bow(doc):
     analyzer = setup_janome()
     text, text_type = doc
+
     if text_type == "ja":
         bow = {}
         for k, v in analyzer.analyze(text):
             bow[k] = v
         return bow
+
     elif text_type == "en":
         text = text.replace(",", " ")
         text = text.replace(".", " ")
@@ -61,6 +65,7 @@ def calc_bow(doc):
                 else:
                     bow[word] = 1
         return bow
+
     else:
         return {}
 
@@ -68,8 +73,10 @@ def calc_bow(doc):
 def multibow(docs):
     cpuc =  os.cpu_count()
     dlen = len(docs)
+
     with Pool(processes=dlen or 1 if cpuc > dlen else cpuc) as pl:
         res = pl.map(calc_bow, docs)
+
     return res
 
 
@@ -160,16 +167,29 @@ def make_doc_objs(file_names, config):
     return doc_objs, bows
 
 
-def make_dbows(doc_objs, bows):
-    domain_pile = [doc_obj["domain"] for doc_obj in doc_objs]
+def make_dbow(domains_bows):
     dbow = {}
-    for domains, bow in zip(domain_pile, bows):
+    for domains, bow in domains_bows:
         for domain in domains:
             if domain:
                 if domain not in dbow:
                     dbow[domain] = bow
                 else:
                     dbow[domain] = merge(dbow, bow)
+    return dbow
+
+
+
+def make_dbows(doc_objs, bows):
+    assert len(doc_objs) == len(bows)
+
+    domain_pile = [doc_obj["domain"] for doc_obj in doc_objs]
+    cpuc =  os.cpu_count()
+    dlen = len(bows)
+
+    with Pool(processes=dlen or 1 if cpuc > dlen else cpuc) as pl:
+        dbow = pl.map(make_dbow, zip(domain_pile, bows))
+
     return dbow
 
 
