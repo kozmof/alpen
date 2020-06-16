@@ -167,15 +167,15 @@ def make_doc_objs(file_names, config):
     return doc_objs, bows
 
 
-def make_dbow(domains_bows):
+def make_dbow(domains_bow):
+    domains, bow = domains_bow
     dbow = {}
-    for domains, bow in domains_bows:
-        for domain in domains:
-            if domain:
-                if domain not in dbow:
-                    dbow[domain] = bow
-                else:
-                    dbow[domain] = merge(dbow, bow)
+    for domain in domains:
+        if domain:
+            if domain not in dbow:
+                dbow[domain] = bow
+            else:
+                dbow[domain] = merge(dbow, bow)
     return dbow
 
 
@@ -188,7 +188,11 @@ def make_dbows(doc_objs, bows):
     dlen = len(bows)
 
     with Pool(processes=dlen or 1 if cpuc > dlen else cpuc) as pl:
-        dbow = pl.map(make_dbow, zip(domain_pile, bows))
+        dbows = pl.map(make_dbow, zip(domain_pile, bows))
+
+    dbow = {}
+    for _dbow in dbows:
+        dbow = merge(dbow, _dbow)
 
     return dbow
 
