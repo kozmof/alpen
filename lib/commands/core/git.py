@@ -14,7 +14,7 @@ from lib.commands.core.dir_ops import get_dir_path
 
 
 def git_diff() -> Diffs:
-    """Modify default diff of Git
+    r"""Modify default diff of Git
 
     Example:
         (1)
