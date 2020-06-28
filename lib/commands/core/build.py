@@ -164,14 +164,6 @@ def prep_tag_source(path, config):
     # tag/index.tsx
     with open(f"{path}/index.tsx", "w") as f:
         f.write("TODO")
-    with open(path_tag, "r") as f:
-        tags = json.load(f)
-    for tag in tags.keys():
-        if not os.path.isdir(sub_path := f"{path}/{tag}"):
-            os.mkdir(sub_path)
-        # tag/{tag}/index.tsx
-        with open(f"{sub_path}/index.tsx", "w") as f:
-            f.write("TODO")
 
 
 def prep_domain_source(path, config):
@@ -180,14 +172,6 @@ def prep_domain_source(path, config):
     path_domain = f"{payload_dir}/domain.payload.json"
     with open(f"{path}/index.tsx", "w") as f:
         f.write("TODO")
-    with open(path_domain, "r") as f:
-        domains = json.load(f)
-    for domain in domains.keys():
-        if not os.path.isdir(sub_path := f"{path}/{domain}"):
-            os.mkdir(sub_path)
-        # domain/{domain}/index.tsx
-        with open(f"{sub_path}/index.tsx", "w") as f:
-            f.write("TODO")
 
 
 def make_index_tree(src):
