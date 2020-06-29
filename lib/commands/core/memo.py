@@ -1,13 +1,25 @@
+"""Memo utilities
+"""
 import re
 import os
 from lib.commands.core.configure import load_config, has_config
 from lib.commands.core.dir_ops import get_dir_path 
 
-def memo_dir_path():
+def memo_dir_path() -> str:
+    """Get a directory for memo
+
+    Returns:
+        str: A directory path
+    """
     return get_dir_path('MEMO', load_config())
 
 
 def get_memo() -> str:
+    """Get an user specific memo
+
+    Returns:
+        str: A memo
+    """
     MEMO_DIR_PATH = memo_dir_path()
     if not os.path.isdir(MEMO_DIR_PATH):
         os.makedirs(MEMO_DIR_PATH)

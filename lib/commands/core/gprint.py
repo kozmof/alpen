@@ -1,8 +1,18 @@
+"""Grid print
+"""
 from typing import List
 from unicodedata import east_asian_width
 
 
-def count_wide_char(line):
+def count_wide_char(line: str) -> int:
+    """Count an amount of wide characters
+
+    Args:
+        line (str): Strings
+
+    Returns:
+        int: an amount of wide characters
+    """
     count = 0
     for char in line:
         if east_asian_width(char) in ["W", "F", "A"]:
@@ -13,6 +23,15 @@ TR_ST = "\033[?7l"
 TR_ED = "\033[?7h"
 
 def grid_text(*texts, margin: int = 3) -> str:
+    """Make grid texts
+
+    Args:
+        texts (str): Variable length args of string
+        margin (int, optional): Margins of grid space. Defaults to 3.
+
+    Returns:
+        str: Grid texts
+    """
     whole_max_len: List[int] = []
     max_height: int = 0
 
@@ -51,5 +70,11 @@ def grid_text(*texts, margin: int = 3) -> str:
 
 
 def gprint(*texts, margin: int = 3) -> None:
+    """A Wrapper of grid_text to print given texts
+
+    Args:
+        texts (str): Variable length args of string
+        margin (int, optional): Margins of grid space. Defaults to 3.
+    """
     result = grid_text(*texts, margin=margin)
     print(result)

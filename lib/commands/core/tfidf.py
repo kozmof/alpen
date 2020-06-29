@@ -1,3 +1,5 @@
+"""TF-IDF utilities
+"""
 import os
 import asyncio
 import lib.commands.core.stopwords as sw
@@ -8,9 +10,18 @@ from concurrent.futures import ThreadPoolExecutor
 from langdetect import detect
 from lib.commands.core.dir_ops import get_dir_path
 from lib.commands.core.metadata import load_metadata
+from typing import Tuple, List
 
 
-def load(path):
+def load(path: str) -> str:
+    """Load a file
+
+    Args:
+        path (str): A file path
+
+    Returns:
+        str: Data of a file
+    """
     if os.path.isfile(path):
         with open(path, "r") as f:
             return f.read()
@@ -19,6 +30,11 @@ def load(path):
 
 
 def setup_janome():
+    """An analyzer to tokenize japanese texts which only counts nouns
+
+    Returns:
+        Analyzer: Janome analyzer
+    """
     from janome.analyzer import Analyzer
     from janome.charfilter import UnicodeNormalizeCharFilter
     from janome.tokenfilter import POSKeepFilter, CompoundNounFilter, TokenCountFilter
@@ -33,7 +49,16 @@ def setup_janome():
     return analyzer
 
 
-def is_stopword(word, text_type):
+def is_stopword(word: str, text_type: str) -> bool:
+    """Check stop-words
+
+    Args:
+        word (str): A word to be checked
+        text_type (en): A language type
+
+    Returns:
+        bool: True if a word is a stop-word
+    """
     if text_type == "en":
         if word in sw.en:
             return True
@@ -43,7 +68,15 @@ def is_stopword(word, text_type):
         return False
 
 
-def calc_bow(doc):
+def calc_bow(doc: Tuple[str, str]) -> dict:
+    """Calculate Bag of Words
+
+    Args:
+        doc (Tuple[str, str]): A pair of a text and a language type
+
+    Returns:
+        dict: A BoW
+    """
     analyzer = setup_janome()
     text, text_type = doc
 
@@ -70,7 +103,15 @@ def calc_bow(doc):
         return {}
 
 
-def multibow(docs):
+def multibow(docs: List[Tuple[str, str]]) -> List[dict]:
+    """Execute multiprocessing of calcurating BoW
+
+    Args:
+        docs (List[Tuple[str, str]]): A bunch of pairs of a text and a language type
+
+    Returns:
+        List[dict]: A bunch of BoWs
+    """
     cpuc =  os.cpu_count()
     dlen = len(docs)
 
@@ -80,7 +121,15 @@ def multibow(docs):
     return res
 
 
-def tfidf(bows):
+def tfidf(bows: List[dict]) -> List[dict]:
+    """Calculate TF-IDF
+
+    Args:
+        bows (List[dict]): A bunch of BoWs
+
+    Returns:
+        List[dict]: TF-IDFs based on BoWs
+    """
     _pool = {}
     def _acum(k):
         if k not in _pool:
@@ -109,7 +158,16 @@ def tfidf(bows):
     return [_tf_idf(bow, doc_freq, N) for bow in bows]
 
 
-def merge(d1, d2):
+def merge(d1: dict, d2: dict) -> dict:
+    """Merge dictioanries which values have a `+` operator
+
+    Args:
+        d1 (dict): dict A
+        d2 (dict): dict B
+
+    Returns:
+        dict: dict A + B
+    """
     _d3 = {**d1, **d2}
     d3 = {
         k: v + d1[k] if  k in d1 and k in d2 else v

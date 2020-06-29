@@ -83,9 +83,6 @@ def update_tag_file(action_type: str, config: Config,
         new_file_name (Optional[str], optional):    Use in RENAME_FILE. Defaults to None.
         tag_name (Optional[str], optional):         Use in ADD_TAG, REMOVE_TAG, SEARCH_TAG.  Defaults to None.
         new_tag_name (Optional[str], optional):     Use in RENAME_TAG. Defaults to None.
-
-    Raises:
-        Exception: [description]
     """
     # -------------------------------------------------------
     # ADD_TAG 

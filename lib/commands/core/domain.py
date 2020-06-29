@@ -1,3 +1,5 @@
+"""Domain Utilities
+"""
 import os
 import json
 from pprint import pprint
@@ -14,6 +16,20 @@ DOMAIN_FILE = "domains.json"
 
 
 def load_domain_data(config: Config):
+    """Load all domain data
+
+    Structure:
+        domain_data:
+            {
+                [domain_name: str]:  List # file names
+            }
+
+    Args:
+        config (Config): Config data
+
+    Returns:
+        Dict: Domain data
+    """
     domain_dir = get_dir_path("DOMAIN", config)
     domain_file_path = f"{domain_dir}/{DOMAIN_FILE}"
 
@@ -24,6 +40,12 @@ def load_domain_data(config: Config):
 
 
 def dump_domain_json(domain_data, config: Config):
+    """Dump domain data
+
+    Args:
+        domain_data (Dict): Domain data
+        config (Config): Config data
+    """
     domain_dir = get_dir_path("DOMAIN", config)
     domain_file_path = f"{domain_dir}/{DOMAIN_FILE}"
 
@@ -37,7 +59,33 @@ def dump_domain_json(domain_data, config: Config):
 def update_domain_file(action_type: str, config: Config,
                        file_name: Optional[str] = None, new_file_name: Optional[str] = None,
                        domain_name: Optional[str] = None, new_domain_name: Optional[str] = None):
+    """Update domain file
 
+        - ADD_DOMAIN: Add a new domain
+        - REMOVE_DOMAIN: Remove a domain
+        - RENAME_DOMAIN: Rename a domain
+        - SEARCH_DOMAIN: Search a domain and print linked files
+        - SHOW_ALL: Print all domain data
+        - RENAME_FILE: Rename a file which links to domains
+
+    Arg Patterns:
+        - ADD_DOMAIN:      file_name, domain_name
+        - REMOVE_DOMAIN:   file_name, domain_name
+        - RENAME_DOMAIN:   domain_name, new_domain_name
+        - SEARCH_DOMAIN:   domain_name
+        - SHOW_ALL:     none
+        - RENAME_FILE:  file_name, new_file_name
+
+    Args:
+        action_type (str):                          ADD_DOMAIN, REMOVE_DOMAIN, RENAME_DOMAIN, SEARCH_DOMAIN, SHOW_ALL, RENAME_FILE
+        config (Config):                            Config file
+        file_name (Optional[str], optional):        Use in ADD_DOMAIN, REMOVE_DOMAIN, RENAME_DOMAIN, RENAME_FILE. Defaults to None.
+        new_file_name (Optional[str], optional):    Use in RENAME_FILE. Defaults to None.
+        domain_name (Optional[str], optional):         Use in ADD_DOMAIN, REMOVE_DOMAIN, SEARCH_DOMAIN.  Defaults to None.
+        new_domain_name (Optional[str], optional):     Use in RENAME_DOMAIN. Defaults to None.
+    """
+    # -------------------------------------------------------
+    # ADD_DOMAIN 
     if action_type == "ADD_DOMAIN":
         domain_data = load_domain_data(config)
 
@@ -53,7 +101,8 @@ def update_domain_file(action_type: str, config: Config,
             domain_data[domain_name] = [file_name]
 
         dump_domain_json(domain_data, config)
-
+    # -------------------------------------------------------
+    # REMOVE_DOMAIN
     elif action_type == "REMOVE_DOMAIN":
         domain_data = load_domain_data(config)
         if domain_data and domain_name in domain_data:
@@ -62,23 +111,27 @@ def update_domain_file(action_type: str, config: Config,
                 if not domain_data[domain_name]:
                     del domain_data[domain_name]
                 dump_domain_json(domain_data, config)
-
+    # -------------------------------------------------------
+    # RENAME_DOMAIN
     elif action_type == "RENAME_DOMAIN":
         domain_data = load_domain_data(config)
         if domain_data and domain_name in domain_data:
             domain_data[new_domain_name] = domain_data[domain_name]
             del domain_data[domain_name]
             dump_domain_json(domain_data, config)
-
+    # -------------------------------------------------------
+    # SEARCH_DOMAIN
     elif action_type == "SEARCH_DOMAIN":
         domain_data = load_domain_data(config)
         if domain_data and domain_name in domain_data:
             pprint(domain_data[domain_name])
-
+    # -------------------------------------------------------
+    # SHOW_ALL
     elif action_type == "SHOW_ALL":
         domain_data = load_domain_data(config)
         pprint(domain_data)
-
+    # -------------------------------------------------------
+    # RENAME_FILE
     elif action_type == "RENAME_FILE":
         domain_names = f2d(file_name, config)
         domain_data = load_domain_data(config)
@@ -88,5 +141,6 @@ def update_domain_file(action_type: str, config: Config,
                 domain_data[domain_name].append(new_file_name)
 
             dump_domain_json(domain_data, config)
+    # -------------------------------------------------------
     else:
         raise Exception(f"No such action type: {action_type}")
