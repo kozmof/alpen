@@ -10,7 +10,7 @@ from concurrent.futures import ThreadPoolExecutor
 from langdetect import detect
 from lib.commands.core.dir_ops import get_dir_path
 from lib.commands.core.metadata import load_metadata
-from typing import Tuple, List
+from typing import Tuple, List, Optional
 
 
 def load(path: str) -> str:
@@ -176,7 +176,28 @@ def merge(d1: dict, d2: dict) -> dict:
     return d3
 
 
-def make_doc_obj(file_name, doc_dir, metadata, text, text_type, bow, tfidf):
+def make_doc_obj(
+    file_name: str,
+    doc_dir: str,
+    metadata: dict,
+    text: str,
+    text_type: str,
+    bow: dict,
+    tfidf: dict) -> Optional[dict]:
+    """Make a document object
+
+    Args:
+        file_name (str): A file name
+        doc_dir (str): A path of document directory
+        metadata (dict): Metadata of document
+        text (str): Text data
+        text_type (str): A language type
+        bow (dict): Bow
+        tfidf (dict): TF-IDF 
+
+    Returns:
+        Optional[dict]: A document object
+    """
     if text:
         doc_obj = {}
         doc_obj["text"] = text
@@ -187,7 +208,16 @@ def make_doc_obj(file_name, doc_dir, metadata, text, text_type, bow, tfidf):
         return doc_obj
 
 
-def make_doc_objs(file_names, config):
+def make_doc_objs(file_names: List[str], config: dict) -> Tuple[dict, dict]:
+    """Make document objects and BoWs given file names
+
+    Args:
+        file_names (List[str]): File names 
+        config (dict): Config data
+
+    Returns:
+        Tuple[dict, dict]: Document objects and BoWs without empty documents
+    """
     doc_dir = get_dir_path("DOCUMENT", config)
     metadata = load_metadata(config)
     docs = [
@@ -216,7 +246,15 @@ def make_doc_objs(file_names, config):
     return doc_objs, bows
 
 
-def make_dbow(domains_bow):
+def make_dbow(domains_bow: Tuple[dict, dict]) -> dict:
+    """Make domain specific BoWs
+
+    Args:
+        domains_bow (dict): Domains and BoW which is related to domains
+
+    Returns:
+        dict: A domain specific BoW
+    """
     domains, bow = domains_bow
     dbow = {}
     for domain in domains:
@@ -228,8 +266,16 @@ def make_dbow(domains_bow):
     return dbow
 
 
+def make_dbows(doc_objs: List[dict], bows: List[dict]) -> dict:
+    """Make domain specific BoWs from given document objects
 
-def make_dbows(doc_objs, bows):
+    Args:
+        doc_objs (List[dict]): Document objects
+        bows (List[dict]): BoWs of document objects which are same indices
+
+    Returns:
+        dict: All domain specific BoWs
+    """
     assert len(doc_objs) == len(bows)
 
     domain_pile = [doc_obj["domain"] for doc_obj in doc_objs]
@@ -237,16 +283,24 @@ def make_dbows(doc_objs, bows):
     dlen = len(bows)
 
     with Pool(processes=dlen or 1 if cpuc > dlen else cpuc) as pl:
-        dbows = pl.map(make_dbow, zip(domain_pile, bows))
+        _dbows = pl.map(make_dbow, zip(domain_pile, bows))
 
-    dbow = {}
-    for _dbow in dbows:
-        dbow = merge(dbow, _dbow)
+    dbows = {}
+    for _dbow in _dbows:
+        dbows = merge(dbows, _dbow)
 
-    return dbow
+    return dbows
 
 
-def domain_tfidf(dbows):
+def domain_tfidf(dbows: dict) -> dict:
+    """Make domain specific TF-IDF
+
+    Args:
+        dbows (dict): Domanin specific BoWs
+
+    Returns:
+        dict: Domain specific TF-IDF
+    """
     domain_dbow = list(zip(*dbows.items()))
     return {
         domain_dbow[0][i]: dbow for i, dbow in enumerate(tfidf(domain_dbow[1]))
