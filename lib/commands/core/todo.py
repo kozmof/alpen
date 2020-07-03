@@ -1,3 +1,5 @@
+"""TO-DO Utilities
+"""
 import re
 import os
 from typing import List
@@ -8,11 +10,21 @@ CHECK_SIGN: str = "- [x]"
 UNCHECK_SIGN: str = "- [ ]"
 
 
-def todo_dir_path():
+def todo_dir_path() -> str:
+    """Get a path of TO-DO directory
+
+    Returns:
+        str: A path
+    """
     return get_dir_path('TODO', load_config())
 
 
 def get_todo() -> str:
+    """Get TO-DO lists
+
+    Returns:
+        str: TO-DO texts
+    """
     TODO_DIR_PATH = todo_dir_path()
     if not os.path.isdir(TODO_DIR_PATH):
         os.makedirs(TODO_DIR_PATH)
@@ -41,6 +53,11 @@ def get_todo() -> str:
 
 
 def toggle_check(num: int) -> None:
+    """Toggle check and uncheck
+
+    Args:
+        num (int): An indext to toggle
+    """
     TODO_DIR_PATH = todo_dir_path()
     new_todo: str = ""
     try:
