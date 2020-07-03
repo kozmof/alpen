@@ -176,15 +176,6 @@ def merge(d1: dict, d2: dict) -> dict:
     return d3
 
 
-def de_merge(d1, d2):
-    _d3 = {
-        k: v - d2[k] if k in d1 else v
-        for k,  v in d1.items()
-    }
-    d3 = {k: v for k, v in _d3.items() if v}
-    return d3
-
-
 def make_doc_obj(file_name, doc_dir, metadata, text, text_type, bow, tfidf):
     if text:
         doc_obj = {}
