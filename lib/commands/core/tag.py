@@ -7,7 +7,7 @@ from typing import Optional, List, Dict
 from lib.commands.core.configure import load_config
 from lib.commands.core.dir_ops import get_dir_path
 from lib.commands.core.metadata import (
-    update_metadata_file,
+    manipulate_metadata,
     f2t
     )
 from lib.commands.core.custom_types import Config
@@ -56,7 +56,7 @@ def dump_tag_json(tag_data, config: Config) -> None:
         json.dump(tag_data, f, indent=4, sort_keys=True)
 
 
-def update_tag_file(action_type: str, config: Config,
+def manipulate_tag_data(action_type: str, config: Config,
                     file_name: Optional[str] = None, new_file_name: Optional[str] = None,
                     tag_name: Optional[str] = None, new_tag_name: Optional[str] = None) -> None:
     """Update tag file

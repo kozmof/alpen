@@ -3,9 +3,9 @@
 import re
 from typing import Tuple, Optional
 
-from lib.commands.core.tag import update_tag_file
-from lib.commands.core.domain import update_domain_file
-from lib.commands.core.metadata import update_metadata_file
+from lib.commands.core.tag import manipulate_tag_data
+from lib.commands.core.domain import manipulate_domain_data
+from lib.commands.core.metadata import manipulate_metadata
 from lib.commands.core.configure import load_config
 from lib.commands.core.custom_types import Config
 
@@ -57,6 +57,6 @@ def apply_rename(file_name: str, new_file_name: str, config: Config) -> None:
         new_file_name (str): A new file name
         config (Config): Config data
     """
-    update_tag_file("RENAME_FILE", config, file_name=file_name, new_file_name=new_file_name)
-    update_domain_file("RENAME_FILE", config, file_name=file_name, new_file_name=new_file_name)
-    update_metadata_file("RENAME_FILE", config, file_name=file_name, new_file_name=new_file_name)
+    manipulate_tag_data("RENAME_FILE", config, file_name=file_name, new_file_name=new_file_name)
+    manipulate_domain_data("RENAME_FILE", config, file_name=file_name, new_file_name=new_file_name)
+    manipulate_metadata("RENAME_FILE", config, file_name=file_name, new_file_name=new_file_name)

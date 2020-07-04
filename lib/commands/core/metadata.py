@@ -145,7 +145,7 @@ def dump_metadata_json(metadata: dict, config: Config) -> None:
         json.dump(metadata, f, indent=4, sort_keys=True)
 
 
-def update_metadata_file(action_type: str, config: Config,
+def manipulate_metadata(action_type: str, config: Config,
                          file_name: Optional[str] = None,
                          tag_name: Optional[str] = None, new_tag_name: Optional[str] = None,
                          domain_name: Optional[str] = None, new_domain_name: Optional[str] = None,
