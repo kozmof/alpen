@@ -95,7 +95,7 @@ def has_config() -> bool:
         return False
 
 
-def update_config(key: str, value: any, halt_if_exists: bool = False, backup_limit=10) -> None:
+def update_config(key: str, value: any, halt_if_exists: bool=False, backup_limit: int=10) -> None:
     """Update config data
 
     Args:
