@@ -9,6 +9,7 @@ tags.json
 .histories
 .*.swp
 publish/dist/*
+publish/payload/*
 publish/node_modules/*
 publish/build.config.json
 __pycache__
