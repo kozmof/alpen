@@ -1,4 +1,4 @@
-"""Command Utilities
+"""Command utilities
 """
 import re
 from typing import List

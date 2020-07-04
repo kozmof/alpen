@@ -1,4 +1,4 @@
-"""Domain Utilities
+"""Domain utilities
 """
 import os
 import json

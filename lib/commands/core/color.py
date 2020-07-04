@@ -1,4 +1,4 @@
-"""Color Utilities
+"""Color utilities
 """
 GREENC = "\033[1;32m"
 BLUEC = "\033[1;34m"

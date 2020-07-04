@@ -1,4 +1,4 @@
-"""Consistency Utilities
+"""Consistency utilities
 """
 import os
 import re

@@ -1,4 +1,4 @@
-"""Renaming Utilities
+"""Renaming utilities
 """
 import re
 from typing import Tuple, Optional

@@ -1,4 +1,4 @@
-"""Domain Operations
+"""Domain operations
 """
 from lib.commands.core.configure import load_config
 from lib.commands.core.domain import manipulate_domain_data

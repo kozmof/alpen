@@ -1,4 +1,4 @@
-"""Metadata Utilities
+"""Metadata utilities
 """
 import os
 import json

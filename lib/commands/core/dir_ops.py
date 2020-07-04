@@ -1,4 +1,4 @@
-"""Directory ops
+"""Directory operations
 """
 
 import os

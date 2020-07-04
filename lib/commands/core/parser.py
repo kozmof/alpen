@@ -1,4 +1,4 @@
-"""Parser Utilities
+"""Parser utilities
 """
 import re
 from typing import List

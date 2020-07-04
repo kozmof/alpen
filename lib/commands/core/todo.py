@@ -1,4 +1,4 @@
-"""TO-DO Utilities
+"""TO-DO utilities
 """
 import re
 import os
