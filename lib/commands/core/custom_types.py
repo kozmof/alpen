@@ -1,3 +1,5 @@
+"""Custom types
+"""
 from datetime import datetime
 from typing import NewType, List, Dict, Union
 
