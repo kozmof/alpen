@@ -39,11 +39,11 @@ def load_domain_data(config: Config):
             return domain_data
 
 
-def dump_domain_json(domain_data, config: Config):
+def dump_domain_json(domain_data: dict, config: Config):
     """Dump domain data
 
     Args:
-        domain_data (Dict): Domain data
+        domain_data (dict): Domain data
         config (Config): Config data
     """
     domain_dir = get_dir_path("DOMAIN", config)
