@@ -87,8 +87,8 @@ def calc_bow(doc: Tuple[str, str]) -> dict:
         return bow
 
     elif text_type == "en":
-        text = text.replace(",", " ")
-        text = text.replace(".", " ")
+        text = text.replace(",", " ")\
+                   .replace(".", " ")
         words = text.split()
         bow = {}
         for word in words:
