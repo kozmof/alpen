@@ -58,7 +58,7 @@ class ConfigError(Exception):
     pass
 
 
-def load_config(backup=False) -> Union[Config, ConfigBackup]:
+def load_config(backup: bool=False) -> Union[Config, ConfigBackup]:
     """Load config data
 
     Args:
