@@ -1,3 +1,5 @@
+"""Configure utilities
+"""
 import re
 import os
 import json
@@ -41,6 +43,8 @@ SHORTHAND_PATH = ROOT_DIR + "/" + "shorthand.json"
 
 
 def init() -> None:
+    """Initialize config data
+    """
     with open(CONFIG_PATH, "w") as f:
         json.dump(INITIAL_CONFIG, f, indent=4, sort_keys=True)
 
@@ -49,9 +53,20 @@ def init() -> None:
 
 
 class ConfigError(Exception):
-    ...
+    """Custom Exception for missing a config file
+    """
+    pass
+
 
 def load_config(backup=False) -> Union[Config, ConfigBackup]:
+    """Load config data
+
+    Args:
+        backup (bool, optional): Load backup config data. Defaults to False.
+
+    Returns:
+        Union[Config, ConfigBackup]: Config data or backup config data
+    """
     if not backup: 
         cpath = CONFIG_PATH
     else:
@@ -67,7 +82,12 @@ def load_config(backup=False) -> Union[Config, ConfigBackup]:
         raise ConfigError(f"{cpath} not found")
 
 
-def has_config():
+def has_config() -> bool:
+    """Check whether a config file exists or not
+
+    Returns:
+        bool: True if a config file exists
+    """
     cpath = CONFIG_PATH
     if os.path.isfile(cpath):
         return True
@@ -76,6 +96,14 @@ def has_config():
 
 
 def update_config(key: str, value: any, halt_if_exists: bool = False, backup_limit=10) -> None:
+    """Update config data
+
+    Args:
+        key (str): A key to update data
+        value (any): A value to be updated
+        halt_if_exists (bool, optional): Don't update if a key exists. Defaults to False.
+        backup_limit (int, optional): An amount of backup data. Defaults to 10.
+    """
     if os.path.isfile(CONFIG_PATH):
         config : Config = load_config()
         update: bool = False
@@ -110,6 +138,10 @@ def update_config(key: str, value: any, halt_if_exists: bool = False, backup_lim
 
 
 def load_shorthand() -> Shorthand:
+    """Load command shorthands
+    Returns:
+        Shorthand: Command shorthands
+    """
     spath: str = SHORTHAND_PATH
 
     if os.path.isfile(spath):
@@ -120,33 +152,64 @@ def load_shorthand() -> Shorthand:
 
 
 def update_shorthand(config: Config, key: str, value: str) -> None:
+    """Updata shorthand data
+
+    Args:
+        config (Config): Config data
+        key (str): An command name
+        value (str): A shorthand
+    """
     if os.path.isfile(SHORTHAND_PATH):
         shorthand: Shorthand = load_shorthand()
         with open(SHORTHAND_PATH, "w") as f:
             shorthand[key] = value
-            json.dump(config, f, indent=4, sort_keys=True)
+            json.dump(shorthand, f, indent=4, sort_keys=True)
 
 
 def save_uuid() -> None:
+    """Save an uuid if it doesn't exist
+    """
     uuid: str = str(uuid4())
     update_config("uuid", uuid, halt_if_exists=True)
 
 
 def save_root_path() -> None:
+    """Save an absolute path of root if it doesn't exist
+    """
     update_config("root_path", ROOT_DIR, halt_if_exists=True)
 
 
 def config_editor(editor: str) -> None:
+    """Configure an editor 
+
+    Args:
+        editor (str): An editor command in CLI
+    """
     update_config("editor", editor)
 
 
 def config_user(user: str) -> None:
+    """Configure an user name
+
+    Args:
+        user (str): An user name
+    """
     update_config("user", user)
 
 
 def config_editor_file_pos(pos: int) -> None:
+    """Configure a file position to be openend by an editor
+
+    Args:
+        pos (int): A position statrts from 0
+    """
     update_config("editor_file_pos", pos)
 
 
 def config_deploy_path(path: str) -> None:
+    """Configure a path to save a built data
+
+    Args:
+        path (str): A path 
+    """
     update_config("deploy_path", path)

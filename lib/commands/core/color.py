@@ -1,3 +1,5 @@
+"""Color Utilities
+"""
 GREENC = "\033[1;32m"
 BLUEC = "\033[1;34m"
 CYANC = "\033[1;36m"
@@ -6,6 +8,15 @@ ENDC = "\033[0m"
 
 
 def color(text: str, color_type: str) -> str:
+    """Color a given text
+
+    Args:
+        text (str): A text
+        color_type (str): A color type
+
+    Returns:
+        str: A colored text
+    """
     if color_type == "green":
         return f"{GREENC}{text}{ENDC}"
     elif color_type == "blue":
