@@ -11,7 +11,7 @@ UNCHECK_SIGN: str = "- [ ]"
 
 
 def todo_dir_path() -> str:
-    """Get a path of TO-DO directory
+    """Get an absolute path of TO-DO directory
 
     Returns:
         str: A path
@@ -56,7 +56,7 @@ def toggle_check(num: int) -> None:
     """Toggle check and uncheck
 
     Args:
-        num (int): An indext to toggle
+        num (int): An index to toggle
     """
     TODO_DIR_PATH = todo_dir_path()
     new_todo: str = ""
