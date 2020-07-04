@@ -13,7 +13,7 @@ def record_edited_file(file_name: str) -> None:
     """Recored an edited file 
 
     Args:
-        file_name (str): Edited file name
+        file_name (str): An edited file name
     """
     config: Config = load_config()
     root_path: str = config["root_path"]
@@ -24,7 +24,7 @@ def record_edited_file(file_name: str) -> None:
 
 
 def read_edited_file_record(active_sign: str="A", not_active_sign: str="N") -> Optional[str]:
-    """Read whole records of edited files
+    """Get whole records of edited files
 
     Args:
         active_sign (str, optional): A sign of file exists. Defaults to "A".
