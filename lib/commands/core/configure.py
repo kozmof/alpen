@@ -139,6 +139,7 @@ def update_config(key: str, value: any, halt_if_exists: bool=False, backup_limit
 
 def load_shorthand() -> Shorthand:
     """Load command shorthands
+
     Returns:
         Shorthand: Command shorthands
     """
